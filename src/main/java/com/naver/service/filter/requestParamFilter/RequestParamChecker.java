@@ -58,7 +58,11 @@ public final class RequestParamChecker {
 			LOG.error("Not exist URL & Param Rule infomation. Request url: " + url + ", Parameter name: " + paramName);
 			return "";
 		} else {
-			return urlRule.getDefender().doFilter(value);
+			if (urlRule.isUseDefender()) {
+				return urlRule.getDefender().doFilter(value);
+			} else {
+				return value;
+			}
 		}
 	}
 }
