@@ -7,6 +7,12 @@
 	<name>Request Parameter Filter</name>
 	<url>http://repo.nhncorp.com/maven2/com/naver/service/request-param-filter</url>
 
+	<scm>
+		<connection>scm:svn:http://svn.bds.nhncorp.com/dic/request-param-filter/trunk</connection>
+		<url>http://svn.bds.nhncorp.com/dic/request-param-filter/trunk</url>
+		<developerConnection>scm:svn:http://svn.bds.nhncorp.com/dic/request-param-filter/trunk</developerConnection>
+	</scm>
+
 	<distributionManagement>
 		<repository>
 			<id>nhn.release.repository</id>

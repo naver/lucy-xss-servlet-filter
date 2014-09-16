@@ -55,7 +55,7 @@ public final class RequestParamChecker {
 
 		RequestParamParamRule urlRule = config.getUrlParamRule(url, paramName);
 		if (urlRule == null) {
-			LOG.error("Not exist URL & Param Rule infomation. Request url: " + url + ", Parameter name: " + paramName);
+			LOG.error("Not exist URL & Param Rule information. Request url: " + url + ", Parameter name: " + paramName);
 			return "";
 		} else {
 			if (urlRule.isUseDefender()) {

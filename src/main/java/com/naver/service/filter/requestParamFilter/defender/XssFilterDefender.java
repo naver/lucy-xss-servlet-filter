@@ -25,7 +25,9 @@ public class XssFilterDefender implements Defender {
 	 */
 	@Override
 	public void init(String[] values) {
-		if (values != null) {
+		if (values == null || values.length == 0) {
+			filter = XssFilter.getInstance();
+		} else {
 			switch (values.length) {
 				case 1:
 					if (isBoolean(values[0])) {
