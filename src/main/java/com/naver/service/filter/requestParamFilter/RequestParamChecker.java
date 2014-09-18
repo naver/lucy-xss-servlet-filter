@@ -55,13 +55,16 @@ public final class RequestParamChecker {
 
 		RequestParamParamRule urlRule = config.getUrlParamRule(url, paramName);
 		if (urlRule == null) {
-			LOG.error("Not exist URL & Param Rule information. Request url: " + url + ", Parameter name: " + paramName);
-			return "";
+			// Default defender 적용
+			return config.getDefaultDefender().doFilter(value);
 		} else {
-			if (urlRule.isUseDefender()) {
-				return urlRule.getDefender().doFilter(value);
-			} else {
+			if (!urlRule.isUseDefender()) {
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("Do not filtered Parameter. Request url: " + url + ", Parameter name: " + paramName + ", Parameter value: " + value);
+				}
 				return value;
+			} else {
+				return urlRule.getDefender().doFilter(value);
 			}
 		}
 	}

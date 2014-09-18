@@ -126,7 +126,7 @@ public class RequestParamConfig {
 	 * @param elements
 	 */
 	private void addUrlRuleSet(Element rootElement) {
-		NodeList nodeList = rootElement.getElementsByTagName("urlRule");
+		NodeList nodeList = rootElement.getElementsByTagName("url-rule");
 		for (int i = 0; nodeList.getLength() > 0 && i < nodeList.getLength(); i++) {
 			Element element = (Element)nodeList.item(i);
 			addUrlRule(element);
@@ -290,5 +290,14 @@ public class RequestParamConfig {
 	 */
 	public Map<String, Defender> getDefenderMap() {
 		return defenderMap;
+	}
+
+	/**
+	 * Default Defender 획득
+	 * 
+	 * @return
+	 */
+	public Defender getDefaultDefender() {
+		return defaultDefender;
 	}
 }

@@ -3,7 +3,7 @@
 	<groupId>com.naver.service</groupId>
 	<artifactId>request-param-filter</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<name>Request Parameter Filter</name>
 	<url>http://repo.nhncorp.com/maven2/com/naver/service/request-param-filter</url>
 
