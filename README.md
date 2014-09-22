@@ -120,29 +120,9 @@
     </url-rule-set>
 </config>
 ```
-
 ## Rule 파일 XML 항목별 설명
-|| 항목명 || || || || || || || 속성명 || 노출개수 || 범위 || 기본값 || 내용 ||
-| config | | | | | | | | 1 | | | Root Element |
-| | defenders | | | | | | | 1 | | | Parameter 값을 변경할 때 사용할 defender 인스턴스의 집합 |
-| | | defender | | | | | | 1 .. n | | | defender 인스턴스 |
-| | | | name | | | | | 1 | | | defender 의 이름 |
-| | | | class | | | | | 1 | | | defender 의 실제 class name |
-| | | | init-param | | | | | 0 .. 1 | | | defender 의 생성자 파라메터의 집합 |
-| | | | | param-value | | | | 0 .. n | | | defender 의 생성자 파라메터 |
-| | default | | | | | | | 1 | | | 기본 설정값 |
-| | | defender | | | | | | 1 | | | 기본 defender 값.\\defenders > defender > name 값을 입력 |
-| | global | | | | | | | 0 .. 1 | | | 전체 설정에 적용되는 값 |
-| | | params | | | | | | 1 | | | 전체 설정에 적용될 Parameter 값의 집합 |
-| | | | param | | | | | 1 .. n | | | 전체 설정에 적용될 Parameter 값. |
-| | | | | | | | name | 1 | | | Request Parameter 명 |
-| | | | | | | | useDefender | 0 .. 1 | true\\false | true | defender 에 의한 입력값의 변조 여부.\\{color:red}*false 로 설정 시에는 반드시 서버 코드 내에서 별도 escape 처리를 하도록 한다.*{color} |
-| | | | | | defender | | | 0 .. 1 | | | 적용할 defender.\\defenders > defender > name 값을 입력\\생략될 경우 default defender가 설정된다. |
-| | url-rule-set | | | | | | | 1 | | | 필터 적용 시 옵션을 설정할 URL Rule 의 집합 |
-| | | url-rule | | | | | | 1 .. n | | | 필터 적용 시 옵션을 설정할 URL Rule |
-| | | | url | | | | | 1 | | | 옵션을 설정할 URL |
-| | | | params | | | | | 0 .. 1 | | | 옵션을 설정할 Parameter 값의 집합 |
-| | | | | param | | | | 1 | | | 옵션을 설정할 Parameter |
-| | | | | | | | name | 1 | | | Request Parameter 명 |
-| | | | | | | | useDefender | 0 .. 1 | true\\false | true | defender 에 의한 입력값의 변조 여부.\\{color:red}*false 로 설정 시에는 반드시 서버 코드 내에서 별도 escape 처리를 하도록 한다.*{color} |
-| | | | | | defender | | | 0 .. 1 | | | 적용할 defender.\\defenders > defender > name 값을 입력\\생략될 경우 default defender가 설정된다. | 
+|항목명|  |   |   |   |   |   |속성명|노출개수|범위|기본값|내용|
+|:---:|-:|:-:|:-:|:-:|:-:|:-:|:---:|:-----:|:-:|:----:|:-:|
+|config| |   |   |   |   |   |     |1      |   |      |Root Element|
+|
+|
