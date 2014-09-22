@@ -32,7 +32,7 @@
 </filter-mapping>
 ```
 
-3. Rule 파일 설정
+3. 기본 Rule 파일 설정 예제
 - resource 폴더 내에 "request-param-filter-rule.xml" 파일을 생성
 - XML 각 항목에 대한 설명은 "Rule 파일 XML 항목별 설명"을 참고한다.    
 ``` XML
@@ -62,6 +62,60 @@
             <params>
 		<!-- /search.nhn URL에 요청되는 'query' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 별도 escape 처리를 해야 됨 -->
                 <param name="query" useDefender="false" />        
+            </params>
+        </url-rule>
+    </url-rule-set>
+</config>
+```
+
+4. 특정 Parameter에만 XSS FIlter를 적용하는 Rule 파일 설정 예제
+```
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<config xmlns="http://www.navercorp.com/request-param">
+    <defenders>
+        <defender>
+            <name>preventer</name>
+            <class>com.naver.service.filter.requestParamFilter.defender.XssPreventerDefender</class>
+        </defender>
+        <!-- // Lucy XSS Filter defender 등록 -->
+        <defender>
+            <!-- XSS Defender 사용 시에는 Lucy XSS Filter에 대한 기본 설정(lucy-xss-superset.xml 정의 등)을 미리 해두어야 한다. -->
+            <name>xss</name>
+            <class>com.naver.service.filter.requestParamFilter.defender.XssFilterDefender</class>
+            <init-param>
+                <param-value>true</param-value>
+            </init-param>
+        </defender>
+        <!-- // Lucy XSS Filter defender 등록 -->
+    </defenders>
+  
+    <default>
+        <defender>preventer</defender>
+    </default>
+  
+    <global>
+        <params>
+            <param name="q" useDefender="false" />
+        </params>
+    </global>
+      
+    <url-rule-set>
+        <url-rule>
+            <url>/search.nhn</url>
+            <params>
+                <param name="query" useDefender="false" />
+            </params>
+        </url-rule>
+        <url-rule>
+            <url>/tlist/list.nhn</url>
+            <params>
+                <param name="listId" useDefender="false" />
+                <param name="body">
+                    <!-- // Lucy XSS Filter defender 사용 설정 -->
+                    <defender>xss</defender>
+                    <!-- // Lucy XSS Filter defender 사용 설정 -->
+                </param>
             </params>
         </url-rule>
     </url-rule-set>
