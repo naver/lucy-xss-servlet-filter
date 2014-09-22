@@ -6,6 +6,9 @@
 
 그래서 서비스 내 URL별 요청 Parameter에 대해 기본으로 모든 태그를 무력화하는 Preventer를 적용하고, 특정 paramater에는 필요에 따라 Preventer를 적용하지 않거나 XSS Filter를 일관된 방식으로 적용할 수 있는 설정 방식을 제공하고자 함
 
+## 구조
+- XSS Request Param Filter Structure
+![1.png](/files/18078)
 
 ## 적용방법
 1. Dependency 설정
