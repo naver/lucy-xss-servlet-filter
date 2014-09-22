@@ -8,7 +8,7 @@
 
 
 ## 적용방법
-- Dependency 설정
+1. Dependency 설정
 ``` XML
 <dependency>
     <groupId>com.naver.service</groupId>
@@ -17,7 +17,7 @@
 </dependency>
 ```
 
-- Servlet Filter 설정
+2. Servlet Filter 설정
 ``` XML
 <filter>
     <filter-name>requestParamFilter</filter-name>
@@ -29,11 +29,11 @@
 </filter-mapping>
 ```
 
-- Rule 파일 설정
- 
+3. Rule 파일 설정
+- resource 폴더 내에 "request-param-filter-rule.xml" 파일을 생성
+- XML 각 항목에 대한 설명은 "Rule 파일 XML 항목별 설명"을 참고한다.    
 ``` XML
 <?xml version="1.0" encoding="UTF-8"?>
- 
 <config xmlns="http://www.navercorp.com/request-param">
     <defenders>
         <defender>
