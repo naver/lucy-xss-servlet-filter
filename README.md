@@ -67,11 +67,9 @@
     </url-rule-set>
 </config>
 ```
-
 4. 특정 Parameter에만 XSS FIlter를 적용하는 Rule 파일 설정 예제
-```
+``` XML
 <?xml version="1.0" encoding="UTF-8"?>
- 
 <config xmlns="http://www.navercorp.com/request-param">
     <defenders>
         <defender>
@@ -121,3 +119,4 @@
     </url-rule-set>
 </config>
 ```
+
