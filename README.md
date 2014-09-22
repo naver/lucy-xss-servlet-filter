@@ -28,3 +28,39 @@
     <url-pattern>/*</url-pattern>
 </filter-mapping>
 ```
+
+- Rule 파일 설정
+ 
+```
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<config xmlns="http://www.navercorp.com/request-param">
+    <defenders>
+        <defender>
+            <name>preventer</name>
+            <class>com.naver.service.filter.requestParamFilter.defender.XssPreventerDefender</class>
+        </defender>
+    </defenders>
+ 
+    <default>
+        <defender>preventer</defender>
+    </default>
+ 
+    <global>
+        <params>
+	    <!-- 모든 URL에 요청되는 'q' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 별도 escape 처리를 해야 됨 -->
+            <param name="q" useDefender="false" />        
+        </params>
+    </global>
+     
+    <url-rule-set>
+        <url-rule>
+            <url>/search.nhn</url>
+            <params>
+		<!-- /search.nhn URL에 요청되는 'query' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 별도 escape 처리를 해야 됨 -->
+                <param name="query" useDefender="false" />        
+            </params>
+        </url-rule>
+    </url-rule-set>
+</config>
+```
