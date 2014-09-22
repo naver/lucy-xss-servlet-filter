@@ -6,3 +6,25 @@
 
 그래서 서비스 내 URL별 요청 Parameter에 대해 기본으로 모든 태그를 무력화하는 Preventer를 적용하고, 특정 paramater에는 필요에 따라 Preventer를 적용하지 않거나 XSS Filter를 일관된 방식으로 적용할 수 있는 설정 방식을 제공하고자 함
 
+
+## 적용방법
+- Dependency 설정
+```
+<dependency>
+    <groupId>com.naver.service</groupId>
+    <artifactId>request-param-filter</artifactId>
+    <version>0.0.3</version>
+</dependency>
+```
+
+- Servlet Filter 설정
+```
+<filter>
+    <filter-name>requestParamFilter</filter-name>
+    <filter-class>com.naver.service.filter.requestParamFilter.RequestParamFilter</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>requestParamFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+```
