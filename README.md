@@ -8,8 +8,8 @@
 
 
 ## 적용방법
-- Dependency 설정 XML
-```
+- Dependency 설정
+``` XML
 <dependency>
     <groupId>com.naver.service</groupId>
     <artifactId>request-param-filter</artifactId>
@@ -17,8 +17,8 @@
 </dependency>
 ```
 
-- Servlet Filter 설정 XML
-```
+- Servlet Filter 설정
+``` XML
 <filter>
     <filter-name>requestParamFilter</filter-name>
     <filter-class>com.naver.service.filter.requestParamFilter.RequestParamFilter</filter-class>
