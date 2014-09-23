@@ -1,5 +1,5 @@
 /*
- * @(#)XssFilterDefender.java $version 2014. 9. 15.
+ * @(#)XssSaxFilterDefender.java $version 2014. 9. 23.
  *
  * Copyright 2007 NHN Corp. All rights Reserved. 
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -12,13 +12,13 @@ import org.apache.commons.lang.*;
 import com.nhncorp.lucy.security.xss.*;
 
 /**
- * Lucy XSS Filter 를 사용하는 Defender Adapter
+ * Lucy XSS Sax Filter 를 사용하는 Defender Adapter
  * 
  * @author tod2
  */
-public class XssFilterDefender implements Defender {
-	private XssFilter filter;
-	
+public class XssSaxFilterDefender implements Defender {
+	private XssSaxFilter filter;
+
 	/**
 	 * @param values
 	 * @see com.naver.service.filter.requestparam.defender.Defender#init(java.lang.String[])
@@ -26,25 +26,25 @@ public class XssFilterDefender implements Defender {
 	@Override
 	public void init(String[] values) {
 		if (values == null || values.length == 0) {
-			filter = XssFilter.getInstance();
+			filter = XssSaxFilter.getInstance();
 		} else {
 			switch (values.length) {
 				case 1:
 					if (isBoolean(values[0])) {
-						filter = XssFilter.getInstance(convertBoolean(values[0]));	
+						filter = XssSaxFilter.getInstance(convertBoolean(values[0]));	
 					} else {
-						filter = XssFilter.getInstance(values[0]);
+						filter = XssSaxFilter.getInstance(values[0]);
 					}
 					break;
 				case 2:
-					filter = XssFilter.getInstance(values[0], convertBoolean(values[1]));	
+					filter = XssSaxFilter.getInstance(values[0], convertBoolean(values[1]));	
 					break;
 				default:
 					break;
 			}
 		}
 	}
-	
+
 	/**
 	 * @param value
 	 * @return
@@ -54,7 +54,7 @@ public class XssFilterDefender implements Defender {
 	public String doFilter(String value) {
 		return filter.doFilter(value);
 	}
-	
+
 	/**
 	 * 해당 문자열이 boolean 값을 의미하는지 여부
 	 * 
