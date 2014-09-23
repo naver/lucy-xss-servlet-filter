@@ -22,10 +22,10 @@ import static org.hamcrest.CoreMatchers.nullValue;
  * @author tod2
  */
 public class RequestParamConfigTest {
-	RequestParamConfig config;
+	static RequestParamConfig config;
 	
-	@Before
-	public void init() throws Exception {
+	@BeforeClass
+	public static void init() throws Exception {
 		config = new RequestParamConfig();
 	}
 	

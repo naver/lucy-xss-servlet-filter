@@ -40,6 +40,7 @@ public class XssFilterDefender implements Defender {
 					filter = XssFilter.getInstance(values[0], convertBoolean(values[1]));	
 					break;
 				default:
+					filter = null;
 					break;
 			}
 		}
