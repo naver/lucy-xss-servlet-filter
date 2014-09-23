@@ -5,9 +5,11 @@
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-package com.naver.service.filter.requestParamFilter.defender;
+package com.naver.service.filter.requestparam.defender;
 
 import org.apache.commons.lang.*;
+
+import com.naver.service.filter.requestparam.defender.*;
 
 import com.nhncorp.lucy.security.xss.*;
 
@@ -21,7 +23,7 @@ public class XssFilterDefender implements Defender {
 	
 	/**
 	 * @param values
-	 * @see com.naver.service.filter.requestParamFilter.defender.Defender#init(java.lang.String[])
+	 * @see com.naver.service.filter.requestparam.defender.Defender#init(java.lang.String[])
 	 */
 	@Override
 	public void init(String[] values) {
@@ -48,7 +50,7 @@ public class XssFilterDefender implements Defender {
 	/**
 	 * @param value
 	 * @return
-	 * @see com.naver.service.filter.requestParamFilter.defender.Defender#doFilter(java.lang.String)
+	 * @see com.naver.service.filter.requestparam.defender.Defender#doFilter(java.lang.String)
 	 */
 	@Override
 	public String doFilter(String value) {

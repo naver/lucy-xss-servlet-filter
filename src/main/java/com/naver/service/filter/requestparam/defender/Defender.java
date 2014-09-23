@@ -5,7 +5,7 @@
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-package com.naver.service.filter.requestParamFilter.defender;
+package com.naver.service.filter.requestparam.defender;
 
 /**
  * Request Param Filter 에서 Filtering 동작을 정의하는 Interface 

@@ -5,10 +5,12 @@
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-package com.naver.service.filter.requestParamFilter;
+package com.naver.service.filter.requestparam;
 
 import org.apache.commons.lang.*;
 import org.apache.commons.logging.*;
+
+import com.naver.service.filter.requestParamFilter.*;
 
 /**
  * 요청 URL 및 parameter 에 대해 RequestParam 체크를 진행하는 Checker.

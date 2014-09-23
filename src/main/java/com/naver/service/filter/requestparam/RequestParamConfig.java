@@ -5,7 +5,7 @@
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-package com.naver.service.filter.requestParamFilter;
+package com.naver.service.filter.requestparam;
 
 import java.io.*;
 import java.util.*;
@@ -16,7 +16,9 @@ import org.apache.commons.lang.*;
 import org.apache.commons.logging.*;
 import org.w3c.dom.*;
 
+import com.naver.service.filter.requestParamFilter.*;
 import com.naver.service.filter.requestParamFilter.defender.*;
+import com.naver.service.filter.requestparam.defender.*;
 
 /**
  * RequestParamFilter 에서 사용할 설정 정보를 관리하는 클래스.<br/><br/>

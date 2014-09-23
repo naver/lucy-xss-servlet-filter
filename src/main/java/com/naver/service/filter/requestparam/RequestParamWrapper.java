@@ -5,13 +5,15 @@
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-package com.naver.service.filter.requestParamFilter;
+package com.naver.service.filter.requestparam;
 
 import java.util.*;
 import java.util.Map.Entry;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
+
+import com.naver.service.filter.requestparam.*;
 
 /**
  * RequestParam 이 적용되어 parameter 값을 변경하기 위한 Wrapper.<br/><br/>

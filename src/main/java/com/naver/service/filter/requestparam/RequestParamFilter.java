@@ -5,11 +5,14 @@
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-package com.naver.service.filter.requestParamFilter;
+package com.naver.service.filter.requestparam;
 
 import java.io.*;
 
 import javax.servlet.*;
+
+import com.naver.service.filter.requestParamFilter.*;
+import com.naver.service.filter.requestparam.*;
 
 /**
  * RequestParam 을 적용하기 위한 Filter.
