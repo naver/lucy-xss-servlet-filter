@@ -7,8 +7,6 @@
 
 package com.naver.service.filter.requestparam.defender;
 
-import com.naver.service.filter.requestparam.defender.*;
-
 import com.nhncorp.lucy.security.xss.*;
 
 /**

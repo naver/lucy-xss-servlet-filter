@@ -16,8 +16,6 @@ import org.apache.commons.lang.*;
 import org.apache.commons.logging.*;
 import org.w3c.dom.*;
 
-import com.naver.service.filter.requestParamFilter.*;
-import com.naver.service.filter.requestParamFilter.defender.*;
 import com.naver.service.filter.requestparam.defender.*;
 
 /**

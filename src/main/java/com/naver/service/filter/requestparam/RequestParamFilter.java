@@ -11,9 +11,6 @@ import java.io.*;
 
 import javax.servlet.*;
 
-import com.naver.service.filter.requestParamFilter.*;
-import com.naver.service.filter.requestparam.*;
-
 /**
  * RequestParam 을 적용하기 위한 Filter.
  * 

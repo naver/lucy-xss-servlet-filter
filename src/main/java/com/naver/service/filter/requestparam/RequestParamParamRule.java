@@ -7,7 +7,6 @@
 
 package com.naver.service.filter.requestparam;
 
-import com.naver.service.filter.requestParamFilter.defender.*;
 import com.naver.service.filter.requestparam.defender.*;
 
 /**
