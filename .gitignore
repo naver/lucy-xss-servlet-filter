@@ -1,0 +1,7 @@
+target/
+bin/
+.settings/
+.project
+.classpath
+.springBeans
+.checkstyle
