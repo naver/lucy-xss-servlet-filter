@@ -262,7 +262,7 @@ public class RequestParamConfig {
 	/**
 	 * 해당 URL 에 정의된 Param 정의 정보를 획득.<br/><br/>
 	 * 
-	 * 개별 URL 에 정의된 Param 정보가 없을 경우 Global Param 정보를 찾아 반환하며, 둘 다 없을 경우는 null 을 반환한다.
+	 * 해당 URL 에 정의된 Param 정보가 없을 경우 Global Param 정보를 찾아 반환하며, 둘 다 없을 경우는 null 을 반환한다.
 	 * 
 	 * @param url
 	 * @param paramName
@@ -271,7 +271,7 @@ public class RequestParamConfig {
 	public RequestParamParamRule getUrlParamRule(String url, String paramName) {
 		Map<String, RequestParamParamRule> urlParamRuleMap = urlRuleSetMap.get(url);
 		if (urlParamRuleMap == null) {
-			return null;
+			return globalParamRuleMap.get(paramName);
 		} else {
 			RequestParamParamRule paramRule = urlParamRuleMap.get(paramName);
 			

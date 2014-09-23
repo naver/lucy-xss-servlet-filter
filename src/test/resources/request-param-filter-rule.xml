@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<config xmlns="http://www.navercorp.com/request-param">
+    <defenders>
+        <defender>
+            <name>preventer</name>
+            <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
+        </defender>
+		<defender>
+			<!-- XSS Defender 사용 시에는 Lucy XSS Filter에 대한 기본 설정(lucy-xss-superset.xml 정의 등)을 미리 해두어야 한다. -->
+			<name>xss</name>
+			<class>com.naver.service.filter.requestparam.defender.XssFilterDefender</class>
+			<init-param>
+				<param-value>true</param-value>
+			</init-param>
+		</defender>
+		<defender>
+			<!-- XSS Sax Defender 사용 시에는 Lucy XSS Sax Filter에 대한 기본 설정(lucy-xss-superset-sax.xml 정의 등)을 미리 해두어야 한다. -->
+			<name>xss_sax</name>
+			<class>com.naver.service.filter.requestparam.defender.XssSaxFilterDefender</class>
+			<init-param>
+				<param-value>true</param-value>
+			</init-param>
+		</defender>
+    </defenders>
+ 
+    <default>
+        <defender>preventer</defender>
+    </default>
+ 
+    <global>
+        <params>
+            <param name="q" useDefender="false" />
+        </params>
+    </global>
+     
+    <url-rule-set>
+        <url-rule>
+            <url>/search.nhn</url>
+            <params>
+                <param name="query" useDefender="false" />        <!-- /search.nhn URL에 요청되는 'query' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 별도 escape 처리를 해야 됨 -->
+            </params>
+        </url-rule>
+        <url-rule>
+            <url>/tlist/list.nhn</url>
+			<params>
+				<param name="listId" useDefender="false" />	<!-- 필터 대상에서 제외할 경우. 원본 입력값을 유지하고 싶을 경우 사용하며, 서버 코드 내에서 별도 escape 처리를 해야 됨 -->
+				<param name="mode">
+					<defender>xss</defender>
+				</param>
+				<param name="q">
+					<defender>xss_sax</defender>
+				</param>
+			</params>
+        </url-rule>
+    </url-rule-set>
+</config>
