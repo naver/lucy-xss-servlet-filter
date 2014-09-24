@@ -128,6 +128,12 @@
 			<version>4.4</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>3.2.11.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<properties>

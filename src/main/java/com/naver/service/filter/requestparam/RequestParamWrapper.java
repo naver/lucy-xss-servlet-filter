@@ -80,8 +80,12 @@ public class RequestParamWrapper extends HttpServletRequestWrapper {
 		for (Entry<String, Object> entry : entries) {
 			String paramName = entry.getKey();
 			Object[] valueObj = (Object[])entry.getValue();
-			String value = doFilter(paramName, String.valueOf(valueObj[0]));
-			newFilteredParamMap.put(entry.getKey(), new String[] {value});
+			String[] filteredValue = new String[valueObj.length];
+			for (int index = 0; index < valueObj.length; index++) {
+				filteredValue[index] = doFilter(paramName, String.valueOf(valueObj[index]));
+			}
+			
+			newFilteredParamMap.put(entry.getKey(), filteredValue);
 		}
 
 		return newFilteredParamMap;

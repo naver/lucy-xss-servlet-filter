@@ -23,7 +23,7 @@ public class XssPreventerDefenderTest {
 	@Test
 	public void testInit() {
 		defender.init(null);
-		assertThat(defender.doFilter("<문자"), is("&lt;&#47928;&#51088;"));
-		assertThat(defender.doFilter("<b>문자</b>"), is("&lt;b&gt;&#47928;&#51088;&lt;/b&gt;"));
+		assertThat(defender.doFilter("<Text"), is("&lt;Text"));
+		assertThat(defender.doFilter("<b>Text</b>"), is("&lt;b&gt;Text&lt;/b&gt;"));
 	}
 }
