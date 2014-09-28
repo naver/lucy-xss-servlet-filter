@@ -12,7 +12,7 @@ import java.util.*;
 
 import javax.xml.parsers.*;
 
-import org.apache.commons.lang.*;
+import org.apache.commons.lang3.*;
 import org.apache.commons.logging.*;
 import org.w3c.dom.*;
 

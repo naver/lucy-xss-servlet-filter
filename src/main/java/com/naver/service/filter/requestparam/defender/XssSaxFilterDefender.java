@@ -7,7 +7,7 @@
 
 package com.naver.service.filter.requestparam.defender;
 
-import org.apache.commons.lang.*;
+import org.apache.commons.lang3.*;
 
 import com.nhncorp.lucy.security.xss.*;
 
