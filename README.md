@@ -16,7 +16,7 @@
 <dependency>
     <groupId>com.naver.service</groupId>
     <artifactId>request-param-filter</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 </dependency>
 ```
 
@@ -24,7 +24,7 @@
 ``` XML
 <filter>
     <filter-name>requestParamFilter</filter-name>
-    <filter-class>com.naver.service.filter.requestParamFilter.RequestParamFilter</filter-class>
+    <filter-class>com.naver.service.filter.requestparam.RequestParamFilter</filter-class>
 </filter>
 <filter-mapping>
     <filter-name>requestParamFilter</filter-name>
@@ -41,7 +41,7 @@
     <defenders>
         <defender>
             <name>preventer</name>
-            <class>com.naver.service.filter.requestParamFilter.defender.XssPreventerDefender</class>
+            <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
         </defender>
     </defenders>
  
@@ -75,18 +75,28 @@
     <defenders>
         <defender>
             <name>preventer</name>
-            <class>com.naver.service.filter.requestParamFilter.defender.XssPreventerDefender</class>
+            <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
         </defender>
         <!-- // Lucy XSS Filter defender 등록 -->
         <defender>
             <!-- XSS Defender 사용 시에는 Lucy XSS Filter에 대한 기본 설정(lucy-xss-superset.xml 정의 등)을 미리 해두어야 한다. -->
             <name>xss</name>
-            <class>com.naver.service.filter.requestParamFilter.defender.XssFilterDefender</class>
+            <class>com.naver.service.filter.requestparam.defender.XssFilterDefender</class>
             <init-param>
                 <param-value>true</param-value>
             </init-param>
         </defender>
         <!-- // Lucy XSS Filter defender 등록 -->
+        <!-- // Lucy XSS Sax Filter defender 등록 -->
+        <defender>
+            <!-- XSS Sax Defender 사용 시에는 Lucy XSS Sax Filter에 대한 기본 설정(lucy-xss-superset-sax.xml 정의 등)을 미리 해두어야 한다. -->
+            <name>xss_sax</name>
+            <class>com.naver.service.filter.requestparam.defender.XssSaxFilterDefender</class>
+            <init-param>
+                <param-value>true</param-value>
+            </init-param>
+        </defender>
+        <!-- // Lucy XSS Sax Filter defender 등록 -->
     </defenders>
   
     <default>
@@ -114,6 +124,11 @@
                     <!-- // Lucy XSS Filter defender 사용 설정 -->
                     <defender>xss</defender>
                     <!-- // Lucy XSS Filter defender 사용 설정 -->
+                </param>
+                <param name="body2">
+                    <!-- // Lucy XSS Sax Filter defender 사용 설정 -->
+                    <defender>xss_sax</defender>
+                    <!-- // Lucy XSS Sax Filter defender 사용 설정 -->
                 </param>
             </params>
         </url-rule>
