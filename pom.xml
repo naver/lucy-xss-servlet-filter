@@ -3,7 +3,7 @@
 	<groupId>com.naver.service</groupId>
 	<artifactId>request-param-filter</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>0.0.4</version>
 	<name>Request Parameter Filter</name>
 	<url>http://yobi.navercorp.com/lucy-projects/lucy-request-param-filter</url>
 
