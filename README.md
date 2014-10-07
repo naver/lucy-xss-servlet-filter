@@ -180,7 +180,7 @@
 ## FAQ
 Q: Global Params 값은 어떤 경우에 사용하면 되나요?
 A: 옵션 설정이 필요한 Parameter 값 중 전체 서비스에서 사용되는 Parameter 값을 등록합니다. 
-   예를 들어 모바일 기기에서 PC 페이지로 접근 시 해당 URL 에 일괄적으로 "mobile=Y" 와 같은 값을 붙여주고, 
+                              예를 들어 모바일 기기에서 PC 페이지로 접근 시 해당 URL 에 일괄적으로 "mobile=Y" 와 같은 값을 붙여주고, 
    interceptor 에서 항상 request.getParameter("mobile") 와 같이 호출하는 로직이 있다면 Global params 에 등록하면 됩니다.
 
 Q: URL은 대소문자를 구분하나요?
