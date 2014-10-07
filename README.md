@@ -161,3 +161,14 @@
 |           |            |        |          |           |        |name       |1      |           |      |Request Parameter 명   |
 |           |            |        |          |           |        |useDefender|0..1   |true, false |true  |defender 에 의한 입력값의 변조 여부 <br/><h6>false 로 설정 시에는 반드시 서버 코드 내에서 별도 escape 처리를 하도록 한다.</h1>|
 |           |            |        |          |           |defender|           |0..1   |           |      |적용할 defender <br/>defenders > defender > name 값을 입력, 생략할 경우 default defender가 설정된다. |
+
+## 참고정보 
+1. Filtering 시점 
+* URL 호출 시점이 아닌 서버코드에서 parameter 값을 획득하는 ServletRequest의 getParameter(), getParameterValues(), getParameterMap() 호출 시 filtering 진행
+
+2. URL Rule 미설정으로 인한 Debug값 확인 
+* useDefender="false" 로 설정된 값에 대해 tomcat debug log가 출력됨 
+```
+2014-09-18 18:59:59 [DEBUG](RequestParamChecker :62 ) Do not filtered Parameter. Request url: /search.nhn, Parameter name: query, Parameter value: 가>
+2014-09-18 19:02:26 [DEBUG](RequestParamChecker :62 ) Do not filtered Parameter. Request url: /tlist/list.nhn, Parameter name: listId, Parameter value: 2
+```
