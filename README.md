@@ -151,7 +151,7 @@
 |           |         |params  |          |           |           |           |1      |           |      |전체 설정에 적용될 Parameter 값의 집합 | 
 |           |         |        |param     |           |           |           |1..n   |           |      |전체 설정에 적용될 Parameter 값 |
 |           |         |        |          |           |           |name       |1      |           |      |Request Parameter 명   |
-|           |         |        |          |           |           |useDefender|0..1   |true, false|true  |defender 에 의한 입력값의 변조 여부 false 로 설정 시에는 반드시 서버 코드 내에서 별도 escape 처리를 하도록 한다.|
+|           |         |        |          |           |           |useDefender|0..1   |true, false|true  |defender 에 의한 입력값의 변조 여부, <br/> false 로 설정 시에는 반드시 서버 코드 내에서 별도 escape 처리를 하도록 한다.|
 |           |            |        |          |           |defender|           |0..1   |           |      |적용할 defender, defenders > defender > name 값을 입력, 생략될 경우 default defender가 설정된다. |
 |           |url-rule-set|        |          |           |        |           |1      |           |      |필터 적용 시 옵션을 설정할 URL Rule 의 집합  |
 |           |            |url-rule|          |           |        |           |1..n   |           |      |필터 적용 시 옵션을 설정할 URL Rule | 
