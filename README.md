@@ -159,6 +159,6 @@
 |           |            |        |params    |           |        |           |1      |           |      |옵션을 설정할 Parameter 값의 집합  |
 |           |            |        |          |param      |        |           |0..n   |           |      |옵션을 설정할 Parameter  |
 |           |            |        |          |           |        |name       |1      |           |      |Request Parameter 명   |
-|           |            |        |          |           |        |useDefender|0..1   |true false |true  |defender 에 의한 입력값의 변조 여부<br> 
-													  false 로 설정 시에는 반드시 서버 코드 내에서 별도 escape 처리를 하도록 한다.|
+|           |            |        |          |           |        |useDefender|0..1   |true false |true  |defender 에 의한 입력값의 변조 여부 
+													  <br/>false 로 설정 시에는 반드시 서버 코드 내에서 별도 escape 처리를 하도록 한다.|
 |           |            |        |          |           |defender|           |0..1   |           |      |적용할 defender, defenders > defender > name 값을 입력, 생략될 경우 default defender가 설정된다. |
