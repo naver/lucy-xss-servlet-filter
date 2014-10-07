@@ -162,13 +162,18 @@
 |           |            |        |          |           |        |useDefender|0..1   |true, false |true  |defender 에 의한 입력값의 변조 여부 <br/><h6>false 로 설정 시에는 반드시 서버 코드 내에서 별도 escape 처리를 하도록 한다.</h1>|
 |           |            |        |          |           |defender|           |0..1   |           |      |적용할 defender <br/>defenders > defender > name 값을 입력, 생략할 경우 default defender가 설정된다. |
 
-## 참고정보 
-1. Filtering 시점 
-* URL 호출 시점이 아닌 서버코드에서 parameter 값을 획득하는 ServletRequest의 getParameter(), getParameterValues(), getParameterMap() 호출 시 filtering 진행
+## 주의사항
+* web.xml 내에 filter-mapping 선언 시 전체가 아닌 특정 url 만 등록하거나, RequestParamFilter를 Copy 및 재구현하여 특정 url 만 타도록 하는 등 예외를 두지 않도록 한다.
+* global params에 서비스 전체에서 사용되는 공통 파라메터 값이 아닌, 서비스되는 URL의 모든 파라메터 값을 useDefender = "false" 로 넣지 않도록 한다.
 
-2. URL Rule 미설정으로 인한 Debug값 확인 
-* useDefender="false" 로 설정된 값에 대해 tomcat debug log가 출력됨 
+## 참고정보 
+* Filtering 시점 
+	URL 호출 시점이 아닌 서버코드에서 parameter 값을 획득하는 ServletRequest의 getParameter(), getParameterValues(), getParameterMap() 호출 시 filtering 진행
+
+* URL Rule 미설정으로 인한 Debug값 확인 
+	useDefender="false" 로 설정된 값에 대해 tomcat debug log가 출력됨 
 ```
-2014-09-18 18:59:59 [DEBUG](RequestParamChecker :62 ) Do not filtered Parameter. Request url: /search.nhn, Parameter name: query, Parameter value: 가>
-2014-09-18 19:02:26 [DEBUG](RequestParamChecker :62 ) Do not filtered Parameter. Request url: /tlist/list.nhn, Parameter name: listId, Parameter value: 2
+2014-09-18 18:59:59 [DEBUG](RequestParamChecker:62 ) Do not filtered Parameter. Request url: /search.nhn, Parameter name: query, Parameter value: 가>
+2014-09-18 19:02:26 [DEBUG](RequestParamChecker:62 ) Do not filtered Parameter. Request url: /tlist/list.nhn, Parameter name: listId, Parameter value: 2
 ```
+## FAQ
