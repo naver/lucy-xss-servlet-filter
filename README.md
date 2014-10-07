@@ -159,7 +159,7 @@
 |           |            |        |params    |           |        |           |1      |           |      |옵션을 설정할 Parameter 값의 집합  |
 |           |            |        |          |param      |        |           |0..n   |           |      |옵션을 설정할 Parameter  |
 |           |            |        |          |           |        |name       |1      |           |      |Request Parameter 명   |
-|           |            |        |          |           |        |useDefender|0..1   |true, false |true  |defender 에 의한 입력값의 변조 여부 <br/><h6>false 로 설정 시에는 반드시 서버 코드 내에서 별도 escape 처리를 하도록 한다.</h1>|
+|           |            |        |          |           |        |useDefender|0..1   |true, false |true  |defender 에 의한 입력값의 변조 여부 <br/><h6>false 로 설정 시에는 반드시 서버 코드 내에서 별도 escape 처리를 하도록 한다.</h6>|
 |           |            |        |          |           |defender|           |0..1   |           |      |적용할 defender <br/>defenders > defender > name 값을 입력, 생략할 경우 default defender가 설정된다. |
 
 ## 주의사항
@@ -176,4 +176,21 @@
 2014-09-18 18:59:59 [DEBUG](RequestParamChecker:62 ) Do not filtered Parameter. Request url: /search.nhn, Parameter name: query, Parameter value: 가>
 2014-09-18 19:02:26 [DEBUG](RequestParamChecker:62 ) Do not filtered Parameter. Request url: /tlist/list.nhn, Parameter name: listId, Parameter value: 2
 ```
+
 ## FAQ
+Q: Global Params 값은 어떤 경우에 사용하면 되나요?
+A: 옵션 설정이 필요한 Parameter 값 중 전체 서비스에서 사용되는 Parameter 값을 등록합니다. 
+   예를 들어 모바일 기기에서 PC 페이지로 접근 시 해당 URL 에 일괄적으로 "mobile=Y" 와 같은 값을 붙여주고, 
+   interceptor 에서 항상 request.getParameter("mobile") 와 같이 호출하는 로직이 있다면 Global params 에 등록하면 됩니다.
+
+Q: URL은 대소문자를 구분하나요?
+A: 네. URL는 대소문자를 구분합니다.
+
+Q: 이미 자체 escape 나 XSS Filter 적용 등으로 처리된 경우는 해당 코드를 모두 걷어내고 적용해야 하나요?
+A: 가능하면 해당 코드를 걷어내고 XSS Request Param Filter로 일원화하는 것을 권장합니다. 
+   기존에 적용된 코드량이 방대하여 걷어내는 리소스가 클 경우는 param rule 설정 시 useDefender 속성을 "false"로 설정하여 제외처리 하도록 합니다.
+
+Q: Defender에서 preventer 만 사용하는 경우에도 Lucy XSS Filter 가 모두 로딩되어 성능에 이슈가 되지는 않나요?
+A: XSS Filter 는 getInstance() 메소드 호출 시 로딩이 되어 메모리에 설정 정보가 로딩되며, 실제 성능에 영향을 미치는 부분은 해당 파라메터의 값에 필터링을 적용하는 시점의
+	parsing 동작입니다. Preventer 만 사용하는 경우는 XSS Filter 를 로딩하지 않으며, preventer defender 에서 실제 사용하는 Lucy XssPreventer.escape 는
+	static 메소드로 apache commons 의 StringEscapeUtils.escapeHtml() 수준이라 성능에 큰 영향을 미치지 않습니다.
