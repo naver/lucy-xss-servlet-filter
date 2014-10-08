@@ -5,18 +5,18 @@
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-package com.naver.service.filter.requestParamFilter;
+package com.naver.service.filter.requestparam;
 
 import java.io.*;
 import java.util.*;
 
 import javax.xml.parsers.*;
 
-import org.apache.commons.lang.*;
+import org.apache.commons.lang3.*;
 import org.apache.commons.logging.*;
 import org.w3c.dom.*;
 
-import com.naver.service.filter.requestParamFilter.defender.*;
+import com.naver.service.filter.requestparam.defender.*;
 
 /**
  * RequestParamFilter 에서 사용할 설정 정보를 관리하는 클래스.<br/><br/>
@@ -262,7 +262,7 @@ public class RequestParamConfig {
 	/**
 	 * 해당 URL 에 정의된 Param 정의 정보를 획득.<br/><br/>
 	 * 
-	 * 개별 URL 에 정의된 Param 정보가 없을 경우 Global Param 정보를 찾아 반환하며, 둘 다 없을 경우는 null 을 반환한다.
+	 * 해당 URL 에 정의된 Param 정보가 없을 경우 Global Param 정보를 찾아 반환하며, 둘 다 없을 경우는 null 을 반환한다.
 	 * 
 	 * @param url
 	 * @param paramName
@@ -271,7 +271,7 @@ public class RequestParamConfig {
 	public RequestParamParamRule getUrlParamRule(String url, String paramName) {
 		Map<String, RequestParamParamRule> urlParamRuleMap = urlRuleSetMap.get(url);
 		if (urlParamRuleMap == null) {
-			return null;
+			return globalParamRuleMap.get(paramName);
 		} else {
 			RequestParamParamRule paramRule = urlParamRuleMap.get(paramName);
 			
