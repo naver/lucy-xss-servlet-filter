@@ -175,7 +175,7 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
 	useDefender="false" 로 설정된 값에 대해 tomcat debug log가 출력됨 
 ```
 2014-09-18 18:59:59 [DEBUG](RequestParamChecker:62 ) Do not filtered Parameter. Request url: /search.nhn, Parameter name: query, Parameter value: 가>
-2014-09-18 19:02:26 [DEBUG](RequestParamChecker:62 ) Do not filtered Parameter. Request url: /tlist/list.nhn, Parameter name: listId, Parameter value: 2
+2014-09-18 19:02:26 [DEBUG](RequestParamChecker:62 ) Do not filtered Parameter. Request url: /list/list.nhn, Parameter name: listId, Parameter value: 2
 ```
 
 ## FAQ
