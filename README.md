@@ -31,6 +31,7 @@
     <url-pattern>/*</url-pattern>
 </filter-mapping>
 ```
+_requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
 
 3. 기본 Rule 파일 설정 예제
 - resource 폴더 내에 "request-param-filter-rule.xml" 파일을 생성
