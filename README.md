@@ -53,7 +53,7 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
  
     <global>
         <params>
-	    <!-- 모든 URL에 요청되는 'q' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 별도 escape 처리를 해야 됨 -->
+	    <!-- 모든 URL에 요청되는 'q' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 직접 escape 처리를 해야 됨 -->
             <param name="q" useDefender="false" />        
         </params>
     </global>
@@ -62,7 +62,7 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
         <url-rule>
             <url>/search.nhn</url>
             <params>
-		<!-- /search.nhn URL에 요청되는 'query' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 별도 escape 처리를 해야 됨 -->
+		<!-- /search.nhn URL에 요청되는 'query' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 직접 escape 처리를 해야 됨 -->
                 <param name="query" useDefender="false" />        
             </params>
         </url-rule>
@@ -139,8 +139,18 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
 ```
 
 ## 주의사항
-* 파라메터 필터링과 컨텐츠 필터링의 두 가지 전부 적용을 고려한다면  아래 링크에서 웹플랫폼 검토의견을 참고한다.
- 	(http://yobi.navercorp.com/lucy-projects/lucy-request-param-filter/issue/10)
+* 사용자 입력데이터를 화면에 다시 노출시킬 목적이 아닌 Business Logic에만 쓰이는 데이터일 경우에는 filtering을 하지 말아야 한다. 불필요한 eacape/unescape이 발생해 원본데이터가 훼손될 수 있다.
+* 원본 데이터의 훼손 및 DB 검색 키워드용으로 저장 시 문제가 있어 파라메터 필터링을 DB에 저장되기 전 시점이 아닌 사용자 화면에 보여지는 시점에 진행하고자 한다면  useDefender 설정을 false로 한다. 코드 곳곳에 xss 공격 방어 로직이 삽입되어 개발자의 사용 상 주의가 필요하다.  
+``` XML
+ <global>
+        <params>
+	    <!-- 모든 URL에 요청되는 'q' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 직접 escape 처리를 해야 됨 -->
+            <param name="q" useDefender="false" />        
+        </params>
+    </global>
+``` 
+* 파라메터 필터링과 컨텐츠 필터링 둘 다  전부 적용을 고려한다면  아래 링크에서 웹플랫폼 검토의견을 참고한다.
+ 	(http://yobi.navercorp.com/lucy-projects/lucy-request-param-filter/post/3) 	
 * web.xml 내에 filter-mapping 선언 시 전체가 아닌 특정 url 만 등록하거나, RequestParamFilter를 Copy 및 재구현하여 특정 url 만 타도록 하는 등 예외를 두지 않도록 한다.
 * global params에 서비스 전체에서 사용되는 공통 파라메터 값이 아닌, 서비스되는 URL의 모든 파라메터 값을 useDefender = "false" 로 넣지 않도록 한다.
 
@@ -156,7 +166,7 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
 ```
 
 ## Rule 파일 XML 항목별 설명
-|항목명      |         |        |          |           |           |속성명      |노출개수|범위        |기본값|내용         |
+|항목명                |         |        |          |           |           |속성명                |노출개수   |범위                   |기본값     |내용         |
 |-----------|---------|--------|----------|-----------|-----------|-----------|-------|-----------|------|------------|
 |config     |         |        |          |           |           |           |1      |           |      |Root Element|
 |           |defenders|        |          |           |           |           |1      |           |      |Parameter 값을 변경할 때 사용할 defender 인스턴스의 집합|
