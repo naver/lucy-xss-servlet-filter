@@ -30,4 +30,10 @@ public class RequestParamCheckerTest {
 		assertThat(checker.doFilter("/tlist/list.nhn", "mode", "<script>Text</script>"), is("&lt;script&gt;Text&lt;/script&gt;"));
 		assertThat(checker.doFilter("/tlist/list.nhn", "q", "<script>Text</script>"), is("&lt;script&gt;Text&lt;/script&gt;"));
 	}
+	
+	@Test
+	public void testUnicodeDoFilter() {
+		assertThat(checker.doFilter("/notExistUrl.nhn", "title", "<b>Text</b>"), is("&lt;b&gt;Text&lt;/b&gt;"));
+		assertThat(checker.doFilter("/notExistUrl.nhn", "title", "안녕"), is("안녕"));
+	}
 }
