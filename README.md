@@ -34,7 +34,7 @@
 __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다.__
 
 3. 기본 Rule 파일 설정 예제
-__컨텐츠 필터링을 하지 않고 파라메터 필터링만 수행한다면 기본 XssPreventerDefender만 설정한다.__
+- __컨텐츠 필터링을 하지 않고 파라메터 필터링만 수행한다면 기본 XssPreventerDefender만 설정한다.__
 - resource 폴더 내에 "request-param-filter-rule.xml" 파일을 생성
 - XML 각 항목에 대한 설명은 "Rule 파일 XML 항목별 설명"을 참고한다.    
 ``` XML
