@@ -10,7 +10,7 @@
 - XSS Request Param Filter Structure
 ![1.png](/files/18078)
 
-## 적용방법
+## 적용방법 
 1. Dependency 설정
 ``` XML
 <dependency>
@@ -34,6 +34,7 @@
 __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다.__
 
 3. 기본 Rule 파일 설정 예제
+__컨텐츠 필터링을 하지 않고 파라메터 필터링만 수행한다면 기본 XssPreventerDefender만 설정한다.__
 - resource 폴더 내에 "request-param-filter-rule.xml" 파일을 생성
 - XML 각 항목에 대한 설명은 "Rule 파일 XML 항목별 설명"을 참고한다.    
 ``` XML
@@ -69,7 +70,7 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
 </config>
 ```
 
-- 특정 Parameter에만 XSS FIlter를 적용하는 Rule 파일 설정 예제
+- 특정 Parameter에만 XSS FIlter(컨텐츠 필터링)를 적용하는 Rule 파일 설정 예제
 ``` XML
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://www.navercorp.com/request-param">
@@ -136,6 +137,23 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
     </url-rule-set>
 </config>
 ```
+
+## 주의사항
+* 파라메터 필터링과 컨텐츠 필터링의 두 가지 전부 적용을 고려한다면  아래 링크에서 웹플랫폼 검토의견을 참고한다. 	(http://yobi.navercorp.com/lucy-projects/lucy-request-param-filter/issue/10)
+* web.xml 내에 filter-mapping 선언 시 전체가 아닌 특정 url 만 등록하거나, RequestParamFilter를 Copy 및 재구현하여 특정 url 만 타도록 하는 등 예외를 두지 않도록 한다.
+* global params에 서비스 전체에서 사용되는 공통 파라메터 값이 아닌, 서비스되는 URL의 모든 파라메터 값을 useDefender = "false" 로 넣지 않도록 한다.
+
+## 참고정보 
+* Filtering 시점 
+	URL 호출 시점이 아닌 서버코드에서 parameter 값을 획득하는 ServletRequest의 getParameter(), getParameterValues(), getParameterMap() 호출 시 filtering 진행
+
+* URL Rule 미설정으로 인한 Debug값 확인 
+	useDefender="false" 로 설정된 값에 대해 tomcat debug log가 출력됨 
+```
+2014-09-18 18:59:59 [DEBUG](RequestParamChecker:62 ) Do not filtered Parameter. Request url: /search.nhn, Parameter name: query, Parameter value: 가>
+2014-09-18 19:02:26 [DEBUG](RequestParamChecker:62 ) Do not filtered Parameter. Request url: /list/list.nhn, Parameter name: listId, Parameter value: 2
+```
+
 ## Rule 파일 XML 항목별 설명
 |항목명      |         |        |          |           |           |속성명      |노출개수|범위        |기본값|내용         |
 |-----------|---------|--------|----------|-----------|-----------|-----------|-------|-----------|------|------------|
@@ -162,21 +180,6 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
 |           |            |        |          |           |        |name       |1      |           |      |Request Parameter 명   |
 |           |            |        |          |           |        |useDefender|0..1   |true, false |true  |defender 에 의한 입력값의 변조 여부 <br/><h6>false 로 설정 시에는 반드시 서버 코드 내에서 별도 escape 처리를 하도록 한다.</h6>|
 |           |            |        |          |           |defender|           |0..1   |           |      |적용할 defender <br/>defenders > defender > name 값을 입력, 생략할 경우 default defender가 설정된다. |
-
-## 주의사항
-* web.xml 내에 filter-mapping 선언 시 전체가 아닌 특정 url 만 등록하거나, RequestParamFilter를 Copy 및 재구현하여 특정 url 만 타도록 하는 등 예외를 두지 않도록 한다.
-* global params에 서비스 전체에서 사용되는 공통 파라메터 값이 아닌, 서비스되는 URL의 모든 파라메터 값을 useDefender = "false" 로 넣지 않도록 한다.
-
-## 참고정보 
-* Filtering 시점 
-	URL 호출 시점이 아닌 서버코드에서 parameter 값을 획득하는 ServletRequest의 getParameter(), getParameterValues(), getParameterMap() 호출 시 filtering 진행
-
-* URL Rule 미설정으로 인한 Debug값 확인 
-	useDefender="false" 로 설정된 값에 대해 tomcat debug log가 출력됨 
-```
-2014-09-18 18:59:59 [DEBUG](RequestParamChecker:62 ) Do not filtered Parameter. Request url: /search.nhn, Parameter name: query, Parameter value: 가>
-2014-09-18 19:02:26 [DEBUG](RequestParamChecker:62 ) Do not filtered Parameter. Request url: /list/list.nhn, Parameter name: listId, Parameter value: 2
-```
 
 ## FAQ
 __Q: Global Params 값은 어떤 경우에 사용하면 되나요?__
