@@ -1,12 +1,24 @@
 ## 개요
-
-기존에는 아래의 사유로 XSS 공격 방어가 누락되거나 비효율적으로 적용되고 있음
-예를 들어 
+기존에는 아래의 사유로 XSS 공격 방어가 누락되거나 비효율적으로 적용되고 있다. 
 - 별도의 필터링 라이브러리를 구현하여 Controller / BO 코드 내에 적용할 경우, 기능 추가 시 XSS 공격 방어 체크를 누락하여 보안에 허점 발생
-- 필터링 대상이 아닌데 XSS Filter 를 적용하여 서비스 성능에 저하가 발생할 수 있음
-- White List 방식으로 보안 허점 발생 가능성이 여전히 존재
+- 서비스에서 필터링 대상이 아닌데 XSS Filter 를 적용하여 서비스 성능에 저하가 발생할 수 있음
+- 기존의 White List 방식으로는 보안 허점 발생 가능성이 존재할 수 있음
 
 그래서 서비스 내 URL별 요청 parameter에 대해 기본으로 모든 태그를 무력화하는 Preventer를 적용하고, 특정 paramater에는 필요에 따라 Preventer를 적용하지 않거나 XSS Filter를 일관된 방식으로 적용할 수 있는 설정 방식을 제공하고자 함
+
+## lucy-xss-filter vs lucy-xss-servlet-filter
+| 항목 |xss-filter                      |xss-servlet-filter                |
+|----|--------------------------------|----------------------------------|
+|설명   |xss 공격을 방어하는 기본 라이브러리                  |xss-filter를 기반으로  xss 공격을 방어하는 서블릿 필터 라이브러리|
+|차이점|xss 방어 코드를 개발자가 직접 서비스 코드에 추가|web.xml에 서블릿 필터 선언으로 xss 방어 코드가 전체 일괄 적용됨|
+|장점   |개발 자유도 증가|xss 방어 코드를 신경쓰지 않아도 설정된 필터링 조건에 전체 적용됨|
+|단점   |xss 방어 로직이 필요할 때마다 직접 작성해야 함|전체 적용되기 때문에 의도치 않은 결과가 발생할 수 있으므로 테스트 필수|
+ 
+ - 권고
+ 문자열 전체를 escape하는 경우가 주로 많다면 xss-servlet-filter를 사용해 전체에 일괄 적용하는 방법을 추천하며 
+ 서비스의 성격상 필터링의 조건이 동적으로 변하거나 전체 문자열에 대해 필터링하지 않고 태그별로 선별해서 필터링 해야한다면 개발자가 판단해 xss-filter 라이브러리를 직접 사용하는 방법을 추천 
+
+[lucy-xss-filter 문서](http://devcafe.nhncorp.com/index.php?mid=issuetracker&act=dispIssuetrackerDownload&vid=Lucy&package_srl=282220)
 
 ## 적용방법 
 1. Dependency 설정
@@ -31,10 +43,9 @@
 ```
 __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다.__
 
-3. 기본 Rule 파일 설정 예제
-- __컨텐츠 필터링을 하지 않고 파라메터 필터링만 수행한다면 기본 XssPreventerDefender만 설정한다.__
+3. 기본 Rule 파일 설정 예제 (XML 각 항목에 대한 설명은 "Rule 파일 XML 항목별 설명"을 참고한다.)
+- 특정 Parameter에만 파라메터 필터링을 적용하는 Rule 파일 설정 예제
 - resource 폴더 내에 "request-param-filter-rule.xml" 파일을 생성
-- XML 각 항목에 대한 설명은 "Rule 파일 XML 항목별 설명"을 참고한다.    
 ``` XML
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://www.navercorp.com/request-param">
@@ -68,7 +79,8 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
 </config>
 ```
 
-- 특정 Parameter에만 XSS Filter(컨텐츠 필터링)를 적용하는 Rule 파일 설정 예제
+- 기본 파리메터 필터링 외에 추가로 컨텐츠 필터링을 적용하는 Rule 파일 설정 예제
+- __컨텐츠 필터링을 하지 않고 파라메터 필터링만 수행한다면 위의 설정을 따르면 된다.__
 ``` XML
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://www.navercorp.com/request-param">
