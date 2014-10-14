@@ -1,14 +1,12 @@
 ## 개요
 
 기존에는 아래의 사유로 XSS 공격 방어가 누락되거나 비효율적으로 적용되고 있음
-- 별도의 preventer 를 구현하여 Controller / BO 코드 내에 적용할 경우, 기능 추가 시 XSS 공격 방어 체크를 누락하여 보안에 허점 발생
-- 전체 요청에 대해 용도에 벗어난 XSS Filter 를 적용하여 서비스 성능에 저하가 발생할 수 있으며, White List 방식으로 보안 허점 발생 가능성이 여전히 존재
+예를 들어 
+- 별도의 필터링 라이브러리를 구현하여 Controller / BO 코드 내에 적용할 경우, 기능 추가 시 XSS 공격 방어 체크를 누락하여 보안에 허점 발생
+- 필터링 대상이 아닌데 XSS Filter 를 적용하여 서비스 성능에 저하가 발생할 수 있음
+- White List 방식으로 보안 허점 발생 가능성이 여전히 존재
 
-그래서 서비스 내 URL별 요청 Parameter에 대해 기본으로 모든 태그를 무력화하는 Preventer를 적용하고, 특정 paramater에는 필요에 따라 Preventer를 적용하지 않거나 XSS Filter를 일관된 방식으로 적용할 수 있는 설정 방식을 제공하고자 함
-
-## 구조
-- XSS Request Param Filter Structure
-![1.png](/files/18078)
+그래서 서비스 내 URL별 요청 parameter에 대해 기본으로 모든 태그를 무력화하는 Preventer를 적용하고, 특정 paramater에는 필요에 따라 Preventer를 적용하지 않거나 XSS Filter를 일관된 방식으로 적용할 수 있는 설정 방식을 제공하고자 함
 
 ## 적용방법 
 1. Dependency 설정
@@ -70,7 +68,7 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
 </config>
 ```
 
-- 특정 Parameter에만 XSS FIlter(컨텐츠 필터링)를 적용하는 Rule 파일 설정 예제
+- 특정 Parameter에만 XSS Filter(컨텐츠 필터링)를 적용하는 Rule 파일 설정 예제
 ``` XML
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://www.navercorp.com/request-param">
@@ -209,3 +207,17 @@ __Q: Defender에서 preventer 만 사용하는 경우에도 Lucy XSS Filter 가 
 _A: XSS Filter 는 getInstance() 메소드 호출 시 로딩이 되어 메모리에 설정 정보가 로딩되며, 실제 성능에 영향을 미치는 부분은 해당 파라메터의 값에 필터링을 적용하는 시점의
    parsing 동작입니다. Preventer 만 사용하는 경우는 XSS Filter 를 로딩하지 않으며, preventer defender 에서 실제 사용하는 Lucy XssPreventer.escape 는
    static 메소드로 apache commons 의 StringEscapeUtils.escapeHtml() 수준이라 성능에 큰 영향을 미치지 않습니다._
+
+## 구조
+- XSS Request Param Filter Structure
+![1.png](/files/18078)
+
+## 용어설명
+- 파라메터 필터링
+	html이 아닌 단순 텍스트 데이터에 대한 필터링
+	lucy-xss-filter의 XssPreventer 라이브러리를 사용해 모든 xss 공격 위험요소를  필터링
+	
+- 컨텐츠 필터링 
+	html로 작성된  데이터에 대한 필터링, 주로 사용자가 html을 작성하여 생성된 컨텐츠에 사용됨 
+	lucy-xss-filter의 XssFilter 라이브러리를 사용해  설정파일(lucy-xss, lucy-xss-sax.xml) 기준으로 xss 공격 위험요소를  필터링
+	ex) 지식인, 메일, 카페 게시판에서 사용 
