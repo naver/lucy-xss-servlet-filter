@@ -1,3 +1,5 @@
+_용어가 낯설다면 문서 하단부 용어설명 참고해주세요_
+
 ## 개요
 기존에는 아래의 사유로 XSS 공격 방어가 누락되거나 비효율적으로 적용되고 있다. 
 - 별도의 필터링 라이브러리를 구현하여 Controller / BO 코드 내에 적용할 경우, 기능 추가 시 XSS 공격 방어 체크를 누락하여 보안에 허점 발생
@@ -14,7 +16,7 @@
 |장점   |개발 자유도 증가|xss 방어 코드를 신경쓰지 않아도 설정된 필터링 조건에 전체 적용됨|
 |단점   |xss 방어 로직이 필요할 때마다 직접 작성해야 함|전체 적용되기 때문에 의도치 않은 결과가 발생할 수 있으므로 테스트 필수|
  
- - 권고
+ ___권장사항___
  문자열 전체를 escape하는 경우가 주로 많다면 xss-servlet-filter를 사용해 전체에 일괄 적용하는 방법을 추천하며 
  서비스의 성격상 필터링의 조건이 동적으로 변하거나 전체 문자열에 대해 필터링하지 않고 태그별로 선별해서 필터링 해야한다면 개발자가 판단해 xss-filter 라이브러리를 직접 사용하는 방법을 추천 
 
@@ -43,9 +45,10 @@
 ```
 __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다.__
 
-3. 기본 Rule 파일 설정 예제 (XML 각 항목에 대한 설명은 "Rule 파일 XML 항목별 설명"을 참고한다.)
-- 특정 Parameter에만 파라메터 필터링을 적용하는 Rule 파일 설정 예제
+3. Rule 파일 설정 예제 (XML 각 항목에 대한 설명은 "Rule 파일 XML 항목별 설명"을 참고한다.)
 - resource 폴더 내에 "request-param-filter-rule.xml" 파일을 생성
+- 특정 Parameter에만 파라메터 필터링을 적용 
+
 ``` XML
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://www.navercorp.com/request-param">
@@ -78,9 +81,15 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
     </url-rule-set>
 </config>
 ```
+- 작동 순서
+    1.
+    2.
+    3.
+    4. 
+    
+- 기본 파리메터 필터링 외에 추가로 컨텐츠 필터링을 적용
+	__컨텐츠 필터링을 하지 않고 파라메터 필터링만 수행한다면 위의 설정을 따르면 된다.__
 
-- 기본 파리메터 필터링 외에 추가로 컨텐츠 필터링을 적용하는 Rule 파일 설정 예제
-- __컨텐츠 필터링을 하지 않고 파라메터 필터링만 수행한다면 위의 설정을 따르면 된다.__
 ``` XML
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://www.navercorp.com/request-param">
@@ -147,6 +156,12 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
     </url-rule-set>
 </config>
 ```
+
+- 작동 순서
+    1.
+    2.
+    3.
+    4.
 
 ## 주의사항
 * 사용자 입력데이터를 화면에 다시 노출시킬 목적이 아닌 Business Logic에만 쓰이는 데이터일 경우에는 filtering을 하지 말아야 한다. 불필요한 eacape/unescape이 발생해 원본데이터가 훼손될 수 있다.
