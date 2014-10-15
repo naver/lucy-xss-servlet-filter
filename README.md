@@ -1,4 +1,4 @@
-_용어가 낯설다면 문서 하단부 용어설명 참고해주세요_
+<h6>_용어가 낯설다면 문서 하단부 용어설명 참고해주세요_</h6>
 
 ## 개요
 기존에는 아래의 사유로 XSS 공격 방어가 누락되거나 비효율적으로 적용되고 있다. 
@@ -54,6 +54,8 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
 <config xmlns="http://www.navercorp.com/request-param">
     <defenders>
         <defender>
+        	<!--  Lucy XSS XssPreventer defender 등록 -->
+        	<!-- 아래 defender는 <→&lt;, >→&gt;, "→&quot; '→&#39; 로 필터링한다. -->
             <name>preventer</name>
             <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
         </defender>
@@ -63,6 +65,8 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
         <defender>preventer</defender>
     </default>
  
+ 	<!-- xml에 설정한 <global>, <url-rule-set> 태그안에 설정된 정보가 필터링 선정 기준이 된다. -->
+ 	<!-- 서블릿 필터가 인자로 받은 parameter와 url이 xml에 설정한 필터링 선정 기준에 포함되지 않으면 아무런 작업도 수행하지 않는다. -->
     <global>
         <params>
 	    <!-- 모든 URL에 요청되는 'q' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 직접 escape 처리를 해야 됨 -->
@@ -74,19 +78,14 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
         <url-rule>
             <url>/search.nhn</url>
             <params>
-		<!-- /search.nhn URL에 요청되는 'query' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 직접 escape 처리를 해야 됨 -->
+				<!-- /search.nhn URL에 요청되는 'query' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 직접 escape 처리를 해야 됨 -->
                 <param name="query" useDefender="false" />        
             </params>
         </url-rule>
     </url-rule-set>
 </config>
 ```
-- 작동 순서
-    1.
-    2.
-    3.
-    4. 
-    
+
 - 기본 파리메터 필터링 외에 추가로 컨텐츠 필터링을 적용
 	__컨텐츠 필터링을 하지 않고 파라메터 필터링만 수행한다면 위의 설정을 따르면 된다.__
 
@@ -95,22 +94,25 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
 <config xmlns="http://www.navercorp.com/request-param">
     <defenders>
         <defender>
+        	<!--  Lucy XSS XssPreventer defender 등록 -->
+        	<!--  모든 문자열에 대해 <→&lt;, >→&gt;, "→&quot; '→&#39; 로 필터링한다. -->
             <name>preventer</name>
             <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
         </defender>
-        <!-- // Lucy XSS Filter defender 등록 -->
+        
+        <!-- // Lucy XSS Dom Filter defender 등록 -->
         <defender>
-            <!-- XSS Defender 사용 시에는 Lucy XSS Filter에 대한 기본 설정(lucy-xss-superset.xml 정의 등)을 미리 해두어야 한다. -->
+            <!-- XSS Defender 사용 시에는 Lucy XSS Filter에 대한 기본 설정(lucy-xss-superset, lucy-xss.xml 정의 등)을 미리 해두어야 한다. -->
             <name>xss</name>
             <class>com.naver.service.filter.requestparam.defender.XssFilterDefender</class>
             <init-param>
                 <param-value>true</param-value>
             </init-param>
         </defender>
-        <!-- // Lucy XSS Filter defender 등록 -->
+        
         <!-- // Lucy XSS Sax Filter defender 등록 -->
         <defender>
-            <!-- XSS Sax Defender 사용 시에는 Lucy XSS Sax Filter에 대한 기본 설정(lucy-xss-superset-sax.xml 정의 등)을 미리 해두어야 한다. -->
+            <!-- XSS Sax Defender 사용 시에는 Lucy XSS Sax Filter에 대한 기본 설정(lucy-xss-superset-sax, lucy-xss-sax.xml 정의 등)을 미리 해두어야 한다. -->
             <name>xss_sax</name>
             <class>com.naver.service.filter.requestparam.defender.XssSaxFilterDefender</class>
             <init-param>
@@ -124,6 +126,8 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
         <defender>preventer</defender>
     </default>
   
+  	<!-- xml에 설정한 <global>, <url-rule-set> 태그안에 설정된 정보가 필터링 선정 기준이 된다. -->
+ 	<!-- 서블릿 필터가 인자로 받은 parameter와 url이 xml에 설정한 필터링 선정 기준에 포함되지 않으면 아무런 작업도 수행하지 않는다. -->
     <global>
         <params>
             <param name="q" useDefender="false" />
@@ -156,12 +160,6 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
     </url-rule-set>
 </config>
 ```
-
-- 작동 순서
-    1.
-    2.
-    3.
-    4.
 
 ## 주의사항
 * 사용자 입력데이터를 화면에 다시 노출시킬 목적이 아닌 Business Logic에만 쓰이는 데이터일 경우에는 filtering을 하지 말아야 한다. 불필요한 eacape/unescape이 발생해 원본데이터가 훼손될 수 있다.
