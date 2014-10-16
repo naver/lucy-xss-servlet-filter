@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.naver.service</groupId>
+	<groupId>com.nhncorp.lucy</groupId>
 	<artifactId>lucy-xss-servlet</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.0</version>
+	<version>1.0.0-snapshot</version>
 	<name>Request Parameter Filter</name>
 	<url>http://repo.nhncorp.com/maven2/com/naver/service/request-param-filter</url>
 
