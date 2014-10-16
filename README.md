@@ -100,7 +100,7 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
             <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
         </defender>
         
-        <!-- // Lucy XSS Dom Filter defender 등록 -->
+        <!--  Lucy XSS Dom Filter defender 등록 -->
         <defender>
             <!-- XSS Defender 사용 시에는 Lucy XSS Filter에 대한 기본 설정(lucy-xss-superset, lucy-xss.xml 정의 등)을 미리 해두어야 한다. -->
             <name>xss</name>
@@ -110,7 +110,7 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
             </init-param>
         </defender>
         
-        <!-- // Lucy XSS Sax Filter defender 등록 -->
+        <!--  Lucy XSS Sax Filter defender 등록 -->
         <defender>
             <!-- XSS Sax Defender 사용 시에는 Lucy XSS Sax Filter에 대한 기본 설정(lucy-xss-superset-sax, lucy-xss-sax.xml 정의 등)을 미리 해두어야 한다. -->
             <name>xss_sax</name>
@@ -119,7 +119,7 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
                 <param-value>true</param-value>
             </init-param>
         </defender>
-        <!-- // Lucy XSS Sax Filter defender 등록 -->
+        <!--  Lucy XSS Sax Filter defender 등록 -->
     </defenders>
   
     <default>
@@ -146,14 +146,14 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
             <params>
                 <param name="listId" useDefender="false" />
                 <param name="body">
-                    <!-- // Lucy XSS Filter defender 사용 설정 -->
+                    <!--  Lucy XSS Dom Filter defender 사용 설정 -->
                     <defender>xss</defender>
-                    <!-- // Lucy XSS Filter defender 사용 설정 -->
+                    <!--  Lucy XSS Dom Filter defender 사용 설정 -->
                 </param>
                 <param name="body2">
-                    <!-- // Lucy XSS Sax Filter defender 사용 설정 -->
+                    <!--  Lucy XSS Sax Filter defender 사용 설정 -->
                     <defender>xss_sax</defender>
-                    <!-- // Lucy XSS Sax Filter defender 사용 설정 -->
+                    <!--  Lucy XSS Sax Filter defender 사용 설정 -->
                 </param>
             </params>
         </url-rule>
