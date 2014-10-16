@@ -26,8 +26,8 @@
 1. Dependency 설정
 ``` XML
 <dependency>
-    <groupId>com.naver.service</groupId>
-    <artifactId>request-param-filter</artifactId>
+    <groupId>com.nhncorp.lucy</groupId>
+    <artifactId>lucy-xss-servlet</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
