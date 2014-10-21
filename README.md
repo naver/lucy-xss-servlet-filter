@@ -233,6 +233,10 @@ _A: XSS Filter 는 getInstance() 메소드 호출 시 로딩이 되어 메모리
    parsing 동작입니다. Preventer 만 사용하는 경우는 XSS Filter 를 로딩하지 않으며, preventer defender 에서 실제 사용하는 Lucy XssPreventer.escape 는
    static 메소드로 apache commons 의 StringEscapeUtils.escapeHtml() 수준이라 성능에 큰 영향을 미치지 않습니다._
 
+__Q: 적용하고 보니 오류가 발생합니다. Caused by: com/nhncorp/lucy/security/xss/XssPreventer java.lang.NoClassDefFoundError__
+_A: 게시판 참조해주세요. http://yobi.navercorp.com/lucy-projects/lucy-xss-servlet-filter/post/4_
+
+
 ## 구조
 - XSS Request Param Filter Structure
 ![1.png](/files/18078)
