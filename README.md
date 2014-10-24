@@ -173,7 +173,7 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
     </global>
 ``` 
 * 파라메터 필터링과 컨텐츠 필터링 둘 다  전부 적용을 고려한다면  아래 링크에서 웹플랫폼 검토의견을 참고한다.
- 	(http://yobi.navercorp.com/lucy-projects/lucy-request-param-filter/post/3) 	
+ 	(http://yobi.navercorp.com/lucy-projects/lucy-xss-servlet-filter/post/3) 	
 * web.xml 내에 filter-mapping 선언 시 전체가 아닌 특정 url 만 등록하거나, RequestParamFilter를 Copy 및 재구현하여 특정 url 만 타도록 하는 등 예외를 두지 않도록 한다.
 * global params에 서비스 전체에서 사용되는 공통 파라메터 값이 아닌, 서비스되는 URL의 모든 파라메터 값을 useDefender = "false" 로 넣지 않도록 한다.
 
