@@ -239,8 +239,12 @@ _A: XSS Filter 는 getInstance() 메소드 호출 시 로딩이 되어 메모리
 __Q: 적용하고 보니 오류가 발생합니다. Caused by: com/nhncorp/lucy/security/xss/XssPreventer java.lang.NoClassDefFoundError__
 _A: 게시판 참조해주세요. http://yobi.navercorp.com/lucy-projects/lucy-xss-servlet-filter/post/4_
 
-__Q: XssPreventerDefender와  XssSaxFilterDefender 둘 중 어떤 걸 사용해야 하는지 잘 모르겠어요__
+__Q: XssPreventerDefender와  XssSaxFilterDefender 둘 중 어떤 걸 사용해야 하는지 잘 모르겠어요 ?__
 _A: 먼저 필터링 대상 데이터가 컨텐츠 필터링이 필요한지 파라메터 필터링이 필요한지 판단하셔야 합니다. 사용자가 직접 생성한 html이 아니라면 XssSaxFilterDefender를 사용할 일이 거의 없으며 XssPreventerDefender를 사용하시면 됩니다. 그리고 컨텐츠 필터링이 필요한 팀들을 인터뷰 해 본 결과 비즈니스의 성격으로 동일한 데이터라고 할 지라도 어떤 경우는 컨텐츠 필터링이 필요하고 어떤 경우는 필요하지 않는 상황이 발생하기 때문에 XssSaxFilterDefender를 사용해 일괄적으로 필터링 규칙을 적용하는 방식에 거부감을 나타내었으며 기존 lucy-xss-filter 라이브러리를 직접 코드에서 사용하는 방식을 훨씬 선호하였습니다.
+
+__Q: 해당 url 전체 파라미터에 필터링 하지 않을 수 있는 방법도 있나요 ?__
+_A: 안타깝게도 그런 방법은 없습니다. 이 필터의 원칙은 모든 파라메터에 대해서 전부 필터링을 하며 제하고 싶은 파라메터가 있다면 하나씩 exclude 처리를 하셔야 합니다. 이런 식의 사상을 가지게 된 이유는 관리 입장에서는 xss-filter를 적용해 xss 공격 위험요소에서 해방된 것처럼 관리가 되고 있지만 실상은 계속해서 xss 공격에 노출되고 있는 상황입니다. 그래서 이런 상황을 원천적으로 봉쇄하기 위해 모든 파라메터에 대해서 필터링을 하는 원칙을 가지고 출발하였으며 필터링 대상이 아닌 파라메터는 한 눈에 관리가 되도록 xml에 선언하는 방식을 채택하였습니다.
+
 
 ## 구조
 - XSS Request Param Filter Structure
