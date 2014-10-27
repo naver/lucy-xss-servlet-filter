@@ -106,6 +106,9 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
             <name>xss</name>
             <class>com.naver.service.filter.requestparam.defender.XssFilterDefender</class>
             <init-param>
+            <!-- lucy-xss-filter의 dom filter용 설정 파일 -->
+            	<param-value>lucy-xss.xml</param-value>
+             <!-- 필터링된 코멘트를 남길지 여부 -->
                 <param-value>true</param-value>
             </init-param>
         </defender>
@@ -116,7 +119,9 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
             <name>xss_sax</name>
             <class>com.naver.service.filter.requestparam.defender.XssSaxFilterDefender</class>
             <init-param>
+             <!-- lucy-xss-filter의 sax filter용 설정 파일 -->
             	<param-value>lucy-xss-sax.xml</param-value>
+             <!-- 필터링된 코멘트를 남길지 여부 -->			                
                 <param-value>true</param-value>
             </init-param>
         </defender>
