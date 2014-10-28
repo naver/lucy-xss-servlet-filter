@@ -36,7 +36,7 @@
 
 - ** <font color='red'> global params에 서비스 전체에서 사용되는 공통 파라메터 값이 아닌, 서비스되는 URL의 모든 파라메터 값을 useDefender = "false" 로 넣지 않도록 한다. </font> **
 
-- ** <font color='red'> HttpServletRequest의 getQueryString()을 사용해 값을 그대로 UI에 노출하는 경우 lucy-xss-servlet-filter에서 필터링을 하게되면 원본 데이터가 훼손되어 오류를 발생시킬 수 있으므로  (ex: 서버에서 URL Redirect 시) 필터링 처리를 하지 않으며 개발자가 XssPreventer를 사용해 직접 필터링 처리를 하도록 한다. </font> **
+- ** <font color='red'> HttpServletRequest의 getQueryString()을 사용해 값을 그대로 UI에 노출하는 경우 lucy-xss-servlet-filter에서 필터링을 하게되면 원본 데이터가 훼손되어 오류를 발생시킬 수 있어  (ex: 서버에서 URL Redirect 시) 필터링 처리를 하지 않으며 개발자가 XssPreventer를 사용해 직접 필터링 처리를 하도록 한다. </font> **
 
 
 ## 적용방법 
