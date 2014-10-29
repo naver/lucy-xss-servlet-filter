@@ -25,10 +25,12 @@ public class RequestParamCheckerTest {
 	public void testDoFilter() {
 		assertThat(checker.doFilter("/notExistUrl.nhn", "title", "<b>Text</b>"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(checker.doFilter("/notExistUrl.nhn", "q", "<b>Text</b>"), is("<b>Text</b>"));
+		assertThat(checker.doFilter("/notExistUrl.nhn", "test", "<script>alert('1');</script>"), is("&lt;script&gt;alert(&#39;1&#39;);&lt;/script&gt;"));
 		
 		assertThat(checker.doFilter("/tlist/list.nhn", "title", "<b>Text</b>"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(checker.doFilter("/tlist/list.nhn", "mode", "<script>Text</script>"), is("&lt;script&gt;Text&lt;/script&gt;"));
 		assertThat(checker.doFilter("/tlist/list.nhn", "q", "<script>Text</script>"), is("&lt;script&gt;Text&lt;/script&gt;"));
+		
 	}
 	
 	@Test

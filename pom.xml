@@ -108,7 +108,7 @@
 		<dependency>
 			<groupId>com.nhncorp.lucy</groupId>
 			<artifactId>lucy-xss</artifactId>
-			<version>1.6.2</version>
+			<version>1.6.3</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
