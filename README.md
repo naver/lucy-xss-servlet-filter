@@ -45,7 +45,7 @@
 <dependency>
     <groupId>com.nhncorp.lucy</groupId>
     <artifactId>lucy-xss-servlet</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
