@@ -212,7 +212,7 @@ public class RequestParamConfig {
 	 * @return
 	 */
 	private Map<String, RequestParamParamRule> createRequestParamRuleMap(String url, String disable) {
-		if (disable.isEmpty() && !(disable.equals("true"))) {
+		if (disable.isEmpty() || !(disable.equals("true"))) {
 			return null;
 		}
 		
