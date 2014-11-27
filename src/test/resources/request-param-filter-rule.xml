@@ -31,10 +31,19 @@
     <global>
         <params>
             <param name="q" useDefender="false" />
+            <param name="web" useDefender="true" />
         </params>
     </global>
      
     <url-rule-set>
+    	<url-rule>
+            <url>/disabletest1.nhn</url>
+            <disable>true</disable>
+        </url-rule>
+        <url-rule>
+            <url>/disabletest2.nhn</url>
+            <disable>false</disable>
+        </url-rule>
         <url-rule>
             <url>/search.nhn</url>
             <params>

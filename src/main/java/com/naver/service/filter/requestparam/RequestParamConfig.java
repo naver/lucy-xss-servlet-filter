@@ -141,12 +141,24 @@ public class RequestParamConfig {
 	private void addUrlRule(Element element) {
 		Map<String, RequestParamParamRule> paramRuleMap = null;
 		String url = null;
-
+		
 		NodeList nodeList = element.getElementsByTagName("url");
 		if (nodeList.getLength() > 0) {
 			url = nodeList.item(0).getTextContent();
 		}
+		
+		if (!url.isEmpty()) {
+			nodeList = element.getElementsByTagName("disable");
+			if (nodeList.getLength() > 0) {
+				paramRuleMap = createRequestParamRuleMap(url, nodeList.item(0).getTextContent());
 
+				if (paramRuleMap != null) {
+					urlRuleSetMap.put(url, paramRuleMap);
+					return;
+				}
+			}
+		}
+		
 		nodeList = element.getElementsByTagName("params");
 		if (nodeList.getLength() > 0) {
 			paramRuleMap = createRequestParamRuleMap((Element)nodeList.item(0));
@@ -193,6 +205,27 @@ public class RequestParamConfig {
 		return urlRuleMap;
 	}
 
+	/**
+	 * Url Rule 모델 객체 생성
+	 * 
+	 * @param string, boolean
+	 * @return
+	 */
+	private Map<String, RequestParamParamRule> createRequestParamRuleMap(String url, String disable) {
+		if (disable.isEmpty() && !(disable.equals("true"))) {
+			return null;
+		}
+		
+		Map<String, RequestParamParamRule> urlRuleMap = new HashMap<String, RequestParamParamRule>();
+		RequestParamParamRule urlRule = new RequestParamParamRule();
+		urlRule.setName(url);
+		urlRule.setUseDefender(false);
+		urlRule.setDefender(defaultDefender);
+		urlRuleMap.put(url, urlRule);
+		
+		return urlRuleMap;
+	}
+	
 	/**
 	 * Defenders 설정
 	 * 
@@ -279,6 +312,16 @@ public class RequestParamConfig {
 				paramRule = globalParamRuleMap.get(paramName);
 			}
 			
+			if (paramRule == null) {
+				if (urlParamRuleMap.containsKey(url)) {
+					if (!(urlParamRuleMap.get(url).isUseDefender())) {
+						RequestParamParamRule paramUrlRule = new RequestParamParamRule();
+						paramUrlRule.setUseDefender(false);
+					
+						return paramUrlRule;
+					}
+				}
+			}
 			return paramRule;
 		}
 	}

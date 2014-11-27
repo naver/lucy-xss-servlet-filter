@@ -3,7 +3,7 @@
 	<groupId>com.nhncorp.lucy</groupId>
 	<artifactId>lucy-xss-servlet</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.1</version>
+	<version>1.0.2-snapshot</version>
 	<name>Request Parameter Filter</name>
 	<url>http://repo.nhncorp.com/maven2/com/naver/service/request-param-filter</url>
 
