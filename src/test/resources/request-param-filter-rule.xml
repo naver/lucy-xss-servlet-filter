@@ -38,11 +38,11 @@
     <url-rule-set>
     	<url-rule>
             <url>/disabletest1.nhn</url>
-            <disable>true</disable>
+             <disable/>
         </url-rule>
         <url-rule>
             <url>/disabletest2.nhn</url>
-            <disable>false</disable>
+            <disable/>
         </url-rule>
         <url-rule>
             <url>/search.nhn</url>
