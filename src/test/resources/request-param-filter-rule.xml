@@ -37,17 +37,40 @@
      
     <url-rule-set>
     	<url-rule>
-            <url>/disabletest1.nhn</url>
-             <disable/>
+            <url disable="true">/disabletest1.nhn</url>
         </url-rule>
         <url-rule>
-            <url>/disabletest2.nhn</url>
-            <disable/>
+            <url disable="false">/disabletest2.nhn</url>
+        </url-rule>
+        <url-rule>
+            <url disable="true">/disabletest3.nhn</url>
+            <params>
+                <param name="query" useDefender="false" />        <!-- /search.nhn URL에 요청되는 'query' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 별도 escape 처리를 해야 됨 -->
+                <param name="prefix1" usePrefix="true" />
+                <param name="prefix2" usePrefix="false" useDefender="false" />
+                <param name="prefix3" usePrefix="true" useDefender="true" />
+                <param name="prefix4" usePrefix="true" useDefender="false" />
+                <param name="prefix5" usePrefix="false" useDefender="true" />
+            </params>
+        </url-rule>
+        <url-rule>
+            <url disable="false">/disabletest4.nhn</url>
+            <params>
+                <param name="query" useDefender="false" />        <!-- /search.nhn URL에 요청되는 'query' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 별도 escape 처리를 해야 됨 -->
+                <param name="prefix1" usePrefix="true" />
+                <param name="prefix2" usePrefix="false" useDefender="false" />
+                <param name="prefix3" usePrefix="true" useDefender="true" />
+                <param name="prefix4" usePrefix="true" useDefender="false" />
+                <param name="prefix5" usePrefix="false" useDefender="true" />
+            </params>
         </url-rule>
         <url-rule>
             <url>/search.nhn</url>
             <params>
                 <param name="query" useDefender="false" />        <!-- /search.nhn URL에 요청되는 'query' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 별도 escape 처리를 해야 됨 -->
+                <param name="prefix1" usePrefix="true" />
+                <param name="prefix2" usePrefix="false" useDefender="false" />
+                <param name="prefix3" usePrefix="true" useDefender="true" />
             </params>
         </url-rule>
         <url-rule>

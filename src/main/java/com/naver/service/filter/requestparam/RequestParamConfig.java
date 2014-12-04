@@ -7,16 +7,22 @@
 
 package com.naver.service.filter.requestparam;
 
-import java.io.*;
-import java.util.*;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
-import javax.xml.parsers.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.commons.lang3.*;
-import org.apache.commons.logging.*;
-import org.w3c.dom.*;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
-import com.naver.service.filter.requestparam.defender.*;
+import com.naver.service.filter.requestparam.defender.Defender;
 
 /**
  * RequestParamFilter 에서 사용할 설정 정보를 관리하는 클래스.<br/><br/>
@@ -145,17 +151,10 @@ public class RequestParamConfig {
 		NodeList nodeList = element.getElementsByTagName("url");
 		if (nodeList.getLength() > 0) {
 			url = nodeList.item(0).getTextContent();
-		}
-		
-		if (!url.isEmpty()) {
-			nodeList = element.getElementsByTagName("disable");
-			if (nodeList.getLength() > 0) {
-				paramRuleMap = createRequestParamRuleMap(url, nodeList.item(0).getTextContent());
-
-				if (paramRuleMap != null) {
-					urlRuleSetMap.put(url, paramRuleMap);
-					return;
-				}
+			
+			// url이 disable인지 확인, disable 이라면 param 정보를 가질 필요가 없이 그대로 빠져나가면 된다.
+			if (addUrlDisableRule(url, nodeList)) {
+				return;
 			}
 		}
 		
@@ -167,6 +166,23 @@ public class RequestParamConfig {
 		urlRuleSetMap.put(url, paramRuleMap);
 	}
 
+	private boolean addUrlDisableRule(String url, NodeList nodeList) {
+		Map<String, RequestParamParamRule> paramRuleMap = null;
+		boolean result = false;
+		
+		if (!url.isEmpty()) {
+			boolean disable = StringUtils.equalsIgnoreCase(((Element)nodeList.item(0)).getAttribute("disable"), "true") ? true : false;
+			paramRuleMap = createRequestParamRuleMap(url, disable);
+			
+			if (paramRuleMap != null) {
+				urlRuleSetMap.put(url, paramRuleMap);
+				result = true;
+			}
+		}
+		
+		return result;
+	}
+	
 	/**
 	 * Url Rule 모델 객체 생성
 	 * 
@@ -181,6 +197,7 @@ public class RequestParamConfig {
 			Element eachElement = (Element)nodeList.item(i);
 			String name = eachElement.getAttribute("name");
 			boolean useDefender = StringUtils.equalsIgnoreCase(eachElement.getAttribute("useDefender"), "false") ? false : true;
+			boolean usePrefix = StringUtils.equalsIgnoreCase(eachElement.getAttribute("usePrefix"), "true") ? true : false;
 			Defender defender = null;
 
 			NodeList defenderNodeList = eachElement.getElementsByTagName("defender");
@@ -198,6 +215,7 @@ public class RequestParamConfig {
 			urlRule.setName(name);
 			urlRule.setUseDefender(useDefender);
 			urlRule.setDefender(defender);
+			urlRule.setUsePrefix(usePrefix);
 
 			urlRuleMap.put(name, urlRule);
 		}
@@ -211,8 +229,8 @@ public class RequestParamConfig {
 	 * @param string, boolean
 	 * @return
 	 */
-	private Map<String, RequestParamParamRule> createRequestParamRuleMap(String url, String disable) {
-		if (disable.isEmpty() || !"true".equals(disable)) {
+	private Map<String, RequestParamParamRule> createRequestParamRuleMap(String url, boolean disable) {
+		if (!disable) {
 			return null;
 		}
 		
@@ -220,7 +238,6 @@ public class RequestParamConfig {
 		RequestParamParamRule urlRule = new RequestParamParamRule();
 		urlRule.setName(url);
 		urlRule.setUseDefender(false);
-		urlRule.setDefender(defaultDefender);
 		urlRuleMap.put(url, urlRule);
 		
 		return urlRuleMap;
@@ -310,22 +327,45 @@ public class RequestParamConfig {
 			
 			if (paramRule == null) {
 				paramRule = globalParamRuleMap.get(paramName);
-			}
-			
-			if (paramRule == null) {
-				if (urlParamRuleMap.containsKey(url)) {
-					if (!(urlParamRuleMap.get(url).isUseDefender())) {
-						RequestParamParamRule paramUrlRule = new RequestParamParamRule();
-						paramUrlRule.setUseDefender(false);
+				
+				//param 이 null이면 url 전체를 disable 한건지 prefix로 적용된 건지 확인이 필요
+				if (paramRule == null) {
+					// url 전체 disable 설정되었는지 확인
+					paramRule = checkDisableUrl(url, paramRule, urlParamRuleMap);
 					
-						return paramUrlRule;
-					}
+					// prefix 설정이 적용된 파라메터인지 확인 필요
+					paramRule = checkPrefixParameter(paramName, paramRule, urlParamRuleMap);
 				}
 			}
 			return paramRule;
 		}
 	}
 
+	private RequestParamParamRule checkDisableUrl(String url, RequestParamParamRule paramRule, Map<String, RequestParamParamRule> urlParamRuleMap) {
+		if (paramRule != null) {
+			return paramRule;
+		}
+		
+		if (urlParamRuleMap.containsKey(url) && !(urlParamRuleMap.get(url).isUseDefender())) {
+			return urlParamRuleMap.get(url);
+		}
+		return paramRule;
+	}
+	
+	private RequestParamParamRule checkPrefixParameter(String paramName, RequestParamParamRule paramRule, Map<String, RequestParamParamRule> urlParamRuleMap) {
+		if (paramRule != null) {
+			return paramRule;
+		}
+		
+		Set<Entry<String, RequestParamParamRule>> entries = urlParamRuleMap.entrySet();
+		for (Entry<String, RequestParamParamRule> entry : entries) {
+			if (entry.getValue().isUsePrefix() && paramName.startsWith(entry.getKey())) {
+				return urlParamRuleMap.get(entry.getKey());
+			} 
+		}
+		return paramRule;
+	}
+	
 	/**
 	 * 해당 URL 에 정의된 Param 정의 정보를 획득.<br/><br/>
 	 * 

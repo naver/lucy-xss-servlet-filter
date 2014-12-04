@@ -18,6 +18,7 @@ public class RequestParamParamRule {
 	private String name;
 	private boolean useDefender = true;
 	private Defender defender;
+	private boolean usePrefix = false;
 
 	public String getName() {
 		return name;
@@ -42,5 +43,12 @@ public class RequestParamParamRule {
 	public void setDefender(Defender defender) {
 		this.defender = defender;
 	}
+	
+	public boolean isUsePrefix() {
+		return usePrefix;
+	}
 
+	public void setUsePrefix(boolean usePrefix) {
+		this.usePrefix = usePrefix;
+	}
 }

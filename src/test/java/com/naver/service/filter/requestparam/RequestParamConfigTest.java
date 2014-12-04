@@ -64,4 +64,34 @@ public class RequestParamConfigTest {
 		assertThat(config.getUrlParamRule("/tlist/list.nhn", "q").isUseDefender(), is(true));
 		assertThat(config.getUrlParamRule("/tlist/list.nhn", "q").getDefender(), is(config.getDefenderMap().get("xss_sax")));
 	}
+	
+	@Test
+	public void testUrlDisable() {
+		assertThat(config.getUrlParamRule("/disabletest1.nhn", null).isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/disabletest2.nhn", null), is(nullValue()));
+		assertThat(config.getUrlParamRule("/disabletest3.nhn", "query").isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/disabletest4.nhn", "query").isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix1").isUseDefender(), is(true));
+		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix1aaaa").isUseDefender(), is(true));
+		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix2aaaa"), is(nullValue()));
+		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix2").isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix3").isUseDefender(), is(true));
+		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix3aaaa").isUseDefender(), is(true));
+		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix4").isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix4aaaa").isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix5aaaa"),  is(nullValue()));
+		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix5").isUseDefender(), is(true));
+		
+	}
+	
+	@Test
+	public void testUrlPrefix() {
+		assertThat(config.getUrlParamRule("/search.nhn", "query").isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/search.nhn", "prefix1").isUseDefender(), is(true));
+		assertThat(config.getUrlParamRule("/search.nhn", "prefix1aaaa").isUseDefender(), is(true));
+		assertThat(config.getUrlParamRule("/search.nhn", "prefix2aaaa"), is(nullValue()));
+		assertThat(config.getUrlParamRule("/search.nhn", "prefix2").isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/search.nhn", "prefix3").isUseDefender(), is(true));
+		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix3aaaa").isUseDefender(), is(true));
+	}
 }
