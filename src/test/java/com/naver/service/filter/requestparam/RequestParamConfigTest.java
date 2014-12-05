@@ -7,14 +7,17 @@
 
 package com.naver.service.filter.requestparam;
 
-import org.junit.*;
-
-import com.naver.service.filter.requestparam.defender.*;
-
-import static org.junit.Assert.*;
-import static org.hamcrest.core.Is.*;
-import static org.hamcrest.core.IsInstanceOf.*;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertThat;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.naver.service.filter.requestparam.defender.XssFilterDefender;
+import com.naver.service.filter.requestparam.defender.XssPreventerDefender;
+import com.naver.service.filter.requestparam.defender.XssSaxFilterDefender;
 
 /**
  * RequestParamConfig 의 설정 파일 로딩 동작에 대한 테스트
@@ -93,5 +96,6 @@ public class RequestParamConfigTest {
 		assertThat(config.getUrlParamRule("/search.nhn", "prefix2").isUseDefender(), is(false));
 		assertThat(config.getUrlParamRule("/search.nhn", "prefix3").isUseDefender(), is(true));
 		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix3aaaa").isUseDefender(), is(true));
+		assertThat(config.getUrlParamRule("/search.nhn", "prefix4aaaa").getDefender(), instanceOf(XssSaxFilterDefender.class));
 	}
 }

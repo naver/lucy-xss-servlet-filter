@@ -323,24 +323,30 @@ public class RequestParamConfig {
 		if (urlParamRuleMap == null) {
 			return globalParamRuleMap.get(paramName);
 		} else {
-			RequestParamParamRule paramRule = urlParamRuleMap.get(paramName);
+			//param rule 확인
+			RequestParamParamRule paramRule = checkParamRule(urlParamRuleMap, url, paramName);
 			
-			if (paramRule == null) {
-				paramRule = globalParamRuleMap.get(paramName);
-				
-				//param 이 null이면 url 전체를 disable 한건지 prefix로 적용된 건지 확인이 필요
-				if (paramRule == null) {
-					// url 전체 disable 설정되었는지 확인
-					paramRule = checkDisableUrl(url, paramRule, urlParamRuleMap);
-					
-					// prefix 설정이 적용된 파라메터인지 확인 필요
-					paramRule = checkPrefixParameter(paramName, paramRule, urlParamRuleMap);
-				}
-			}
 			return paramRule;
 		}
 	}
 
+	private RequestParamParamRule checkParamRule(Map<String, RequestParamParamRule> urlParamRuleMap, String url, String paramName) {
+		RequestParamParamRule paramRule = urlParamRuleMap.get(paramName);
+		
+		if (paramRule == null) {
+			// url 전체 disable 설정되었는지 확인
+			paramRule = checkDisableUrl(url, paramRule, urlParamRuleMap);
+			
+			// prefix 설정이 적용된 파라메터인지 확인 필요
+			paramRule = checkPrefixParameter(paramName, paramRule, urlParamRuleMap);
+			
+			if (paramRule == null) {
+				paramRule = globalParamRuleMap.get(paramName);
+			}
+		}
+		return paramRule;
+	}
+	
 	private RequestParamParamRule checkDisableUrl(String url, RequestParamParamRule paramRule, Map<String, RequestParamParamRule> urlParamRuleMap) {
 		if (paramRule != null) {
 			return paramRule;
