@@ -101,7 +101,7 @@ __주의 : requestParamFilter는 Lucy 1.6을 사용한다면 ServiceFilter 뒤�
 </config>
 ```
 
-- 설정된 url 내의 모든 파라메터 필터링 제외 적용
+- 설정된 url 내의 모든 파라메터에 대해 필터링 제외 적용
 
 ```XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -131,7 +131,7 @@ __주의 : requestParamFilter는 Lucy 1.6을 사용한다면 ServiceFilter 뒤�
 </config>
 ```
 
-- 설정된 url 내에 동일한 문자열로 시작하는 파라메터 필터링 제외 적용
+- 설정된 url과 prefix로 시작하는 파라메터에 대해 필터링 제외 적용
 
 ```XML
 <?xml version="1.0" encoding="UTF-8"?>
