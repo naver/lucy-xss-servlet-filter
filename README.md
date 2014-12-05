@@ -108,7 +108,6 @@ __주의 : requestParamFilter는 Lucy 1.6을 사용한다면 ServiceFilter 뒤�
 <config xmlns="http://www.navercorp.com/request-param">
     <defenders>
         <defender>
-        	<!--  Lucy XSS XssPreventer defender 등록 -->
             <name>preventer</name>
             <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
         </defender>
@@ -139,7 +138,6 @@ __주의 : requestParamFilter는 Lucy 1.6을 사용한다면 ServiceFilter 뒤�
 <config xmlns="http://www.navercorp.com/request-param">
     <defenders>
         <defender>
-        	<!--  Lucy XSS XssPreventer defender 등록 -->
             <name>preventer</name>
             <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
         </defender>
@@ -170,15 +168,15 @@ __주의 : requestParamFilter는 Lucy 1.6을 사용한다면 ServiceFilter 뒤�
 
 - 기본 파리메터 필터링 외에 추가로 컨텐츠 필터링을 적용
 	
-__컨텐츠 필터링을 하지 않고 파라메터 필터링만 수행한다면 위의 설정을 따르면 된다.__
+__컨텐츠 필터링을 사용하려면 lucy-xss-filter 라이브러리에 대한 이해가 필요하다.__
+
+[lucy-xss-filter 문서](http://devcafe.nhncorp.com/index.php?mid=issuetracker&act=dispIssuetrackerDownload&vid=Lucy&package_srl=282220)
 
 ```XML
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://www.navercorp.com/request-param">
     <defenders>
         <defender>
-        	<!--  Lucy XSS XssPreventer defender 등록 -->
-        	<!--  모든 문자열에 대해 <→&lt;, >→&gt;, "→&quot; '→&#39; 로 필터링한다. -->
             <name>preventer</name>
             <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
         </defender>
@@ -237,12 +235,10 @@ __컨텐츠 필터링을 하지 않고 파라메터 필터링만 수행한다면
                 <param name="body">
                     <!--  Lucy XSS Dom Filter defender 사용 설정 -->
                     <defender>xss</defender>
-                    <!--  Lucy XSS Dom Filter defender 사용 설정 -->
                 </param>
                 <param name="body2">
                     <!--  Lucy XSS Sax Filter defender 사용 설정 -->
                     <defender>xss_sax</defender>
-                    <!--  Lucy XSS Sax Filter defender 사용 설정 -->
                 </param>
             </params>
         </url-rule>
