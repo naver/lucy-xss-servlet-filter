@@ -74,9 +74,11 @@ public class RequestParamCheckerTest {
 	
 	@Test
 	public void testPrefixDoFilter() {
+		assertThat(checker.doFilter("/search.nhn", "prefix1", "<b>Text</b>"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(checker.doFilter("/search.nhn", "prefix1abc", "<b>Text</b>"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(checker.doFilter("/search.nhn", "prefix2ksdc", "<b>Text</b>"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(checker.doFilter("/search.nhn", "prefix2", "<script>Text</script>"), is("<script>Text</script>"));
+		assertThat(checker.doFilter("/search.nhn", "prefix3", "<b>Text</b>"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(checker.doFilter("/search.nhn", "prefix3-dsf", "<b>Text</b>"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(checker.doFilter("/search.nhn", "prefix4aaaa", "<b>Text</b>"), is("<b>Text</b>"));
 		assertThat(checker.doFilter("/search.nhn", "prefix4", "<b>Text</b>"), is("<b>Text</b>"));

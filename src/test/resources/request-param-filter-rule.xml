@@ -70,9 +70,9 @@
             <url>/search.nhn</url>
             <params>
                 <param name="query" useDefender="false" />        <!-- /search.nhn URL에 요청되는 'query' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 별도 escape 처리를 해야 됨 -->
-                <param name="prefix1" usePrefix="true" />         <!-- prefix1로 시작하는 모든 파라메터는 필터링 된다. 굳이 사용할 필요없는 설정이다.  -->
-                <param name="prefix2" usePrefix="false" useDefender="false" /> <!-- prefix2로 시작하는 모든 파라메터는 필터링 되지 않는다.  -->
-                <param name="prefix3" usePrefix="true" useDefender="true" /> <!-- prefix3로 시작하는 모든 파라메터는 필터링 된다. 굳이 사용할 필요없는 설정이다.  -->
+                <param name="prefix1" usePrefix="true" />         <!-- prefix1로 시작하는 모든 파라메터는 필터링 된다.-->
+                <param name="prefix2" usePrefix="false" useDefender="false" /> <!-- prefix2는 필터링 되지 않는다.  -->
+                <param name="prefix3" usePrefix="true" useDefender="true" /> <!-- prefix3로 시작하는 모든 파라메터는 필터링 된다.-->
             	<param name="prefix4" usePrefix="true">     <!-- saxfilter로 prefix 기능이 사용한지 확인 -->
             		<defender>xss_sax</defender>
             	</param>

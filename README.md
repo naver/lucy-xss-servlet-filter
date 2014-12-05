@@ -24,8 +24,7 @@
 
 
 ## 주의사항
-- ** <font color='red'> 사용자 입력데이터를 화면에 다시 노출시킬 목적이 아닌 Business Logic에만 쓰이는 데이터일 경우에는 filtering을 하지 말아야 한다.  
-불필요한 eacape/unescape이 발생해 원본데이터가 훼손될 수 있다. </font> **
+- ** <font color='red'> 사용자 입력데이터를 화면에 다시 노출시킬 목적이 아닌 Business Logic에만 쓰이는 데이터일 경우에는 filtering을 하지 말아야 한다. 불필요한 eacape/unescape이 발생해 원본데이터가 훼손될 수 있다. </font> **
 
 - ** <font color='red'> 원본 데이터의 훼손 가능성 및 DB 검색 키워드용으로 저장 시 문제가 있어 파라메터 필터링을 DB에 저장되기 전 시점이 아닌 사용자 화면에 보여지는 시점에 진행하고자 한다면  useDefender 설정을 false로 한다. 하지만 이럴 경우 코드 곳곳에 xss 공격 방어 로직이 삽입되어 개발자의 사용 상 주의가 필요하다. </font> **
 
@@ -45,7 +44,7 @@
 <dependency>
     <groupId>com.nhncorp.lucy</groupId>
     <artifactId>lucy-xss-servlet</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 
@@ -60,19 +59,18 @@
     <url-pattern>/*</url-pattern>
 </filter-mapping>
 ```
-__주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다.__
+__주의 : requestParamFilter는 Lucy 1.6을 사용한다면 ServiceFilter 뒤에, Lucy 1.7을 사용한다면 CharacterEncodingFilter 뒤에 위치해야 한다.__
 
 3. Rule 파일 설정 예제 (XML 각 항목에 대한 설명은 "Rule 파일 XML 항목별 설명"을 참고한다.)
 - resource 폴더 내에 "request-param-filter-rule.xml" 파일을 생성
 - 특정 Parameter에만 파라메터 필터링을 적용 
 
-``` XML
+```XML
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://www.navercorp.com/request-param">
     <defenders>
         <defender>
         	<!--  Lucy XSS XssPreventer defender 등록 -->
-        	<!-- 아래 defender는 <→&lt;, >→&gt;, "→&quot; '→&#39; 로 필터링한다. -->
             <name>preventer</name>
             <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
         </defender>
@@ -86,7 +84,7 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
  	<!-- 서블릿 필터가 인자로 받은 parameter와 url이 xml에 설정한 필터링 선정 기준에 포함되지 않으면 아무런 작업도 수행하지 않는다. -->
     <global>
         <params>
-	    <!-- 모든 URL에 요청되는 'q' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 직접 escape 처리를 해야 됨 -->
+	        <!-- 모든 URL에 요청되는 'q' parameter 에 대해서는 filtering을 하지 않음. 서버 코드 내에서 직접 escape 처리를 해야 됨 -->
             <param name="q" useDefender="false" />        
         </params>
     </global>
@@ -103,10 +101,78 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
 </config>
 ```
 
-- 기본 파리메터 필터링 외에 추가로 컨텐츠 필터링을 적용
-	__컨텐츠 필터링을 하지 않고 파라메터 필터링만 수행한다면 위의 설정을 따르면 된다.__
+- 설정된 url 내의 모든 파라메터 필터링 제외 적용
 
-``` XML
+```XML
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.navercorp.com/request-param">
+    <defenders>
+        <defender>
+        	<!--  Lucy XSS XssPreventer defender 등록 -->
+            <name>preventer</name>
+            <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
+        </defender>
+    </defenders>
+ 
+    <default>
+        <defender>preventer</defender>
+    </default>
+ 
+    <global>
+        <params>
+            <param name="q" useDefender="false" />        
+        </params>
+    </global>
+     
+    <url-rule-set>
+        <url-rule>
+            <url disable="true">/disabletest1.nhn</url>
+        </url-rule>
+    </url-rule-set>
+</config>
+```
+
+- 설정된 url 내에 동일한 문자열로 시작하는 파라메터 필터링 제외 적용
+
+```XML
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.navercorp.com/request-param">
+    <defenders>
+        <defender>
+        	<!--  Lucy XSS XssPreventer defender 등록 -->
+            <name>preventer</name>
+            <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
+        </defender>
+    </defenders>
+ 
+    <default>
+        <defender>preventer</defender>
+    </default>
+ 
+    <global>
+        <params>
+            <param name="q" useDefender="false" />        
+        </params>
+    </global>
+     
+    <url-rule-set>
+        <url-rule>
+        	<!--  prefix parameter 테스트 -->
+            <url>/search.nhn</url>
+            <params>
+                <!-- prefix로 시작하는 모든 파라메터는 필터링 되지 않는다.  -->
+                <param name="prefix" usePrefix="true" useDefender="false" /> 
+            </params>
+        </url-rule>
+    </url-rule-set>
+</config>
+```
+
+- 기본 파리메터 필터링 외에 추가로 컨텐츠 필터링을 적용
+	
+__컨텐츠 필터링을 하지 않고 파라메터 필터링만 수행한다면 위의 설정을 따르면 된다.__
+
+```XML
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://www.navercorp.com/request-param">
     <defenders>
@@ -217,39 +283,50 @@ __주의 : requestParamFilter는 encoding 필터 뒤에 위치해야 합니다._
 |           |url-rule-set|        |          |           |        |           |1      |           |      |필터 적용 시 옵션을 설정할 URL Rule 의 집합  |
 |           |            |url-rule|          |           |        |           |1..n   |           |      |필터 적용 시 옵션을 설정할 URL Rule | 
 |           |            |        |url       |           |        |           |1      |           |      |옵션을 설정할 URL  |
+|           |            |        |          |disable    |        |           |0..1   |true, false|false |url 내의 모든 파라메터를 disable 여부|
 |           |            |        |params    |           |        |           |1      |           |      |옵션을 설정할 Parameter 값의 집합  |
 |           |            |        |          |param      |        |           |0..n   |           |      |옵션을 설정할 Parameter  |
 |           |            |        |          |           |        |name       |1      |           |      |Request Parameter 명   |
+|           |            |        |          |           |        |usePrefix  |0..1   |true, false|false |파라메터에 prefix 적용 여부|
 |           |            |        |          |           |        |useDefender|0..1   |true, false |true  |defender 에 의한 입력값의 변조 여부 <br/><h6>false 로 설정 시에는 반드시 서버 코드 내에서 별도 escape 처리를 하도록 한다.</h6>|
 |           |            |        |          |           |defender|           |0..1   |           |      |적용할 defender <br/>defenders > defender > name 값을 입력, 생략할 경우 default defender가 설정된다. |
 
 ## FAQ
 __Q: Global Params 값은 어떤 경우에 사용하면 되나요?__
-_A: 옵션 설정이 필요한 Parameter 값 중 전체 서비스에서 사용되는 Parameter 값을 등록합니다. 
-       예를 들어 모바일 기기에서 PC 페이지로 접근 시 해당 URL 에 일괄적으로 "mobile=Y" 와 같은 값을 붙여주고, 
-   interceptor 에서 항상 request.getParameter("mobile") 와 같이 호출하는 로직이 있다면 Global params 에 등록하면 됩니다._
+
+_A: 옵션 설정이 필요한 Parameter 값 중 전체 서비스에서 사용되는 Parameter 값을 등록합니다. 예를 들어 모바일 기기에서 PC 페이지로 접근 시 해당 URL 에 일괄적으로 "mobile=Y" 와 같은 값을 붙여주고, interceptor 에서 항상 request.getParameter("mobile") 와 같이 호출하는 로직이 있다면 Global params 에 등록하면 됩니다._
 
 __Q: URL은 대소문자를 구분하나요?__
+
 _A: 네. URL는 대소문자를 구분합니다._
 
 __Q: 이미 자체 escape 나 XSS Filter 적용 등으로 처리된 경우는 해당 코드를 모두 걷어내고 적용해야 하나요?__
-_A: 가능하면 해당 코드를 걷어내고 XSS Request Param Filter로 일원화하는 것을 권장합니다. 
-       기존에 적용된 코드량이 방대하여 걷어내는 리소스가 클 경우는 param rule 설정 시 useDefender 속성을 "false"로 설정하여 제외처리 하도록 합니다._
+
+_A: 가능하면 해당 코드를 걷어내고 XSS Request Param Filter로 일원화하는 것을 권장합니다. 기존에 적용된 코드량이 방대하여 걷어내는 리소스가 클 경우는 param rule 설정 시 useDefender 속성을 "false"로 설정하여 제외처리 하도록 합니다._
 
 __Q: Defender에서 preventer 만 사용하는 경우에도 Lucy XSS Filter 가 모두 로딩되어 성능에 이슈가 되지는 않나요?__
-_A: XSS Filter 는 getInstance() 메소드 호출 시 로딩이 되어 메모리에 설정 정보가 로딩되며, 실제 성능에 영향을 미치는 부분은 해당 파라메터의 값에 필터링을 적용하는 시점의
-   parsing 동작입니다. Preventer 만 사용하는 경우는 XSS Filter 를 로딩하지 않으며, preventer defender 에서 실제 사용하는 Lucy XssPreventer.escape 는
-   static 메소드로 apache commons 의 StringEscapeUtils.escapeHtml() 수준이라 성능에 큰 영향을 미치지 않습니다._
+
+_A: XSS Filter 는 getInstance() 메소드 호출 시 로딩이 되어 메모리에 설정 정보가 로딩되며, 실제 성능에 영향을 미치는 부분은 해당 파라메터의 값에 필터링을 적용하는 시점의 parsing 동작입니다. Preventer 만 사용하는 경우는 XSS Filter 를 로딩하지 않으며, preventer defender 에서 실제 사용하는 Lucy XssPreventer.escape 는 static 메소드로 apache commons 의 StringEscapeUtils.escapeHtml() 수준이라 성능에 큰 영향을 미치지 않습니다._
 
 __Q: 적용하고 보니 오류가 발생합니다. Caused by: com/nhncorp/lucy/security/xss/XssPreventer java.lang.NoClassDefFoundError__
+
 _A: 게시판 참조해주세요. http://yobi.navercorp.com/lucy-projects/lucy-xss-servlet-filter/post/4_
 
 __Q: XssPreventerDefender와  XssSaxFilterDefender와 XssDomFilterDefender 중 어떤 걸 사용해야 하는지 잘 모르겠어요 ?__
+
 _A: 먼저 필터링 대상 데이터가 컨텐츠 필터링이 필요한지 파라메터 필터링이 필요한지 판단하셔야 합니다. 사용자가 직접 생성한 html이 아니라면 XssSaxFilterDefender, XssDomFilterDefender를 사용할 일이 거의 없으며 XssPreventerDefender를 사용하시면 됩니다. 그리고 컨텐츠 필터링이 필요한 팀들을 인터뷰 해 본 결과 비즈니스의 성격으로 동일한 데이터라고 할 지라도 어떤 경우는 컨텐츠 필터링이 필요하고 어떤 경우는 필요하지 않는 상황이 발생하기 때문에 XssSaxFilterDefender, XssDomFilterDefender를 사용해 일괄적으로 필터링 규칙을 적용하는 방식에 거부감을 나타내었으며 기존 lucy-xss-filter 라이브러리를 직접 코드에서 사용하는 방식을 훨씬 선호하였습니다. 마지막으로 성능상의 이유로 XssSaxFilterDefender와 XssDomFilterDefender 중에서는  XssSaxFilterDefender를 선호합니다._
 
 __Q: 해당 url 전체 파라미터에 필터링 하지 않을 수 있는 방법도 있나요 ?__
-_A: 안타깝게도 그런 방법은 없습니다. 이 필터의 원칙은 모든 파라메터에 대해서 전부 필터링을 하며 제하고 싶은 파라메터가 있다면 하나씩 exclude 처리를 하셔야 합니다. 이런 식의 사상을 가지게 된 이유는 관리 입장에서는 xss-filter를 적용해 xss 공격 위험요소에서 해방된 것처럼 관리가 되고 있지만 실상은 계속해서 xss 공격에 노출되고 있는 상황입니다. 그래서 이런 상황을 원천적으로 봉쇄하기 위해 모든 파라메터에 대해서 필터링을 하는 원칙을 가지고 출발하였으며 필터링 대상이 아닌 파라메터는 한 눈에 관리가 되도록 xml에 선언하는 방식을 채택하였습니다._
 
+_A: 1.0.2 버전에 추가되었습니다. 적용방법에 설정된 xml을 참조해주세요_
+
+__Q: lucy-xss-servlet-filter 적용 후 한글이 깨집니다.__
+
+_A: lucy-xss-filter의 버전이 1.6.3 이상인지 확인해주시고, 계속 같은 증상이 반복된다면 링크를 확인해주세요 (http://devcafe.nhncorp.com/Lucy/forum/307071)_
+
+__Q: XssPreventerDefender의 필터링 규칙이 궁금합니다.__
+
+_A: http://devcafe.nhncorp.com/index.php?mid=forum&vid=Lucy&document_srl=2055777&rnd=2055779#comment_2055779 
 
 ## 구조
 - XSS Request Param Filter Structure
