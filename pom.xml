@@ -3,7 +3,7 @@
 	<groupId>com.nhncorp.lucy</groupId>
 	<artifactId>lucy-xss-servlet</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.2-snapshot</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<name>Request Parameter Filter</name>
 	<url>http://repo.nhncorp.com/maven2/com/naver/service/request-param-filter</url>
 
@@ -54,6 +54,13 @@
 	</pluginRepositories>
 
 	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>1.0</version>
+			</extension>
+		</extensions>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<resources>
 			<resource>
@@ -91,6 +98,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 		</plugins>
 	</build>
 
