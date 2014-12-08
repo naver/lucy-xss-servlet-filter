@@ -42,24 +42,70 @@
 1. Dependency 설정
 ``` XML
 <dependency>
-    <groupId>com.nhncorp.lucy</groupId>
-    <artifactId>lucy-xss-servlet</artifactId>
-    <version>1.0.2</version>
+	<groupId>com.nhncorp.lucy</groupId>
+	<artifactId>lucy-xss-servlet</artifactId>
+	<version>1.0.2</version>
 </dependency>
 ```
 
 2. Servlet Filter 설정
 ``` XML
 <filter>
-    <filter-name>requestParamFilter</filter-name>
-    <filter-class>com.naver.service.filter.requestparam.RequestParamFilter</filter-class>
+	<filter-name>requestParamFilter</filter-name>
+	<filter-class>com.naver.service.filter.requestparam.RequestParamFilter</filter-class>
 </filter>
 <filter-mapping>
     <filter-name>requestParamFilter</filter-name>
     <url-pattern>/*</url-pattern>
 </filter-mapping>
 ```
-__주의 : requestParamFilter는 Lucy 1.6을 사용한다면 ServiceFilter 뒤에, Lucy 1.7을 사용한다면 CharacterEncodingFilter 뒤에 위치해야 한다.__
+__주의 : requestParamFilter는 아래 예제처럼 Lucy 1.6을 사용한다면 ServiceFilter 뒤에, Lucy 1.7을 사용한다면 CharacterEncodingFilter 뒤에 위치해야 한다.__
+
+```XML
+<!-- lucy 1.7 sample-->
+<filter>
+	<filter-name>encodingFilter</filter-name>
+	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+	<init-param>
+		<param-name>encoding</param-name>
+		<param-value>UTF-8</param-value>
+	</init-param>
+</filter>
+<filter-mapping>
+	<filter-name>encodingFilter</filter-name>
+	<url-pattern>/*</url-pattern>
+</filter-mapping>
+
+<filter>
+	<filter-name>requestParamFilter</filter-name>
+	<filter-class>com.naver.service.filter.requestparam.RequestParamFilter</filter-class>
+</filter>
+<filter-mapping>
+	<filter-name>requestParamFilter</filter-name>
+	<url-pattern>/*</url-pattern>
+</filter-mapping>
+```
+
+```XML
+<!-- lucy 1.6 sample-->
+<filter>
+	<filter-name>service-filter</filter-name>
+	<filter-class>com.nhncorp.lucy.web.filter.ServiceFilter</filter-class>
+</filter>
+<filter-mapping>
+	<filter-name>service-filter</filter-name>
+	<url-pattern>/*</url-pattern>
+</filter-mapping>
+
+<filter>
+	<filter-name>requestParamFilter</filter-name>
+	<filter-class>com.naver.service.filter.requestparam.RequestParamFilter</filter-class>
+</filter>
+<filter-mapping>
+	<filter-name>requestParamFilter</filter-name>
+	<url-pattern>/*</url-pattern>
+</filter-mapping>
+```
 
 3. Rule 파일 설정 예제 (XML 각 항목에 대한 설명은 "Rule 파일 XML 항목별 설명"을 참고한다.)
 - resource 폴더 내에 "request-param-filter-rule.xml" 파일을 생성
@@ -322,7 +368,7 @@ _A: lucy-xss-filter의 버전이 1.6.3 이상인지 확인해주시고, 계속 �
 
 __Q: XssPreventerDefender의 필터링 규칙이 궁금합니다.__
 
-_A: http://devcafe.nhncorp.com/index.php?mid=forum&vid=Lucy&document_srl=2055777&rnd=2055779#comment_2055779 
+_A: http://devcafe.nhncorp.com/index.php?mid=forum&vid=Lucy&document_srl=2055777&rnd=2055779#comment_2055779_
 
 ## 구조
 - XSS Request Param Filter Structure
