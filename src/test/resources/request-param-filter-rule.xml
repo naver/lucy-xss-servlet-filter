@@ -32,6 +32,9 @@
         <params>
             <param name="q" useDefender="false" />
             <param name="web" useDefender="true" />
+            <param name="globalprefix1" usePrefix="true" />
+            <param name="globalprefix2" usePrefix="false" useDefender="false" />
+            <param name="globalprefix3" usePrefix="true" useDefender="false" />
         </params>
     </global>
      

@@ -7,14 +7,10 @@
 
 package com.naver.service.filter.requestparam;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
-import org.junit.*;
-
-import com.naver.service.filter.requestparam.defender.XssSaxFilterDefender;
-
-import static org.hamcrest.core.Is.*;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import org.junit.Test;
 
 /**
  * RequestParamChecker 에 대한 통합 테스트
@@ -82,5 +78,11 @@ public class RequestParamCheckerTest {
 		assertThat(checker.doFilter("/search.nhn", "prefix3-dsf", "<b>Text</b>"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(checker.doFilter("/search.nhn", "prefix4aaaa", "<b>Text</b>"), is("<b>Text</b>"));
 		assertThat(checker.doFilter("/search.nhn", "prefix4", "<b>Text</b>"), is("<b>Text</b>"));
+		assertThat(checker.doFilter("/notExist.nhn", "globalprefix1abc", "<b>Text</b>"), is("&lt;b&gt;Text&lt;/b&gt;"));
+		assertThat(checker.doFilter("/notExist.nhn", "globalprefix2", "<b>Text</b>"), is("<b>Text</b>"));
+		assertThat(checker.doFilter("/notExist.nhn", "globalprefix2abc", "<b>Text</b>"), is("&lt;b&gt;Text&lt;/b&gt;"));
+		assertThat(checker.doFilter("/notExist.nhn", "globalprefix3", "<b>Text</b>"), is("<b>Text</b>"));
+		assertThat(checker.doFilter("/notExist.nhn", "globalprefix3a1", "<b>Text</b>"), is("<b>Text</b>"));
+		assertThat(checker.doFilter("/notExist.nhn", "globalprefix3123", "<b>Text</b>"), is("<b>Text</b>"));
 	}
 }

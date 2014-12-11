@@ -320,16 +320,29 @@ public class RequestParamConfig {
 	 */
 	public RequestParamParamRule getUrlParamRule(String url, String paramName) {
 		Map<String, RequestParamParamRule> urlParamRuleMap = urlRuleSetMap.get(url);
+		RequestParamParamRule paramRule = null;
+		
 		if (urlParamRuleMap == null) {
-			return globalParamRuleMap.get(paramName);
+			paramRule = checkGlobalParamRule(paramName);
 		} else {
 			//param rule 확인
-			RequestParamParamRule paramRule = checkParamRule(urlParamRuleMap, url, paramName);
-			
-			return paramRule;
+			paramRule = checkParamRule(urlParamRuleMap, url, paramName);
 		}
+		
+		return paramRule;
 	}
 
+	private RequestParamParamRule checkGlobalParamRule(String paramName) {
+		RequestParamParamRule paramRule = globalParamRuleMap.get(paramName);
+		
+		// paramRule이 null이면 prefix 확인
+		if (paramRule == null) {
+			paramRule = checkPrefixParameter(paramName, null, globalParamRuleMap);
+		}
+		
+		return paramRule;
+	}
+	
 	private RequestParamParamRule checkParamRule(Map<String, RequestParamParamRule> urlParamRuleMap, String url, String paramName) {
 		RequestParamParamRule paramRule = urlParamRuleMap.get(paramName);
 		
@@ -359,7 +372,7 @@ public class RequestParamConfig {
 	}
 	
 	private RequestParamParamRule checkPrefixParameter(String paramName, RequestParamParamRule paramRule, Map<String, RequestParamParamRule> urlParamRuleMap) {
-		if (paramRule != null) {
+		if (paramRule != null || paramName == null) {
 			return paramRule;
 		}
 		
