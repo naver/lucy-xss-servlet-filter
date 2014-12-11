@@ -147,6 +147,36 @@ __주의 : requestParamFilter는 아래 예제처럼 Lucy 1.6을 사용한다면
 </config>
 ```
 
+- global 파라메터에 대해 prefix로 시작하는 파라메터에 대해 필터링 제외 적용
+
+```XML
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.navercorp.com/request-param">
+    <defenders>
+        <defender>
+            <name>preventer</name>
+            <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
+        </defender>
+    </defenders>
+ 
+    <default>
+        <defender>preventer</defender>
+    </default>
+ 
+    <global>
+        <params>
+            <param name="globalprefix3" usePrefix="true" useDefender="false" />
+        </params>
+    </global>
+     
+    <url-rule-set>
+        <url-rule>
+            <url disable="true">/disabletest1.nhn</url>
+        </url-rule>
+    </url-rule-set>
+</config>
+```
+
 - 설정된 url 내의 모든 파라메터에 대해 필터링 제외 적용
 
 ```XML
@@ -320,6 +350,7 @@ __컨텐츠 필터링을 사용하려면 lucy-xss-filter 라이브러리에 대�
 |           |         |params  |          |           |           |           |1      |           |      |전체 설정에 적용될 Parameter 값의 집합 | 
 |           |         |        |param     |           |           |           |1..n   |           |      |전체 설정에 적용될 Parameter 값 |
 |           |         |        |          |           |           |name       |1      |           |      |Request Parameter 명   |
+|           |            |        |          |           |        |usePrefix  |0..1   |true, false|false |파라메터에 prefix 적용 여부|
 |           |         |        |          |           |           |useDefender|0..1   |true, false|true  |defender 에 의한 입력값의 변조 여부, <br/><h6>false 로 설정 시에는 반드시 서버 코드 내에서 별도 escape 처리를 하도록 한다.</h6>|
 |           |            |        |          |           |defender|           |0..1   |           |      |적용할 defender <br/>defenders > defender > name 값을 입력, 생략될 경우 default defender가 설정된다. |
 |           |url-rule-set|        |          |           |        |           |1      |           |      |필터 적용 시 옵션을 설정할 URL Rule 의 집합  |
