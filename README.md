@@ -401,6 +401,10 @@ __Q: XssPreventerDefender의 필터링 규칙이 궁금합니다.__
 
 _A: http://devcafe.nhncorp.com/index.php?mid=forum&vid=Lucy&document_srl=2055777&rnd=2055779#comment_2055779_
 
+__Q: 필터 적용 후 파일 업로드가 되지 않습니다.__
+
+_A: http://devcafe.nhncorp.com/index.php?mid=forum&vid=Lucy&document_srl=2058874_
+
 ## 구조
 - XSS Request Param Filter Structure
 ![1.png](/files/18078)
