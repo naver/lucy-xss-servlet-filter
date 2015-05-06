@@ -1,7 +1,20 @@
+# lucy
 target/
 bin/
-.settings/
-.project
+
+# Eclipse
 .classpath
+.project
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Etc
 .springBeans
 .checkstyle
