@@ -21,16 +21,16 @@ import javax.servlet.http.*;
  * @author tod2
  */
 public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
-	private XssEscapeFilter requestParamChecker;
+	private XssEscapeFilter xssEscapeFilter;
 	private String path = null;
 
 	/**
 	 * @param request
 	 * @param filter
 	 */
-	public XssEscapeServletFilterWrapper(ServletRequest request, XssEscapeFilter requestParamChecker) {
+	public XssEscapeServletFilterWrapper(ServletRequest request, XssEscapeFilter xssEscapeFilter) {
 		super((HttpServletRequest)request);
-		this.requestParamChecker = requestParamChecker;
+		this.xssEscapeFilter = xssEscapeFilter;
 		this.path = ((HttpServletRequest)request).getRequestURI();
 	}
 
@@ -98,7 +98,7 @@ public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
 	 * @return value
 	 */
 	private String doFilter(String paramName, String value) {
-		return requestParamChecker.doFilter(path, paramName, value);
+		return xssEscapeFilter.doFilter(path, paramName, value);
 	}
 
 }

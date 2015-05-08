@@ -18,12 +18,12 @@ import org.apache.commons.logging.*;
 public final class XssEscapeFilter {
 	private static final Log LOG = LogFactory.getLog(XssEscapeFilter.class);
 
-	private static XssEscapeFilter requestParamChecker;
+	private static XssEscapeFilter xssEscapeFilter;
 	private static XssEscapeFilterConfig config;
 
 	static {
 		try {
-			requestParamChecker = new XssEscapeFilter();
+			xssEscapeFilter = new XssEscapeFilter();
 		} catch (Exception e) {
 			throw new ExceptionInInitializerError(e);
 		}
@@ -37,7 +37,7 @@ public final class XssEscapeFilter {
 	 * @return
 	 */
 	public static XssEscapeFilter getInstance() {
-		return requestParamChecker;
+		return xssEscapeFilter;
 	}
 
 	/**

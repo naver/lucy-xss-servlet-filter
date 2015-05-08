@@ -21,7 +21,7 @@ import static org.junit.Assert.assertThat;
  * @author tod2
  */
 public class XssEscapeServletFilterWrapperTest {
-	XssEscapeFilter checker = XssEscapeFilter.getInstance();;
+	XssEscapeFilter filter = XssEscapeFilter.getInstance();;
 	MockHttpServletRequest request;
 	XssEscapeServletFilterWrapper wrapper;
 
@@ -30,7 +30,7 @@ public class XssEscapeServletFilterWrapperTest {
 		request = new MockHttpServletRequest("GET", "/notExistUrl.nhn");
 		request.addParameter("title", "<b>Text</b>");
 		request.addParameter("q", "<b>Text</b>");
-		wrapper = new XssEscapeServletFilterWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		assertThat(wrapper.getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(wrapper.getParameter("q"), is("<b>Text</b>"));
@@ -39,7 +39,7 @@ public class XssEscapeServletFilterWrapperTest {
 		request.addParameter("title", "<b>Text</b>");
 		request.addParameter("mode", "<script>Text</script>");
 		request.addParameter("q", "<script>Text</script>");
-		wrapper = new XssEscapeServletFilterWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		assertThat(wrapper.getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(wrapper.getParameter("mode"), is("&lt;script&gt;Text&lt;/script&gt;"));
@@ -51,7 +51,7 @@ public class XssEscapeServletFilterWrapperTest {
 		request = new MockHttpServletRequest("POST", "/notExistUrl.nhn");
 		request.addParameter("title", "<b>Text</b>");
 		request.addParameter("q", "<b>Text</b>");
-		wrapper = new XssEscapeServletFilterWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		assertThat(wrapper.getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(wrapper.getParameter("q"), is("<b>Text</b>"));
@@ -60,7 +60,7 @@ public class XssEscapeServletFilterWrapperTest {
 		request.addParameter("title", "<b>Text</b>");
 		request.addParameter("mode", "<script>Text</script>");
 		request.addParameter("q", "<script>Text</script>");
-		wrapper = new XssEscapeServletFilterWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		assertThat(wrapper.getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(wrapper.getParameter("mode"), is("&lt;script&gt;Text&lt;/script&gt;"));
@@ -74,7 +74,7 @@ public class XssEscapeServletFilterWrapperTest {
 		request.addParameter("title", "<b>Text2</b>");
 		request.addParameter("q", "<b>Text1</b>");
 		request.addParameter("q", "<b>Text2</b>");
-		wrapper = new XssEscapeServletFilterWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		String[] values = wrapper.getParameterValues("title");
 		assertThat(values[0], is("&lt;b&gt;Text1&lt;/b&gt;"));
@@ -91,7 +91,7 @@ public class XssEscapeServletFilterWrapperTest {
 		request.addParameter("mode", "<script>Text2</script>");
 		request.addParameter("q", "<script>Text1</script>");
 		request.addParameter("q", "<script>Text2</script>");
-		wrapper = new XssEscapeServletFilterWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		values = wrapper.getParameterValues("title");
 		assertThat(values[0], is("&lt;b&gt;Text1&lt;/b&gt;"));
@@ -112,7 +112,7 @@ public class XssEscapeServletFilterWrapperTest {
 		request.addParameter("title", "<b>Text1</b>");
 		request.addParameter("title", "<b>Text2</b>");
 		request.addParameter("q", "<b>Text1</b>");
-		wrapper = new XssEscapeServletFilterWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		Map<String, Object> map = wrapper.getParameterMap();
 		String[] values = (String[])map.get("title");
@@ -128,7 +128,7 @@ public class XssEscapeServletFilterWrapperTest {
 		request.addParameter("mode", "<script>Text1</script>");
 		request.addParameter("mode", "<script>Text2</script>");
 		request.addParameter("q", "<script>Text1</script>");
-		wrapper = new XssEscapeServletFilterWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		map = wrapper.getParameterMap();
 		values = (String[])map.get("title");
