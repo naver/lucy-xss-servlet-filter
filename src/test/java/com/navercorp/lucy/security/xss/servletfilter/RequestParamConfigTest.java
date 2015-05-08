@@ -5,7 +5,7 @@
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-package com.naver.service.filter.requestparam;
+package com.navercorp.lucy.security.xss.servletfilter;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -15,9 +15,9 @@ import static org.junit.Assert.assertThat;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.naver.service.filter.requestparam.defender.XssFilterDefender;
-import com.naver.service.filter.requestparam.defender.XssPreventerDefender;
-import com.naver.service.filter.requestparam.defender.XssSaxFilterDefender;
+import com.navercorp.lucy.security.xss.servletfilter.defender.XssFilterDefender;
+import com.navercorp.lucy.security.xss.servletfilter.defender.XssPreventerDefender;
+import com.navercorp.lucy.security.xss.servletfilter.defender.XssSaxFilterDefender;
 
 /**
  * RequestParamConfig 의 설정 파일 로딩 동작에 대한 테스트

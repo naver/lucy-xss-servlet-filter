@@ -52,7 +52,7 @@
 ``` XML
 <filter>
 	<filter-name>requestParamFilter</filter-name>
-	<filter-class>com.naver.service.filter.requestparam.RequestParamFilter</filter-class>
+	<filter-class>com.navercorp.lucy.security.xss.servletfilter.RequestParamFilter</filter-class>
 </filter>
 <filter-mapping>
     <filter-name>requestParamFilter</filter-name>
@@ -78,7 +78,7 @@ __주의 : requestParamFilter는 아래 예제처럼 Lucy 1.6을 사용한다면
 
 <filter>
 	<filter-name>requestParamFilter</filter-name>
-	<filter-class>com.naver.service.filter.requestparam.RequestParamFilter</filter-class>
+	<filter-class>com.navercorp.lucy.security.xss.servletfilter.RequestParamFilter</filter-class>
 </filter>
 <filter-mapping>
 	<filter-name>requestParamFilter</filter-name>
@@ -99,7 +99,7 @@ __주의 : requestParamFilter는 아래 예제처럼 Lucy 1.6을 사용한다면
 
 <filter>
 	<filter-name>requestParamFilter</filter-name>
-	<filter-class>com.naver.service.filter.requestparam.RequestParamFilter</filter-class>
+	<filter-class>com.navercorp.lucy.security.xss.servletfilter.RequestParamFilter</filter-class>
 </filter>
 <filter-mapping>
 	<filter-name>requestParamFilter</filter-name>
@@ -118,7 +118,7 @@ __주의 : requestParamFilter는 아래 예제처럼 Lucy 1.6을 사용한다면
         <defender>
         	<!--  Lucy XSS XssPreventer defender 등록 -->
             <name>preventer</name>
-            <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
+            <class>com.navercorp.lucy.security.xss.servletfilter.defender.XssPreventerDefender</class>
         </defender>
     </defenders>
  
@@ -155,7 +155,7 @@ __주의 : requestParamFilter는 아래 예제처럼 Lucy 1.6을 사용한다면
     <defenders>
         <defender>
             <name>preventer</name>
-            <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
+            <class>com.navercorp.lucy.security.xss.servletfilter.defender.XssPreventerDefender</class>
         </defender>
     </defenders>
  
@@ -185,7 +185,7 @@ __주의 : requestParamFilter는 아래 예제처럼 Lucy 1.6을 사용한다면
     <defenders>
         <defender>
             <name>preventer</name>
-            <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
+            <class>com.navercorp.lucy.security.xss.servletfilter.defender.XssPreventerDefender</class>
         </defender>
     </defenders>
  
@@ -215,7 +215,7 @@ __주의 : requestParamFilter는 아래 예제처럼 Lucy 1.6을 사용한다면
     <defenders>
         <defender>
             <name>preventer</name>
-            <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
+            <class>com.navercorp.lucy.security.xss.servletfilter.defender.XssPreventerDefender</class>
         </defender>
     </defenders>
  
@@ -254,14 +254,14 @@ __컨텐츠 필터링을 사용하려면 lucy-xss-filter 라이브러리에 대�
     <defenders>
         <defender>
             <name>preventer</name>
-            <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
+            <class>com.navercorp.lucy.security.xss.servletfilter.defender.XssPreventerDefender</class>
         </defender>
         
         <!--  Lucy XSS Dom Filter defender 등록 -->
         <defender>
             <!-- XSS Defender 사용 시에는 Lucy XSS Filter에 대한 기본 설정(lucy-xss-superset, lucy-xss.xml 정의 등)을 미리 해두어야 한다. -->
             <name>xss</name>
-            <class>com.naver.service.filter.requestparam.defender.XssFilterDefender</class>
+            <class>com.navercorp.lucy.security.xss.servletfilter.defender.XssFilterDefender</class>
             <init-param>
             <!-- lucy-xss-filter의 dom filter용 설정 파일 -->
             	<param-value>lucy-xss.xml</param-value>
@@ -274,7 +274,7 @@ __컨텐츠 필터링을 사용하려면 lucy-xss-filter 라이브러리에 대�
         <defender>
             <!-- XSS Sax Defender 사용 시에는 Lucy XSS Sax Filter에 대한 기본 설정(lucy-xss-superset-sax, lucy-xss-sax.xml 정의 등)을 미리 해두어야 한다. -->
             <name>xss_sax</name>
-            <class>com.naver.service.filter.requestparam.defender.XssSaxFilterDefender</class>
+            <class>com.navercorp.lucy.security.xss.servletfilter.defender.XssSaxFilterDefender</class>
             <init-param>
              <!-- lucy-xss-filter의 sax filter용 설정 파일 -->
             	<param-value>lucy-xss-sax.xml</param-value>

@@ -5,7 +5,7 @@
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-package com.naver.service.filter.requestparam;
+package com.navercorp.lucy.security.xss.servletfilter;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import com.naver.service.filter.requestparam.defender.Defender;
+import com.navercorp.lucy.security.xss.servletfilter.defender.Defender;
 
 /**
  * RequestParamFilter 에서 사용할 설정 정보를 관리하는 클래스.<br/><br/>

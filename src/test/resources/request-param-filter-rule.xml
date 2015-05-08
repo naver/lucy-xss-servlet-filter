@@ -4,12 +4,12 @@
     <defenders>
         <defender>
             <name>preventer</name>
-            <class>com.naver.service.filter.requestparam.defender.XssPreventerDefender</class>
+            <class>com.navercorp.lucy.security.xss.servletfilter.defender.XssPreventerDefender</class>
         </defender>
 		<defender>
 			<!-- XSS Defender 사용 시에는 Lucy XSS Filter에 대한 기본 설정(lucy-xss-superset.xml 정의 등)을 미리 해두어야 한다. -->
 			<name>xss</name>
-			<class>com.naver.service.filter.requestparam.defender.XssFilterDefender</class>
+			<class>com.navercorp.lucy.security.xss.servletfilter.defender.XssFilterDefender</class>
 			<init-param>
 				<param-value>true</param-value>
 			</init-param>
@@ -17,7 +17,7 @@
 		<defender>
 			<!-- XSS Sax Defender 사용 시에는 Lucy XSS Sax Filter에 대한 기본 설정(lucy-xss-superset-sax.xml 정의 등)을 미리 해두어야 한다. -->
 			<name>xss_sax</name>
-			<class>com.naver.service.filter.requestparam.defender.XssSaxFilterDefender</class>
+			<class>com.navercorp.lucy.security.xss.servletfilter.defender.XssSaxFilterDefender</class>
 			<init-param>
 				<param-value>true</param-value>
 			</init-param>

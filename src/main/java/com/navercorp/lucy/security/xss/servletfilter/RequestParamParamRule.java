@@ -5,9 +5,9 @@
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-package com.naver.service.filter.requestparam;
+package com.navercorp.lucy.security.xss.servletfilter;
 
-import com.naver.service.filter.requestparam.defender.*;
+import com.navercorp.lucy.security.xss.servletfilter.defender.*;
 
 /**
  * 설정 파일 내 Param Rule 정보를 기록할 모델 클래스 

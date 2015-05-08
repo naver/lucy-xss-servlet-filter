@@ -5,7 +5,7 @@
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-package com.naver.service.filter.requestparam;
+package com.navercorp.lucy.security.xss.servletfilter;
 
 import java.util.*;
 import java.util.Map.Entry;

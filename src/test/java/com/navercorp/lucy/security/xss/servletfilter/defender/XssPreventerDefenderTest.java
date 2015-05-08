@@ -5,7 +5,7 @@
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-package com.naver.service.filter.requestparam.defender;
+package com.navercorp.lucy.security.xss.servletfilter.defender;
 
 import static org.hamcrest.core.Is.*;
 import static org.junit.Assert.*;

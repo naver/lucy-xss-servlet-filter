@@ -5,12 +5,12 @@
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-package com.naver.service.filter.requestparam;
+package com.navercorp.lucy.security.xss.servletfilter;
+
+import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-
-import org.junit.Test;
 
 /**
  * RequestParamChecker 에 대한 통합 테스트
