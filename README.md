@@ -31,7 +31,7 @@
 - ** <font color='red'> 파라메터 필터링과 컨텐츠 필터링 둘 다  전부 적용을 고려한다면  아래 링크에서 웹플랫폼 검토의견을 참고한다. </font> **
  	(http://yobi.navercorp.com/lucy-projects/lucy-xss-servlet-filter/post/3) 	
 
-- ** <font color='red'> web.xml 내에 filter-mapping 선언 시 전체가 아닌 특정 url 만 등록하거나, RequestParamFilter를 Copy 및 재구현하여 특정 url 만 타도록 하는 등 예외를 두지 않도록 한다. </font> **
+- ** <font color='red'> web.xml 내에 filter-mapping 선언 시 전체가 아닌 특정 url 만 등록하거나, XssEscapeServletFilter를 Copy 및 재구현하여 특정 url 만 타도록 하는 등 예외를 두지 않도록 한다. </font> **
 
 - ** <font color='red'> global params에 서비스 전체에서 사용되는 공통 파라메터 값이 아닌, 서비스되는 URL의 모든 파라메터 값을 useDefender = "false" 로 넣지 않도록 한다. </font> **
 
@@ -52,7 +52,7 @@
 ``` XML
 <filter>
 	<filter-name>requestParamFilter</filter-name>
-	<filter-class>com.navercorp.lucy.security.xss.servletfilter.RequestParamFilter</filter-class>
+	<filter-class>com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter</filter-class>
 </filter>
 <filter-mapping>
     <filter-name>requestParamFilter</filter-name>
@@ -78,7 +78,7 @@ __주의 : requestParamFilter는 아래 예제처럼 Lucy 1.6을 사용한다면
 
 <filter>
 	<filter-name>requestParamFilter</filter-name>
-	<filter-class>com.navercorp.lucy.security.xss.servletfilter.RequestParamFilter</filter-class>
+	<filter-class>com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter</filter-class>
 </filter>
 <filter-mapping>
 	<filter-name>requestParamFilter</filter-name>
@@ -99,7 +99,7 @@ __주의 : requestParamFilter는 아래 예제처럼 Lucy 1.6을 사용한다면
 
 <filter>
 	<filter-name>requestParamFilter</filter-name>
-	<filter-class>com.navercorp.lucy.security.xss.servletfilter.RequestParamFilter</filter-class>
+	<filter-class>com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter</filter-class>
 </filter>
 <filter-mapping>
 	<filter-name>requestParamFilter</filter-name>
@@ -108,7 +108,7 @@ __주의 : requestParamFilter는 아래 예제처럼 Lucy 1.6을 사용한다면
 ```
 
 3. Rule 파일 설정 예제 (XML 각 항목에 대한 설명은 "Rule 파일 XML 항목별 설명"을 참고한다.)
-- resource 폴더 내에 "request-param-filter-rule.xml" 파일을 생성
+- resource 폴더 내에 "lucy-xss-servlet-filter-rule.xml" 파일을 생성
 - 특정 Parameter에만 파라메터 필터링을 적용 
 
 ```XML
@@ -330,8 +330,8 @@ __컨텐츠 필터링을 사용하려면 lucy-xss-filter 라이브러리에 대�
 * URL Rule 미설정으로 인한 Debug값 확인 
 	useDefender="false" 로 설정된 값에 대해 tomcat debug log가 출력됨 
 ```
-2014-09-18 18:59:59 [DEBUG](RequestParamChecker:62 ) Do not filtered Parameter. Request url: /search.nhn, Parameter name: query, Parameter value: 가>
-2014-09-18 19:02:26 [DEBUG](RequestParamChecker:62 ) Do not filtered Parameter. Request url: /list/list.nhn, Parameter name: listId, Parameter value: 2
+2014-09-18 18:59:59 [DEBUG](XssEscapeFilter:62 ) Do not filtered Parameter. Request url: /search.nhn, Parameter name: query, Parameter value: 가>
+2014-09-18 19:02:26 [DEBUG](XssEscapeFilter:62 ) Do not filtered Parameter. Request url: /list/list.nhn, Parameter name: listId, Parameter value: 2
 ```
 
 ## Rule 파일 XML 항목별 설명

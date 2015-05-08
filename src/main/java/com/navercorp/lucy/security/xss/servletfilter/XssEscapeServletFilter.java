@@ -1,5 +1,5 @@
 /*
- * @(#)RequestParamFilter.java $version 2014. 9. 1.
+ * @(#)XssEscapeServletFilter.java $version 2014. 9. 1.
  *
  * Copyright 2007 NHN Corp. All rights Reserved. 
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -7,18 +7,17 @@
 
 package com.navercorp.lucy.security.xss.servletfilter;
 
-import java.io.*;
-
 import javax.servlet.*;
+import java.io.IOException;
 
 /**
  * RequestParam 을 적용하기 위한 Filter.
  * 
  * @author tod2
  */
-public class RequestParamFilter implements Filter {
+public class XssEscapeServletFilter implements Filter {
 	/** The filter. */
-	private RequestParamChecker requestParamChecker = RequestParamChecker.getInstance();
+	private XssEscapeFilter requestParamChecker = XssEscapeFilter.getInstance();
 	
 	/**
 	 * @param filterConfig
@@ -39,7 +38,7 @@ public class RequestParamFilter implements Filter {
 	 */
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		chain.doFilter(new RequestParamWrapper(request, requestParamChecker), response);
+		chain.doFilter(new XssEscapeServletFilterWrapper(request, requestParamChecker), response);
 	}
 
 	/**

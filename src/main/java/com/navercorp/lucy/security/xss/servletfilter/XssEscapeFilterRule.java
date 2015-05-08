@@ -1,5 +1,5 @@
 /*
- * @(#)RequestParamParamRule.java $version 2014. 9. 15.
+ * @(#)XssEscapeFilterRule.java $version 2014. 9. 15.
  *
  * Copyright 2007 NHN Corp. All rights Reserved. 
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -14,7 +14,7 @@ import com.navercorp.lucy.security.xss.servletfilter.defender.*;
  * 
  * @author tod2
  */
-public class RequestParamParamRule {
+public class XssEscapeFilterRule {
 	private String name;
 	private boolean useDefender = true;
 	private Defender defender;

@@ -1,5 +1,5 @@
 /*
- * @(#)RequestParamFilteredRequest.java $version 2014. 9. 1.
+ * @(#)XssEscapeServletFilteredRequest.java $version 2014. 9. 1.
  *
  * Copyright 2007 NHN Corp. All rights Reserved. 
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -20,15 +20,15 @@ import javax.servlet.http.*;
  * 
  * @author tod2
  */
-public class RequestParamWrapper extends HttpServletRequestWrapper {
-	private RequestParamChecker requestParamChecker;
+public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
+	private XssEscapeFilter requestParamChecker;
 	private String path = null;
 
 	/**
 	 * @param request
 	 * @param filter
 	 */
-	public RequestParamWrapper(ServletRequest request, RequestParamChecker requestParamChecker) {
+	public XssEscapeServletFilterWrapper(ServletRequest request, XssEscapeFilter requestParamChecker) {
 		super((HttpServletRequest)request);
 		this.requestParamChecker = requestParamChecker;
 		this.path = ((HttpServletRequest)request).getRequestURI();

@@ -1,5 +1,5 @@
 /*
- * @(#)RequestParamConfig.java $version 2014. 9. 2.
+ * @(#)XssEscapeFilterConfig.java $version 2014. 9. 2.
  *
  * Copyright 2007 NHN Corp. All rights Reserved. 
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -25,17 +25,17 @@ import org.w3c.dom.NodeList;
 import com.navercorp.lucy.security.xss.servletfilter.defender.Defender;
 
 /**
- * RequestParamFilter 에서 사용할 설정 정보를 관리하는 클래스.<br/><br/>
+ * XssEscapeServletFilter 에서 사용할 설정 정보를 관리하는 클래스.<br/><br/>
  * 
  * @author tod2
  */
-public class RequestParamConfig {
-	private static final String DEFAULT_FILTER_RULE_FILENAME = "request-param-filter-rule.xml";
+public class XssEscapeFilterConfig {
+	private static final String DEFAULT_FILTER_RULE_FILENAME = "lucy-xss-servlet-filter-rule.xml";
 
-	private static final Log LOG = LogFactory.getLog(RequestParamConfig.class);
+	private static final Log LOG = LogFactory.getLog(XssEscapeFilterConfig.class);
 	
-	private Map<String, Map<String, RequestParamParamRule>> urlRuleSetMap = new HashMap<String, Map<String, RequestParamParamRule>>();
-	private Map<String, RequestParamParamRule> globalParamRuleMap = new HashMap<String, RequestParamParamRule>();
+	private Map<String, Map<String, XssEscapeFilterRule>> urlRuleSetMap = new HashMap<String, Map<String, XssEscapeFilterRule>>();
+	private Map<String, XssEscapeFilterRule> globalParamRuleMap = new HashMap<String, XssEscapeFilterRule>();
 	private Map<String, Defender> defenderMap = new HashMap<String, Defender>();
 	private Defender defaultDefender = null;
 
@@ -45,7 +45,7 @@ public class RequestParamConfig {
 	 * @param filename
 	 * @throws Exception
 	 */
-	public RequestParamConfig() throws Exception {
+	public XssEscapeFilterConfig() throws Exception {
 		this(DEFAULT_FILTER_RULE_FILENAME);
 	}
 	
@@ -55,7 +55,7 @@ public class RequestParamConfig {
 	 * @param filename
 	 * @throws Exception
 	 */
-	public RequestParamConfig(String filename) throws Exception {
+	public XssEscapeFilterConfig(String filename) throws Exception {
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
@@ -145,7 +145,7 @@ public class RequestParamConfig {
 	 * @param elements
 	 */
 	private void addUrlRule(Element element) {
-		Map<String, RequestParamParamRule> paramRuleMap = null;
+		Map<String, XssEscapeFilterRule> paramRuleMap = null;
 		String url = null;
 		
 		NodeList nodeList = element.getElementsByTagName("url");
@@ -167,7 +167,7 @@ public class RequestParamConfig {
 	}
 
 	private boolean addUrlDisableRule(String url, NodeList nodeList) {
-		Map<String, RequestParamParamRule> paramRuleMap = null;
+		Map<String, XssEscapeFilterRule> paramRuleMap = null;
 		boolean result = false;
 		
 		if (!url.isEmpty()) {
@@ -189,8 +189,8 @@ public class RequestParamConfig {
 	 * @param element
 	 * @return
 	 */
-	private Map<String, RequestParamParamRule> createRequestParamRuleMap(Element element) {
-		Map<String, RequestParamParamRule> urlRuleMap = new HashMap<String, RequestParamParamRule>();
+	private Map<String, XssEscapeFilterRule> createRequestParamRuleMap(Element element) {
+		Map<String, XssEscapeFilterRule> urlRuleMap = new HashMap<String, XssEscapeFilterRule>();
 
 		NodeList nodeList = element.getElementsByTagName("param");
 		for (int i = 0; nodeList.getLength() > 0 && i < nodeList.getLength(); i++) {
@@ -211,7 +211,7 @@ public class RequestParamConfig {
 				defender = defaultDefender;
 			}
 
-			RequestParamParamRule urlRule = new RequestParamParamRule();
+			XssEscapeFilterRule urlRule = new XssEscapeFilterRule();
 			urlRule.setName(name);
 			urlRule.setUseDefender(useDefender);
 			urlRule.setDefender(defender);
@@ -229,13 +229,13 @@ public class RequestParamConfig {
 	 * @param string, boolean
 	 * @return
 	 */
-	private Map<String, RequestParamParamRule> createRequestParamRuleMap(String url, boolean disable) {
+	private Map<String, XssEscapeFilterRule> createRequestParamRuleMap(String url, boolean disable) {
 		if (!disable) {
 			return null;
 		}
 		
-		Map<String, RequestParamParamRule> urlRuleMap = new HashMap<String, RequestParamParamRule>();
-		RequestParamParamRule urlRule = new RequestParamParamRule();
+		Map<String, XssEscapeFilterRule> urlRuleMap = new HashMap<String, XssEscapeFilterRule>();
+		XssEscapeFilterRule urlRule = new XssEscapeFilterRule();
 		urlRule.setName(url);
 		urlRule.setUseDefender(false);
 		urlRuleMap.put(url, urlRule);
@@ -318,9 +318,9 @@ public class RequestParamConfig {
 	 * @param paramName
 	 * @return
 	 */
-	public RequestParamParamRule getUrlParamRule(String url, String paramName) {
-		Map<String, RequestParamParamRule> urlParamRuleMap = urlRuleSetMap.get(url);
-		RequestParamParamRule paramRule = null;
+	public XssEscapeFilterRule getUrlParamRule(String url, String paramName) {
+		Map<String, XssEscapeFilterRule> urlParamRuleMap = urlRuleSetMap.get(url);
+		XssEscapeFilterRule paramRule = null;
 		
 		if (urlParamRuleMap == null) {
 			paramRule = checkGlobalParamRule(paramName);
@@ -332,8 +332,8 @@ public class RequestParamConfig {
 		return paramRule;
 	}
 
-	private RequestParamParamRule checkGlobalParamRule(String paramName) {
-		RequestParamParamRule paramRule = globalParamRuleMap.get(paramName);
+	private XssEscapeFilterRule checkGlobalParamRule(String paramName) {
+		XssEscapeFilterRule paramRule = globalParamRuleMap.get(paramName);
 		
 		// paramRule이 null이면 prefix 확인
 		if (paramRule == null) {
@@ -343,8 +343,8 @@ public class RequestParamConfig {
 		return paramRule;
 	}
 	
-	private RequestParamParamRule checkParamRule(Map<String, RequestParamParamRule> urlParamRuleMap, String url, String paramName) {
-		RequestParamParamRule paramRule = urlParamRuleMap.get(paramName);
+	private XssEscapeFilterRule checkParamRule(Map<String, XssEscapeFilterRule> urlParamRuleMap, String url, String paramName) {
+		XssEscapeFilterRule paramRule = urlParamRuleMap.get(paramName);
 		
 		if (paramRule == null) {
 			// url 전체 disable 설정되었는지 확인
@@ -360,7 +360,7 @@ public class RequestParamConfig {
 		return paramRule;
 	}
 	
-	private RequestParamParamRule checkDisableUrl(String url, RequestParamParamRule paramRule, Map<String, RequestParamParamRule> urlParamRuleMap) {
+	private XssEscapeFilterRule checkDisableUrl(String url, XssEscapeFilterRule paramRule, Map<String, XssEscapeFilterRule> urlParamRuleMap) {
 		if (paramRule != null) {
 			return paramRule;
 		}
@@ -371,13 +371,13 @@ public class RequestParamConfig {
 		return paramRule;
 	}
 	
-	private RequestParamParamRule checkPrefixParameter(String paramName, RequestParamParamRule paramRule, Map<String, RequestParamParamRule> urlParamRuleMap) {
+	private XssEscapeFilterRule checkPrefixParameter(String paramName, XssEscapeFilterRule paramRule, Map<String, XssEscapeFilterRule> urlParamRuleMap) {
 		if (paramRule != null || paramName == null) {
 			return paramRule;
 		}
 		
-		Set<Entry<String, RequestParamParamRule>> entries = urlParamRuleMap.entrySet();
-		for (Entry<String, RequestParamParamRule> entry : entries) {
+		Set<Entry<String, XssEscapeFilterRule>> entries = urlParamRuleMap.entrySet();
+		for (Entry<String, XssEscapeFilterRule> entry : entries) {
 			if (entry.getValue().isUsePrefix() && paramName.startsWith(entry.getKey())) {
 				return urlParamRuleMap.get(entry.getKey());
 			} 

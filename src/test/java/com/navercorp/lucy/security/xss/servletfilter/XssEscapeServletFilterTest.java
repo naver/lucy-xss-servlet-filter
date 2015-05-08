@@ -1,5 +1,5 @@
 /*
- * @(#)RequestParamFilterTest.java $version 2014. 9. 23.
+ * @(#)XssEscapeServletFilterTest.java $version 2014. 9. 23.
  *
  * Copyright 2007 NHN Corp. All rights Reserved. 
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -18,12 +18,12 @@ import org.junit.*;
 import org.springframework.mock.web.*;
 
 /**
- * RequestParamFilter 에 대한 통합 테스트
+ * XssEscapeServletFilter 에 대한 통합 테스트
  * 
  * @author tod2
  */
-public class RequestParamFilterTest {
-	RequestParamFilter filter = new RequestParamFilter();
+public class XssEscapeServletFilterTest {
+	XssEscapeServletFilter filter = new XssEscapeServletFilter();
 	MockHttpServletRequest request;
 	MockHttpServletResponse response;
 	MockFilterChain chain;

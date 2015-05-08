@@ -1,5 +1,5 @@
 /*
- * @(#)RequestParamWrapperTest.java $version 2014. 9. 24.
+ * @(#)XssEscapeServletFilterWrapperTest.java $version 2014. 9. 24.
  *
  * Copyright 2007 NHN Corp. All rights Reserved. 
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -7,30 +7,30 @@
 
 package com.navercorp.lucy.security.xss.servletfilter;
 
-import static org.hamcrest.core.Is.*;
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
 
-import java.util.*;
+import java.util.Map;
 
-import org.junit.*;
-import org.springframework.mock.web.*;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 /**
- * RequestParamWrapper 에 대한 통합 테스트
+ * XssEscapeServletFilterWrapper 에 대한 통합 테스트
  * 
  * @author tod2
  */
-public class RequestParamWrapperTest {
-	RequestParamChecker checker = RequestParamChecker.getInstance();;
+public class XssEscapeServletFilterWrapperTest {
+	XssEscapeFilter checker = XssEscapeFilter.getInstance();;
 	MockHttpServletRequest request;
-	RequestParamWrapper wrapper;
+	XssEscapeServletFilterWrapper wrapper;
 
 	@Test
 	public void testGetMethodGetParameter() {
 		request = new MockHttpServletRequest("GET", "/notExistUrl.nhn");
 		request.addParameter("title", "<b>Text</b>");
 		request.addParameter("q", "<b>Text</b>");
-		wrapper = new RequestParamWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, checker);
 
 		assertThat(wrapper.getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(wrapper.getParameter("q"), is("<b>Text</b>"));
@@ -39,7 +39,7 @@ public class RequestParamWrapperTest {
 		request.addParameter("title", "<b>Text</b>");
 		request.addParameter("mode", "<script>Text</script>");
 		request.addParameter("q", "<script>Text</script>");
-		wrapper = new RequestParamWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, checker);
 
 		assertThat(wrapper.getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(wrapper.getParameter("mode"), is("&lt;script&gt;Text&lt;/script&gt;"));
@@ -51,7 +51,7 @@ public class RequestParamWrapperTest {
 		request = new MockHttpServletRequest("POST", "/notExistUrl.nhn");
 		request.addParameter("title", "<b>Text</b>");
 		request.addParameter("q", "<b>Text</b>");
-		wrapper = new RequestParamWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, checker);
 
 		assertThat(wrapper.getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(wrapper.getParameter("q"), is("<b>Text</b>"));
@@ -60,7 +60,7 @@ public class RequestParamWrapperTest {
 		request.addParameter("title", "<b>Text</b>");
 		request.addParameter("mode", "<script>Text</script>");
 		request.addParameter("q", "<script>Text</script>");
-		wrapper = new RequestParamWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, checker);
 
 		assertThat(wrapper.getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(wrapper.getParameter("mode"), is("&lt;script&gt;Text&lt;/script&gt;"));
@@ -74,7 +74,7 @@ public class RequestParamWrapperTest {
 		request.addParameter("title", "<b>Text2</b>");
 		request.addParameter("q", "<b>Text1</b>");
 		request.addParameter("q", "<b>Text2</b>");
-		wrapper = new RequestParamWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, checker);
 
 		String[] values = wrapper.getParameterValues("title");
 		assertThat(values[0], is("&lt;b&gt;Text1&lt;/b&gt;"));
@@ -91,7 +91,7 @@ public class RequestParamWrapperTest {
 		request.addParameter("mode", "<script>Text2</script>");
 		request.addParameter("q", "<script>Text1</script>");
 		request.addParameter("q", "<script>Text2</script>");
-		wrapper = new RequestParamWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, checker);
 
 		values = wrapper.getParameterValues("title");
 		assertThat(values[0], is("&lt;b&gt;Text1&lt;/b&gt;"));
@@ -112,7 +112,7 @@ public class RequestParamWrapperTest {
 		request.addParameter("title", "<b>Text1</b>");
 		request.addParameter("title", "<b>Text2</b>");
 		request.addParameter("q", "<b>Text1</b>");
-		wrapper = new RequestParamWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, checker);
 
 		Map<String, Object> map = wrapper.getParameterMap();
 		String[] values = (String[])map.get("title");
@@ -128,7 +128,7 @@ public class RequestParamWrapperTest {
 		request.addParameter("mode", "<script>Text1</script>");
 		request.addParameter("mode", "<script>Text2</script>");
 		request.addParameter("q", "<script>Text1</script>");
-		wrapper = new RequestParamWrapper(request, checker);
+		wrapper = new XssEscapeServletFilterWrapper(request, checker);
 
 		map = wrapper.getParameterMap();
 		values = (String[])map.get("title");

@@ -1,5 +1,5 @@
 /*
- * @(#)RequestParamConfigTest.java $version 2014. 9. 23.
+ * @(#)XssEscapeFilterConfigTest.java $version 2014. 9. 23.
  *
  * Copyright 2007 NHN Corp. All rights Reserved. 
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -7,29 +7,28 @@
 
 package com.navercorp.lucy.security.xss.servletfilter;
 
+import com.navercorp.lucy.security.xss.servletfilter.defender.XssFilterDefender;
+import com.navercorp.lucy.security.xss.servletfilter.defender.XssPreventerDefender;
+import com.navercorp.lucy.security.xss.servletfilter.defender.XssSaxFilterDefender;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import com.navercorp.lucy.security.xss.servletfilter.defender.XssFilterDefender;
-import com.navercorp.lucy.security.xss.servletfilter.defender.XssPreventerDefender;
-import com.navercorp.lucy.security.xss.servletfilter.defender.XssSaxFilterDefender;
-
 /**
- * RequestParamConfig 의 설정 파일 로딩 동작에 대한 테스트
+ * XssEscapeFilterConfig 의 설정 파일 로딩 동작에 대한 테스트
  * 
  * @author tod2
  */
-public class RequestParamConfigTest {
-	static RequestParamConfig config;
+public class XssEscapeFilterConfigTest {
+	static XssEscapeFilterConfig config;
 	
 	@BeforeClass
 	public static void init() throws Exception {
-		config = new RequestParamConfig();
+		config = new XssEscapeFilterConfig();
 	}
 	
 	@Test
@@ -47,7 +46,7 @@ public class RequestParamConfigTest {
 	
 	@Test
 	public void testGetGlobalUrlParamRule() {
-		assertThat(config.getUrlParamRule("/notExistUrl.nhn", "q"), instanceOf(RequestParamParamRule.class));
+		assertThat(config.getUrlParamRule("/notExistUrl.nhn", "q"), instanceOf(XssEscapeFilterRule.class));
 		assertThat(config.getUrlParamRule("/notExistUrl.nhn", "q").isUseDefender(), is(false));
 		assertThat(config.getUrlParamRule("/notExistUrl.nhn", "q").getDefender(), is(config.getDefaultDefender()));
 	}
@@ -55,15 +54,15 @@ public class RequestParamConfigTest {
 	@Test
 	public void testGetUrlParamRule() {
 		assertThat(config.getUrlParamRule("/search.nhn", "title"), is(nullValue()));
-		assertThat(config.getUrlParamRule("/search.nhn", "query"), instanceOf(RequestParamParamRule.class));
+		assertThat(config.getUrlParamRule("/search.nhn", "query"), instanceOf(XssEscapeFilterRule.class));
 		assertThat(config.getUrlParamRule("/search.nhn", "query").isUseDefender(), is(false));
 		assertThat(config.getUrlParamRule("/search.nhn", "query").getDefender(), is(config.getDefaultDefender()));
 		
-		assertThat(config.getUrlParamRule("/tlist/list.nhn", "mode"), instanceOf(RequestParamParamRule.class));
+		assertThat(config.getUrlParamRule("/tlist/list.nhn", "mode"), instanceOf(XssEscapeFilterRule.class));
 		assertThat(config.getUrlParamRule("/tlist/list.nhn", "mode").isUseDefender(), is(true));
 		assertThat(config.getUrlParamRule("/tlist/list.nhn", "mode").getDefender(), is(config.getDefenderMap().get("xss")));
 
-		assertThat(config.getUrlParamRule("/tlist/list.nhn", "q"), instanceOf(RequestParamParamRule.class));
+		assertThat(config.getUrlParamRule("/tlist/list.nhn", "q"), instanceOf(XssEscapeFilterRule.class));
 		assertThat(config.getUrlParamRule("/tlist/list.nhn", "q").isUseDefender(), is(true));
 		assertThat(config.getUrlParamRule("/tlist/list.nhn", "q").getDefender(), is(config.getDefenderMap().get("xss_sax")));
 	}

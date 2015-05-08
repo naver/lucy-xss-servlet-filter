@@ -1,5 +1,5 @@
 /*
- * @(#)RequestParamChecker.java $version 2014. 9. 15.
+ * @(#)XssEscapeFilter.java $version 2014. 9. 15.
  *
  * Copyright 2007 NHN Corp. All rights Reserved. 
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -15,28 +15,28 @@ import org.apache.commons.logging.*;
  * 
  * @author tod2
  */
-public final class RequestParamChecker {
-	private static final Log LOG = LogFactory.getLog(RequestParamChecker.class);
+public final class XssEscapeFilter {
+	private static final Log LOG = LogFactory.getLog(XssEscapeFilter.class);
 
-	private static RequestParamChecker requestParamChecker;
-	private static RequestParamConfig config;
+	private static XssEscapeFilter requestParamChecker;
+	private static XssEscapeFilterConfig config;
 
 	static {
 		try {
-			requestParamChecker = new RequestParamChecker();
+			requestParamChecker = new XssEscapeFilter();
 		} catch (Exception e) {
 			throw new ExceptionInInitializerError(e);
 		}
 	}
 
-	private RequestParamChecker() throws Exception {
-		config = new RequestParamConfig();
+	private XssEscapeFilter() throws Exception {
+		config = new XssEscapeFilterConfig();
 	}
 
 	/**
 	 * @return
 	 */
-	public static RequestParamChecker getInstance() {
+	public static XssEscapeFilter getInstance() {
 		return requestParamChecker;
 	}
 
@@ -53,7 +53,7 @@ public final class RequestParamChecker {
 			return value;
 		}
 
-		RequestParamParamRule urlRule = config.getUrlParamRule(url, paramName);
+		XssEscapeFilterRule urlRule = config.getUrlParamRule(url, paramName);
 		if (urlRule == null) {
 			// Default defender 적용
 			return config.getDefaultDefender().doFilter(value);

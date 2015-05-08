@@ -1,5 +1,5 @@
 /*
- * @(#)RequestParamCheckerTest.java $version 2014. 9. 23.
+ * @(#)XssEscapeFilterTest.java $version 2014. 9. 23.
  *
  * Copyright 2007 NHN Corp. All rights Reserved. 
  * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -13,12 +13,12 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
- * RequestParamChecker 에 대한 통합 테스트
+ * XssEscapeFilter 에 대한 통합 테스트
  * 
  * @author tod2
  */
-public class RequestParamCheckerTest {
-	RequestParamChecker checker = RequestParamChecker.getInstance();
+public class XssEscapeFilterTest {
+	XssEscapeFilter checker = XssEscapeFilter.getInstance();
 	
 	@Test
 	public void testDoFilter() {
