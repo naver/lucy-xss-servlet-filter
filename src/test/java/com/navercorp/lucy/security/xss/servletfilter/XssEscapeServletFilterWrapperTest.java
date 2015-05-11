@@ -27,70 +27,70 @@ public class XssEscapeServletFilterWrapperTest {
 
 	@Test
 	public void testGetMethodGetParameter() {
-		request = new MockHttpServletRequest("GET", "/notExistUrl.nhn");
+		request = new MockHttpServletRequest("GET", "/notExistUrl.do");
 		request.addParameter("title", "<b>Text</b>");
-		request.addParameter("q", "<b>Text</b>");
+		request.addParameter("globalParameter", "<b>Text</b>");
 		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		assertThat(wrapper.getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
-		assertThat(wrapper.getParameter("q"), is("<b>Text</b>"));
+		assertThat(wrapper.getParameter("globalParameter"), is("<b>Text</b>"));
 
-		request = new MockHttpServletRequest("GET", "/tlist/list.nhn");
+		request = new MockHttpServletRequest("GET", "/url1.do");
 		request.addParameter("title", "<b>Text</b>");
 		request.addParameter("mode", "<script>Text</script>");
-		request.addParameter("q", "<script>Text</script>");
+		request.addParameter("globalParameter", "<script>Text</script>");
 		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		assertThat(wrapper.getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(wrapper.getParameter("mode"), is("&lt;script&gt;Text&lt;/script&gt;"));
-		assertThat(wrapper.getParameter("q"), is("&lt;script&gt;Text&lt;/script&gt;"));
+		assertThat(wrapper.getParameter("globalParameter"), is("&lt;script&gt;Text&lt;/script&gt;"));
 	}
 
 	@Test
 	public void testPostMethodGetParameter() {
-		request = new MockHttpServletRequest("POST", "/notExistUrl.nhn");
+		request = new MockHttpServletRequest("POST", "/notExistUrl.do");
 		request.addParameter("title", "<b>Text</b>");
-		request.addParameter("q", "<b>Text</b>");
+		request.addParameter("globalParameter", "<b>Text</b>");
 		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		assertThat(wrapper.getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
-		assertThat(wrapper.getParameter("q"), is("<b>Text</b>"));
+		assertThat(wrapper.getParameter("globalParameter"), is("<b>Text</b>"));
 
-		request = new MockHttpServletRequest("POST", "/tlist/list.nhn");
+		request = new MockHttpServletRequest("POST", "/url1.do");
 		request.addParameter("title", "<b>Text</b>");
 		request.addParameter("mode", "<script>Text</script>");
-		request.addParameter("q", "<script>Text</script>");
+		request.addParameter("globalParameter", "<script>Text</script>");
 		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		assertThat(wrapper.getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(wrapper.getParameter("mode"), is("&lt;script&gt;Text&lt;/script&gt;"));
-		assertThat(wrapper.getParameter("q"), is("&lt;script&gt;Text&lt;/script&gt;"));
+		assertThat(wrapper.getParameter("globalParameter"), is("&lt;script&gt;Text&lt;/script&gt;"));
 	}
 
 	@Test
 	public void testGetMethodGetParameterValues() {
-		request = new MockHttpServletRequest("GET", "/notExistUrl.nhn");
+		request = new MockHttpServletRequest("GET", "/notExistUrl.do");
 		request.addParameter("title", "<b>Text1</b>");
 		request.addParameter("title", "<b>Text2</b>");
-		request.addParameter("q", "<b>Text1</b>");
-		request.addParameter("q", "<b>Text2</b>");
+		request.addParameter("globalParameter", "<b>Text1</b>");
+		request.addParameter("globalParameter", "<b>Text2</b>");
 		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		String[] values = wrapper.getParameterValues("title");
 		assertThat(values[0], is("&lt;b&gt;Text1&lt;/b&gt;"));
 		assertThat(values[1], is("&lt;b&gt;Text2&lt;/b&gt;"));
 
-		values = wrapper.getParameterValues("q");
+		values = wrapper.getParameterValues("globalParameter");
 		assertThat(values[0], is("<b>Text1</b>"));
 		assertThat(values[1], is("<b>Text2</b>"));
 
-		request = new MockHttpServletRequest("GET", "/tlist/list.nhn");
+		request = new MockHttpServletRequest("GET", "/url1.do");
 		request.addParameter("title", "<b>Text1</b>");
 		request.addParameter("title", "<b>Text2</b>");
 		request.addParameter("mode", "<script>Text1</script>");
 		request.addParameter("mode", "<script>Text2</script>");
-		request.addParameter("q", "<script>Text1</script>");
-		request.addParameter("q", "<script>Text2</script>");
+		request.addParameter("globalParameter", "<script>Text1</script>");
+		request.addParameter("globalParameter", "<script>Text2</script>");
 		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		values = wrapper.getParameterValues("title");
@@ -101,17 +101,17 @@ public class XssEscapeServletFilterWrapperTest {
 		assertThat(values[0], is("&lt;script&gt;Text1&lt;/script&gt;"));
 		assertThat(values[1], is("&lt;script&gt;Text2&lt;/script&gt;"));
 
-		values = wrapper.getParameterValues("q");
+		values = wrapper.getParameterValues("globalParameter");
 		assertThat(values[0], is("&lt;script&gt;Text1&lt;/script&gt;"));
 		assertThat(values[1], is("&lt;script&gt;Text2&lt;/script&gt;"));
 	}
 
 	@Test
 	public void testGetMethodGetParameterMap() {
-		request = new MockHttpServletRequest("GET", "/notExistUrl.nhn");
+		request = new MockHttpServletRequest("GET", "/notExistUrl.do");
 		request.addParameter("title", "<b>Text1</b>");
 		request.addParameter("title", "<b>Text2</b>");
-		request.addParameter("q", "<b>Text1</b>");
+		request.addParameter("globalParameter", "<b>Text1</b>");
 		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		Map<String, Object> map = wrapper.getParameterMap();
@@ -119,15 +119,15 @@ public class XssEscapeServletFilterWrapperTest {
 		assertThat(values[0], is("&lt;b&gt;Text1&lt;/b&gt;"));
 		assertThat(values[1], is("&lt;b&gt;Text2&lt;/b&gt;"));
 
-		values = (String[])map.get("q");
+		values = (String[])map.get("globalParameter");
 		assertThat(values[0], is("<b>Text1</b>"));
 
-		request = new MockHttpServletRequest("GET", "/tlist/list.nhn");
+		request = new MockHttpServletRequest("GET", "/url1.do");
 		request.addParameter("title", "<b>Text1</b>");
 		request.addParameter("title", "<b>Text2</b>");
 		request.addParameter("mode", "<script>Text1</script>");
 		request.addParameter("mode", "<script>Text2</script>");
-		request.addParameter("q", "<script>Text1</script>");
+		request.addParameter("globalParameter", "<script>Text1</script>");
 		wrapper = new XssEscapeServletFilterWrapper(request, filter);
 
 		map = wrapper.getParameterMap();
@@ -139,7 +139,7 @@ public class XssEscapeServletFilterWrapperTest {
 		assertThat(values[0], is("&lt;script&gt;Text1&lt;/script&gt;"));
 		assertThat(values[1], is("&lt;script&gt;Text2&lt;/script&gt;"));
 
-		values = (String[])map.get("q");
+		values = (String[])map.get("globalParameter");
 		assertThat(values[0], is("&lt;script&gt;Text1&lt;/script&gt;"));
 	}
 }

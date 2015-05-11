@@ -39,62 +39,50 @@ public class XssEscapeFilterConfigTest {
 	@Test
 	public void testGetDefenderMap() {
 		assertThat(config.getDefenderMap().size(), is(3));
-		assertThat(config.getDefenderMap().get("preventer"), instanceOf(XssPreventerDefender.class));
-		assertThat(config.getDefenderMap().get("xss"), instanceOf(XssFilterDefender.class));
-		assertThat(config.getDefenderMap().get("xss_sax"), instanceOf(XssSaxFilterDefender.class));
+		assertThat(config.getDefenderMap().get("xssPreventerDefender"), instanceOf(XssPreventerDefender.class));
+		assertThat(config.getDefenderMap().get("xssFilterDefender"), instanceOf(XssFilterDefender.class));
+		assertThat(config.getDefenderMap().get("xssSaxFilterDefender"), instanceOf(XssSaxFilterDefender.class));
 	}
 	
 	@Test
 	public void testGetGlobalUrlParamRule() {
-		assertThat(config.getUrlParamRule("/notExistUrl.nhn", "q"), instanceOf(XssEscapeFilterRule.class));
-		assertThat(config.getUrlParamRule("/notExistUrl.nhn", "q").isUseDefender(), is(false));
-		assertThat(config.getUrlParamRule("/notExistUrl.nhn", "q").getDefender(), is(config.getDefaultDefender()));
+		assertThat(config.getUrlParamRule("/notExistUrl.do", "globalParameter"), instanceOf(XssEscapeFilterRule.class));
+		assertThat(config.getUrlParamRule("/notExistUrl.do", "globalParameter").isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/notExistUrl.do", "globalParameter").getDefender(), is(config.getDefaultDefender()));
 	}
 	
 	@Test
 	public void testGetUrlParamRule() {
-		assertThat(config.getUrlParamRule("/search.nhn", "title"), is(nullValue()));
-		assertThat(config.getUrlParamRule("/search.nhn", "query"), instanceOf(XssEscapeFilterRule.class));
-		assertThat(config.getUrlParamRule("/search.nhn", "query").isUseDefender(), is(false));
-		assertThat(config.getUrlParamRule("/search.nhn", "query").getDefender(), is(config.getDefaultDefender()));
+		assertThat(config.getUrlParamRule("/url1.do", "title"), is(nullValue()));
+		assertThat(config.getUrlParamRule("/url1.do", "url1Parameter"), instanceOf(XssEscapeFilterRule.class));
+		assertThat(config.getUrlParamRule("/url1.do", "url1Parameter").isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/url1.do", "url1Parameter").getDefender(), is(config.getDefaultDefender()));
 		
-		assertThat(config.getUrlParamRule("/tlist/list.nhn", "mode"), instanceOf(XssEscapeFilterRule.class));
-		assertThat(config.getUrlParamRule("/tlist/list.nhn", "mode").isUseDefender(), is(true));
-		assertThat(config.getUrlParamRule("/tlist/list.nhn", "mode").getDefender(), is(config.getDefenderMap().get("xss")));
+		assertThat(config.getUrlParamRule("/url2.do", "url2Parameter3"), instanceOf(XssEscapeFilterRule.class));
+		assertThat(config.getUrlParamRule("/url2.do", "url2Parameter3").isUseDefender(), is(true));
+		assertThat(config.getUrlParamRule("/url2.do", "url2Parameter3").getDefender(), is(config.getDefenderMap().get("xssPreventerDefender")));
 
-		assertThat(config.getUrlParamRule("/tlist/list.nhn", "q"), instanceOf(XssEscapeFilterRule.class));
-		assertThat(config.getUrlParamRule("/tlist/list.nhn", "q").isUseDefender(), is(true));
-		assertThat(config.getUrlParamRule("/tlist/list.nhn", "q").getDefender(), is(config.getDefenderMap().get("xss_sax")));
+		assertThat(config.getUrlParamRule("/url2.do", "url2Parameter2"), instanceOf(XssEscapeFilterRule.class));
+		assertThat(config.getUrlParamRule("/url2.do", "url2Parameter2").isUseDefender(), is(true));
+		assertThat(config.getUrlParamRule("/url2.do", "url2Parameter2").getDefender(), is(config.getDefenderMap().get("xssSaxFilterDefender")));
 	}
 	
 	@Test
-	public void testUrlDisable() {
-		assertThat(config.getUrlParamRule("/disabletest1.nhn", null).isUseDefender(), is(false));
-		assertThat(config.getUrlParamRule("/disabletest2.nhn", null), is(nullValue()));
-		assertThat(config.getUrlParamRule("/disabletest3.nhn", "query").isUseDefender(), is(false));
-		assertThat(config.getUrlParamRule("/disabletest4.nhn", "query").isUseDefender(), is(false));
-		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix1").isUseDefender(), is(true));
-		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix1aaaa").isUseDefender(), is(true));
-		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix2aaaa"), is(nullValue()));
-		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix2").isUseDefender(), is(false));
-		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix3").isUseDefender(), is(true));
-		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix3aaaa").isUseDefender(), is(true));
-		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix4").isUseDefender(), is(false));
-		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix4aaaa").isUseDefender(), is(false));
-		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix5aaaa"),  is(nullValue()));
-		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix5").isUseDefender(), is(true));
-		
-	}
-	
-	@Test
-	public void testUrlPrefix() {
-		assertThat(config.getUrlParamRule("/search.nhn", "query").isUseDefender(), is(false));
-		assertThat(config.getUrlParamRule("/search.nhn", "prefix1").isUseDefender(), is(true));
-		assertThat(config.getUrlParamRule("/search.nhn", "prefix1aaaa").isUseDefender(), is(true));
-		assertThat(config.getUrlParamRule("/search.nhn", "prefix2aaaa"), is(nullValue()));
-		assertThat(config.getUrlParamRule("/search.nhn", "prefix2").isUseDefender(), is(false));
-		assertThat(config.getUrlParamRule("/search.nhn", "prefix3").isUseDefender(), is(true));
-		assertThat(config.getUrlParamRule("/disabletest4.nhn", "prefix3aaaa").isUseDefender(), is(true));
-		assertThat(config.getUrlParamRule("/search.nhn", "prefix4aaaa").getDefender(), instanceOf(XssSaxFilterDefender.class));
+	public void testUrlDisableAndPrefix() {
+		assertThat(config.getUrlParamRule("/disableUrl1.do", null).isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/disableUrl2.do", null), is(nullValue()));
+		assertThat(config.getUrlParamRule("/disableUrl3.do", "query").isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/disableUrl4.do", "query").isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/disableUrl4.do", "prefix1").isUseDefender(), is(true));
+		assertThat(config.getUrlParamRule("/disableUrl4.do", "prefix1aaaa").isUseDefender(), is(true));
+		assertThat(config.getUrlParamRule("/disableUrl4.do", "prefix2aaaa"), is(nullValue()));
+		assertThat(config.getUrlParamRule("/disableUrl4.do", "prefix2").isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/disableUrl4.do", "prefix3").isUseDefender(), is(true));
+		assertThat(config.getUrlParamRule("/disableUrl4.do", "prefix3aaaa").isUseDefender(), is(true));
+		assertThat(config.getUrlParamRule("/disableUrl4.do", "prefix4").isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/disableUrl4.do", "prefix4aaaa").isUseDefender(), is(false));
+		assertThat(config.getUrlParamRule("/disableUrl4.do", "prefix5aaaa"),  is(nullValue()));
+		assertThat(config.getUrlParamRule("/disableUrl4.do", "prefix5").isUseDefender(), is(true));
+		assertThat(config.getUrlParamRule("/disableUrl4.do", "prefix6aaaa").getDefender(), instanceOf(XssSaxFilterDefender.class));
 	}
 }

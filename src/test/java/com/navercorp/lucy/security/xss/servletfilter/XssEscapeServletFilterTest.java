@@ -7,15 +7,16 @@
 
 package com.navercorp.lucy.security.xss.servletfilter;
 
-import static org.hamcrest.core.Is.*;
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.springframework.mock.web.MockFilterChain;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 
-import java.io.*;
+import javax.servlet.ServletException;
+import java.io.IOException;
 
-import javax.servlet.*;
-
-import org.junit.*;
-import org.springframework.mock.web.*;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * XssEscapeServletFilter 에 대한 통합 테스트
@@ -30,21 +31,21 @@ public class XssEscapeServletFilterTest {
 	
 	@Test
 	public void testDoFilter() throws IOException, ServletException {
-		request = new MockHttpServletRequest("GET", "/notExistUrl.nhn");
+		request = new MockHttpServletRequest("GET", "/notExistUrl.do");
 		request.addParameter("title", "<b>Text</b>");
-		request.addParameter("q", "<b>Text</b>");
+		request.addParameter("globalParameter", "<b>Text</b>");
 		response = new MockHttpServletResponse();
 		chain = new MockFilterChain();
 		
 		filter.doFilter(request, response, chain);
 		
 		assertThat(chain.getRequest().getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
-		assertThat(chain.getRequest().getParameter("q"), is("<b>Text</b>"));
+		assertThat(chain.getRequest().getParameter("globalParameter"), is("<b>Text</b>"));
 
-		request = new MockHttpServletRequest("POST", "/tlist/list.nhn");
+		request = new MockHttpServletRequest("POST", "/url1.do");
 		request.addParameter("title", "<b>Text</b>");
 		request.addParameter("mode", "<script>Text</script>");
-		request.addParameter("q", "<script>Text</script>");
+		request.addParameter("globalParameter", "<script>Text</script>");
 		response = new MockHttpServletResponse();
 		chain = new MockFilterChain();
 		
@@ -52,6 +53,6 @@ public class XssEscapeServletFilterTest {
 		
 		assertThat(chain.getRequest().getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
 		assertThat(chain.getRequest().getParameter("mode"), is("&lt;script&gt;Text&lt;/script&gt;"));
-		assertThat(chain.getRequest().getParameter("q"), is("&lt;script&gt;Text&lt;/script&gt;"));
+		assertThat(chain.getRequest().getParameter("globalParameter"), is("&lt;script&gt;Text&lt;/script&gt;"));
 	}
 }
