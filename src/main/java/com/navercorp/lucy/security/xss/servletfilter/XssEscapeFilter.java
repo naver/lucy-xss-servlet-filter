@@ -29,7 +29,7 @@ public final class XssEscapeFilter {
 		}
 	}
 
-	private XssEscapeFilter() throws Exception {
+	private XssEscapeFilter() {
 		config = new XssEscapeFilterConfig();
 	}
 

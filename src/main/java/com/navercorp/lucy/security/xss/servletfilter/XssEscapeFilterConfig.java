@@ -43,9 +43,9 @@ public class XssEscapeFilterConfig {
 	 * 설정값 초기화
 	 * 
 	 * @param filename
-	 * @throws Exception
+	 * @throws IllegalStateException
 	 */
-	public XssEscapeFilterConfig() throws Exception {
+	public XssEscapeFilterConfig() throws IllegalStateException {
 		this(DEFAULT_FILTER_RULE_FILENAME);
 	}
 	
@@ -53,9 +53,9 @@ public class XssEscapeFilterConfig {
 	 * 설정값 초기화
 	 * 
 	 * @param filename
-	 * @throws Exception
+	 * @throws IllegalStateException
 	 */
-	public XssEscapeFilterConfig(String filename) throws Exception {
+	public XssEscapeFilterConfig(String filename) throws IllegalStateException {
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
@@ -76,7 +76,8 @@ public class XssEscapeFilterConfig {
 			addUrlRuleSet(rootElement);
 
 		} catch (Exception e) {
-			throw new Exception(String.format("Cannot parse the RequestParam configuration file [%s].", new Object[] {filename}), e);
+			String message = String.format("Cannot parse the RequestParam configuration file [%s].", filename);
+			throw new IllegalStateException(message, e);
 		}
 	}
 

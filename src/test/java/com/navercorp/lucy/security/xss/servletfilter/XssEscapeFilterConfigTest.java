@@ -30,7 +30,12 @@ public class XssEscapeFilterConfigTest {
 	public static void init() throws Exception {
 		config = new XssEscapeFilterConfig();
 	}
-	
+
+	@Test(expected = IllegalStateException.class)
+	public void testWhenWrongConfigFile() {
+		new XssEscapeFilterConfig("test.xml");
+	}
+
 	@Test
 	public void testGetDefaultDefender() {
 		assertThat(config.getDefaultDefender(), instanceOf(XssPreventerDefender.class));
