@@ -1,27 +1,34 @@
 /*
- * @(#)XssFilterDefender.java $version 2014. 9. 15.
+ * Copyright 2014 NAVER Corp.
  *
- * Copyright 2007 NHN Corp. All rights Reserved. 
- * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.navercorp.lucy.security.xss.servletfilter.defender;
 
-import org.apache.commons.lang3.*;
 
-import com.nhncorp.lucy.security.xss.*;
+import com.nhncorp.lucy.security.xss.XssFilter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
- * Lucy XSS Filter 를 사용하는 Defender Adapter
- * 
- * @author tod2
+ * @author todtod80
  */
 public class XssFilterDefender implements Defender {
 	private XssFilter filter;
-	
+
 	/**
-	 * @param values
-	 * @see com.navercorp.lucy.security.xss.servletfilter.defender.Defender#init(java.lang.String[])
+	 * @param values String[]
+	 * @return void
 	 */
 	@Override
 	public void init(String[] values) {
@@ -45,34 +52,27 @@ public class XssFilterDefender implements Defender {
 			}
 		}
 	}
-	
+
 	/**
-	 * @param value
-	 * @return
-	 * @see com.navercorp.lucy.security.xss.servletfilter.defender.Defender#doFilter(java.lang.String)
+	 * @param value String
+	 * @return String
 	 */
 	@Override
 	public String doFilter(String value) {
 		return filter.doFilter(value);
 	}
-	
+
 	/**
-	 * 해당 문자열이 boolean 값을 의미하는지 여부
-	 * 
-	 * @param value
-	 * @return
+	 * @param value String
+	 * @return boolean
 	 */
 	private boolean isBoolean(String value) {
 		return StringUtils.equalsIgnoreCase(value, "true") || StringUtils.equalsIgnoreCase(value, "false");
 	}
-	
+
 	/**
-	 * 해당 문자열 값으로 boolean 값을 획득.</br></br>
-	 * 
-	 * 허용되지 않는 값일 경우는 false 를 return한다.
-	 * 
-	 * @param value
-	 * @return
+	 * @param value String
+	 * @return boolean
 	 */
 	private boolean convertBoolean(String value) {
 		return StringUtils.equalsIgnoreCase(value, "true") ? true : false;

@@ -1,33 +1,40 @@
 /*
- * @(#)XssEscapeFilterConfig.java $version 2014. 9. 2.
+ * Copyright 2014 NAVER Corp.
  *
- * Copyright 2007 NHN Corp. All rights Reserved. 
- * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.navercorp.lucy.security.xss.servletfilter;
 
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
+import com.navercorp.lucy.security.xss.servletfilter.defender.Defender;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import com.navercorp.lucy.security.xss.servletfilter.defender.Defender;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
- * XssEscapeServletFilter 에서 사용할 설정 정보를 관리하는 클래스.<br/><br/>
- * 
- * @author tod2
+ * @author todtod80
+ * @author leeplay
+ * @author benelog
  */
 public class XssEscapeFilterConfig {
 	private static final String DEFAULT_FILTER_RULE_FILENAME = "lucy-xss-servlet-filter-rule.xml";
@@ -40,20 +47,16 @@ public class XssEscapeFilterConfig {
 	private Defender defaultDefender = null;
 
 	/**
-	 * 설정값 초기화
-	 * 
-	 * @param filename
-	 * @throws IllegalStateException
+	 * Default Constructor
 	 */
 	public XssEscapeFilterConfig() throws IllegalStateException {
 		this(DEFAULT_FILTER_RULE_FILENAME);
 	}
-	
+
 	/**
-	 * 설정값 초기화
-	 * 
-	 * @param filename
-	 * @throws IllegalStateException
+	 * Constructor
+	 *
+	 * @param filename String
 	 */
 	public XssEscapeFilterConfig(String filename) throws IllegalStateException {
 		try {
@@ -82,9 +85,8 @@ public class XssEscapeFilterConfig {
 	}
 
 	/**
-	 * 기본값 정보 설정
-	 * 
-	 * @param rootElement
+	 * @param rootElement Element
+	 * @return void
 	 */
 	private void addDefaultInfo(Element rootElement) {
 		NodeList nodeList = rootElement.getElementsByTagName("default");
@@ -95,9 +97,8 @@ public class XssEscapeFilterConfig {
 	}
 
 	/**
-	 * 기본값 내 각 항목 설정
-	 * 
-	 * @param element
+	 * @param element Element
+	 * @return void
 	 */
 	private void addDefaultInfoItems(Element element) {
 		NodeList nodeList = element.getElementsByTagName("defender");
@@ -111,9 +112,8 @@ public class XssEscapeFilterConfig {
 	}
 
 	/**
-	 * Global Param 설정
-	 * 
-	 * @param rootElement
+	 * @param rootElement Element
+	 * @return void
 	 */
 	private void addGlobalParams(Element rootElement) {
 		NodeList nodeList = rootElement.getElementsByTagName("global");
@@ -126,11 +126,10 @@ public class XssEscapeFilterConfig {
 			}			
 		}
 	}
-	
+
 	/**
-	 * Url Rule Set 설정
-	 * 
-	 * @param elements
+	 * @param rootElement Element
+	 * @return void
 	 */
 	private void addUrlRuleSet(Element rootElement) {
 		NodeList nodeList = rootElement.getElementsByTagName("url-rule");
@@ -141,9 +140,8 @@ public class XssEscapeFilterConfig {
 	}
 
 	/**
-	 * Url Rule 설정
-	 * 
-	 * @param elements
+	 * @param element Element
+	 * @return void
 	 */
 	private void addUrlRule(Element element) {
 		Map<String, XssEscapeFilterRule> paramRuleMap = null;
@@ -167,6 +165,11 @@ public class XssEscapeFilterConfig {
 		urlRuleSetMap.put(url, paramRuleMap);
 	}
 
+	/**
+	 * @param url String
+	 * @param nodeList NodeList
+	 * @return boolean
+	 */
 	private boolean addUrlDisableRule(String url, NodeList nodeList) {
 		Map<String, XssEscapeFilterRule> paramRuleMap = null;
 		boolean result = false;
@@ -183,12 +186,10 @@ public class XssEscapeFilterConfig {
 		
 		return result;
 	}
-	
+
 	/**
-	 * Url Rule 모델 객체 생성
-	 * 
-	 * @param element
-	 * @return
+	 * @param element Element
+	 * @return Map<String, XssEscapeFilterRule>
 	 */
 	private Map<String, XssEscapeFilterRule> createRequestParamRuleMap(Element element) {
 		Map<String, XssEscapeFilterRule> urlRuleMap = new HashMap<String, XssEscapeFilterRule>();
@@ -225,10 +226,9 @@ public class XssEscapeFilterConfig {
 	}
 
 	/**
-	 * Url Rule 모델 객체 생성
-	 * 
-	 * @param string, boolean
-	 * @return
+	 * @param url String
+	 * @param disable boolean
+	 * @return Map<String, XssEscapeFilterRule>
 	 */
 	private Map<String, XssEscapeFilterRule> createRequestParamRuleMap(String url, boolean disable) {
 		if (!disable) {
@@ -243,11 +243,10 @@ public class XssEscapeFilterConfig {
 		
 		return urlRuleMap;
 	}
-	
+
 	/**
-	 * Defenders 설정
-	 * 
-	 * @param rootElement
+	 * @param rootElement Element
+	 * @return void
 	 */
 	private void addDefenders(Element rootElement) {
 		NodeList nodeList = rootElement.getElementsByTagName("defenders");
@@ -259,9 +258,8 @@ public class XssEscapeFilterConfig {
 	}
 
 	/**
-	 * Defender 설정
-	 * 
-	 * @param elements
+	 * @param element Element
+	 * @return void
 	 */
 	private void addDefender(Element element) {
 		NodeList nodeList = element.getElementsByTagName("defender");
@@ -274,6 +272,12 @@ public class XssEscapeFilterConfig {
 		}
 	}
 
+	/**
+	 * @param name String
+	 * @param clazz String
+	 * @param args String[]
+	 * @return void
+	 */
 	private void addDefender(String name, String clazz, String[] args) {
 		// TODO 필수 파라미터의 검증은 향후 DTD나 XSL등 XML 정합성체크에 맡겨야함
 		if (StringUtils.isBlank(name) || StringUtils.isBlank(clazz)) {
@@ -295,11 +299,21 @@ public class XssEscapeFilterConfig {
 		}
 	}
 
+	/**
+	 * @param name String
+	 * @param clazz String
+	 * @param e Exception
+	 * @return void
+	 */
 	private void rethrow(String name, String clazz, Exception e) {
 		String message = String.format("Fail to add defender: name=%s, class=%s", name, clazz);
 		throw new IllegalStateException(message, e);
 	}
 
+	/**
+	 * @param eachElement Element
+	 * @return String[]
+	 */
 	private String[] getInitParams(Element eachElement) {
 		NodeList initParamNodeList = eachElement.getElementsByTagName("init-param");
 		if (initParamNodeList.getLength() == 0) {
@@ -315,6 +329,11 @@ public class XssEscapeFilterConfig {
 		return args;
 	}
 
+	/**
+	 * @param eachElement Element
+	 * @param tagName String
+	 * @return String
+	 */
 	private String getTagContent(Element eachElement, String tagName) {
 		NodeList nodeList = eachElement.getElementsByTagName(tagName);
 		if (nodeList.getLength() > 0) {
@@ -324,13 +343,9 @@ public class XssEscapeFilterConfig {
 	}
 
 	/**
-	 * 해당 URL 에 정의된 Param 정의 정보를 획득.<br/><br/>
-	 * 
-	 * 해당 URL 에 정의된 Param 정보가 없을 경우 Global Param 정보를 찾아 반환하며, 둘 다 없을 경우는 null 을 반환한다.
-	 * 
-	 * @param url
-	 * @param paramName
-	 * @return
+	 * @param url String
+	 * @param paramName String
+	 * @return XssEscapeFilterRule
 	 */
 	public XssEscapeFilterRule getUrlParamRule(String url, String paramName) {
 		Map<String, XssEscapeFilterRule> urlParamRuleMap = urlRuleSetMap.get(url);
@@ -346,6 +361,10 @@ public class XssEscapeFilterConfig {
 		return paramRule;
 	}
 
+	/**
+	 * @param paramName String
+	 * @return XssEscapeFilterRule
+	 */
 	private XssEscapeFilterRule checkGlobalParamRule(String paramName) {
 		XssEscapeFilterRule paramRule = globalParamRuleMap.get(paramName);
 		
@@ -356,7 +375,13 @@ public class XssEscapeFilterConfig {
 		
 		return paramRule;
 	}
-	
+
+	/**
+	 * @param urlParamRuleMap Map<String, XssEscapeFilterRule>
+	 * @param url String
+	 * @param paramName String
+	 * @return XssEscapeFilterRule
+	 */
 	private XssEscapeFilterRule checkParamRule(Map<String, XssEscapeFilterRule> urlParamRuleMap, String url, String paramName) {
 		XssEscapeFilterRule paramRule = urlParamRuleMap.get(paramName);
 		
@@ -373,7 +398,13 @@ public class XssEscapeFilterConfig {
 		}
 		return paramRule;
 	}
-	
+
+	/**
+	 * @param url String
+	 * @param paramRule XssEscapeFilterRule
+	 * @param urlParamRuleMap Map<String, XssEscapeFilterRule>
+	 * @return XssEscapeFilterRule
+	 */
 	private XssEscapeFilterRule checkDisableUrl(String url, XssEscapeFilterRule paramRule, Map<String, XssEscapeFilterRule> urlParamRuleMap) {
 		if (paramRule != null) {
 			return paramRule;
@@ -384,7 +415,13 @@ public class XssEscapeFilterConfig {
 		}
 		return paramRule;
 	}
-	
+
+	/**
+	 * @param paramName String
+	 * @param paramRule XssEscapeFilterRule
+	 * @param urlParamRuleMap Map<String, XssEscapeFilterRule>
+	 * @return XssEscapeFilterRule
+	 */
 	private XssEscapeFilterRule checkPrefixParameter(String paramName, XssEscapeFilterRule paramRule, Map<String, XssEscapeFilterRule> urlParamRuleMap) {
 		if (paramRule != null || paramName == null) {
 			return paramRule;
@@ -398,20 +435,16 @@ public class XssEscapeFilterConfig {
 		}
 		return paramRule;
 	}
-	
+
 	/**
-	 * 해당 URL 에 정의된 Param 정의 정보를 획득.<br/><br/>
-	 * 
-	 * @return
+	 * @return Map<String, Defender>
 	 */
 	public Map<String, Defender> getDefenderMap() {
 		return defenderMap;
 	}
 
 	/**
-	 * Default Defender 획득
-	 * 
-	 * @return
+	 * @return Defender
 	 */
 	public Defender getDefaultDefender() {
 		return defaultDefender;

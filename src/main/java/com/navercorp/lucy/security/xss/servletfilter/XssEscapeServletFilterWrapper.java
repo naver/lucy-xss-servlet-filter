@@ -1,57 +1,47 @@
 /*
- * @(#)XssEscapeServletFilteredRequest.java $version 2014. 9. 1.
+ * Copyright 2014 NAVER Corp.
  *
- * Copyright 2007 NHN Corp. All rights Reserved. 
- * NHN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.navercorp.lucy.security.xss.servletfilter;
 
-import java.util.*;
-import java.util.Map.Entry;
-
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * RequestParam 이 적용되어 parameter 값을 변경하기 위한 Wrapper.<br/><br/>
- * 
- * RequestParam 필터의 Rule에 의해 값이 변조되어야 할 경우 request 객체의 값을 변조하는 역할을 한다.  
- * 
- * @author tod2
+ * @author todtod80
+ * @author leeplay
  */
 public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
 	private XssEscapeFilter xssEscapeFilter;
 	private String path = null;
 
-	/**
-	 * @param request
-	 * @param filter
-	 */
 	public XssEscapeServletFilterWrapper(ServletRequest request, XssEscapeFilter xssEscapeFilter) {
 		super((HttpServletRequest)request);
 		this.xssEscapeFilter = xssEscapeFilter;
 		this.path = ((HttpServletRequest)request).getRequestURI();
 	}
 
-	/**
-	 * Gets the parameter.
-	 *
-	 * @param paramName the param name
-	 * @return the parameter
-	 */
 	@Override
 	public String getParameter(String paramName) {
 		String value = super.getParameter(paramName);
 		return doFilter(paramName, value);
 	}
-
-	/**
-	 * Gets the parameter values.
-	 *
-	 * @param paramName the param name
-	 * @return the parameter values
-	 */
 
 	@Override
 	public String[] getParameterValues(String paramName) {
@@ -65,19 +55,14 @@ public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
 		return values;
 	}
 
-	/**
-	 * Gets the parameter map.
-	 *
-	 * @return the parameter map
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Object> getParameterMap() {
 		Map<String, Object> paramMap = super.getParameterMap();
 		Map<String, Object> newFilteredParamMap = new HashMap<String, Object>();
 
-		Set<Entry<String, Object>> entries = paramMap.entrySet();
-		for (Entry<String, Object> entry : entries) {
+		Set<Map.Entry<String, Object>> entries = paramMap.entrySet();
+		for (Map.Entry<String, Object> entry : entries) {
 			String paramName = entry.getKey();
 			Object[] valueObj = (Object[])entry.getValue();
 			String[] filteredValue = new String[valueObj.length];
@@ -92,13 +77,11 @@ public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
 	}
 
 	/**
-	 * 파라메터 값에 대해 Filtering 수행
-	 *
-	 * @param paramName 
-	 * @return value
+	 * @param paramName String
+	 * @param value String
+	 * @return String
 	 */
 	private String doFilter(String paramName, String value) {
 		return xssEscapeFilter.doFilter(path, paramName, value);
 	}
-
 }
