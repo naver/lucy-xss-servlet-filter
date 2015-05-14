@@ -87,7 +87,7 @@ Lucy-Xss-Servlet-Filter를 적용하게 되면 아래와 같은 장단점이 있
 
 ```XML
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns="http://www.navercop.com/lucy-xss-servlet">
+<config xmlns="http://www.navercorp.com/lucy-xss-servlet">
    <defenders>
        <!-- XssPreventer 등록 -->
        <defender>

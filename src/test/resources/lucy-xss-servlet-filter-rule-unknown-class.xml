@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns="http://www.navercop.com/lucy-xss-servlet">
+<config xmlns="http://www.navercorp.com/lucy-xss-servlet">
     <defenders>
         <defender>
             <name>xssPreventerDefender</name>
