@@ -162,9 +162,9 @@ Lucy-Xss-Servlet-Filter를 적용하게 되면 아래와 같은 장단점이 있
 </config>
 ```
 
-자세한 사용방버은 아래를 참고해 주세요
-- [manual.md]()
-- [lucy-xss-servlet-filter-rule.xml]()
+자세한 사용방법은 아래를 참고해 주세요
+- [manual.md](https://github.com/naver/lucy-xss-servlet-filter/blob/master/doc/manual.md)
+- [lucy-xss-servlet-filter-rule.xml](https://github.com/naver/lucy-xss-servlet-filter/blob/master/src/test/resources/lucy-xss-servlet-filter-rule.xml)
 
 ## Contributing to Lucy
 Want to hack on Lucy-XSS? Awesome! There are instructions to get you started here.
