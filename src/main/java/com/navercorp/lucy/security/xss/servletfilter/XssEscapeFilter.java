@@ -29,7 +29,7 @@ public final class XssEscapeFilter {
 		}
 	}
 
-	private XssEscapeFilter() throws Exception {
+	private XssEscapeFilter() {
 		config = new XssEscapeFilterConfig();
 	}
 
@@ -57,15 +57,19 @@ public final class XssEscapeFilter {
 		if (urlRule == null) {
 			// Default defender 적용
 			return config.getDefaultDefender().doFilter(value);
-		} else {
-			if (!urlRule.isUseDefender()) {
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Do not filtered Parameter. Request url: " + url + ", Parameter name: " + paramName + ", Parameter value: " + value);
-				}
-				return value;
-			} else {
-				return urlRule.getDefender().doFilter(value);
-			}
+		} 
+
+		if (!urlRule.isUseDefender()) {
+			log(url, paramName, value);
+			return value;
+		}
+
+		return urlRule.getDefender().doFilter(value);
+	}
+
+	private void log(String url, String paramName, String value) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Do not filtered Parameter. Request url: " + url + ", Parameter name: " + paramName + ", Parameter value: " + value);
 		}
 	}
 }

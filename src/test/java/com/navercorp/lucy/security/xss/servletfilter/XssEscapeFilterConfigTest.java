@@ -30,7 +30,23 @@ public class XssEscapeFilterConfigTest {
 	public static void init() throws Exception {
 		config = new XssEscapeFilterConfig();
 	}
-	
+
+	@Test(expected = IllegalStateException.class)
+	public void testWhenNotExistingConfigFile() {
+		new XssEscapeFilterConfig("unkonwn-file.xml");
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void testWhenUnknownDefnderClass() {
+		new XssEscapeFilterConfig("lucy-xss-servlet-filter-rule-unknown-class.xml");
+	}
+
+	@Test
+	public void testWhenEmptyDefnderName() {
+		new XssEscapeFilterConfig("lucy-xss-servlet-filter-rule-empty-name.xml");
+		// leaves warning message
+	}
+
 	@Test
 	public void testGetDefaultDefender() {
 		assertThat(config.getDefaultDefender(), instanceOf(XssPreventerDefender.class));

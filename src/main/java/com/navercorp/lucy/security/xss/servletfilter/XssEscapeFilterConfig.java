@@ -43,9 +43,9 @@ public class XssEscapeFilterConfig {
 	 * 설정값 초기화
 	 * 
 	 * @param filename
-	 * @throws Exception
+	 * @throws IllegalStateException
 	 */
-	public XssEscapeFilterConfig() throws Exception {
+	public XssEscapeFilterConfig() throws IllegalStateException {
 		this(DEFAULT_FILTER_RULE_FILENAME);
 	}
 	
@@ -53,9 +53,9 @@ public class XssEscapeFilterConfig {
 	 * 설정값 초기화
 	 * 
 	 * @param filename
-	 * @throws Exception
+	 * @throws IllegalStateException
 	 */
-	public XssEscapeFilterConfig(String filename) throws Exception {
+	public XssEscapeFilterConfig(String filename) throws IllegalStateException {
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
@@ -76,7 +76,8 @@ public class XssEscapeFilterConfig {
 			addUrlRuleSet(rootElement);
 
 		} catch (Exception e) {
-			throw new Exception(String.format("Cannot parse the RequestParam configuration file [%s].", new Object[] {filename}), e);
+			String message = String.format("Cannot parse the RequestParam configuration file [%s].", filename);
+			throw new IllegalStateException(message, e);
 		}
 	}
 
@@ -265,48 +266,61 @@ public class XssEscapeFilterConfig {
 	private void addDefender(Element element) {
 		NodeList nodeList = element.getElementsByTagName("defender");
 		for (int i = 0; nodeList.getLength() > 0 && i < nodeList.getLength(); i++) {
-			String name = null;
-			String clazz = null;
-			String[] args = null;
-			
 			Element eachElement = (Element)nodeList.item(i);
-			NodeList nameNodeList = eachElement.getElementsByTagName("name");
-			if (nameNodeList.getLength() > 0) {
-				name = nameNodeList.item(0).getTextContent();
-			}
-
-			NodeList classNodeList = eachElement.getElementsByTagName("class");
-			if (classNodeList.getLength() > 0) {
-				clazz = classNodeList.item(0).getTextContent();
-			}
-			
-			NodeList initParamNodeList = eachElement.getElementsByTagName("init-param");
-			if (initParamNodeList.getLength() > 0) {
-				Element paramValueElement = (Element)initParamNodeList.item(0);
-				NodeList paramValueNodeList = paramValueElement.getElementsByTagName("param-value");
-			
-				args = new String[paramValueNodeList.getLength()];
-				for (int j = 0; paramValueNodeList.getLength() > 0 && j < paramValueNodeList.getLength(); j++) {
-					args[j] = paramValueNodeList.item(j).getTextContent();
-				}
-			}
-
-			Defender defender;
-			try {
-				defender = (Defender)Class.forName(clazz.trim()).newInstance();
-				defender.init(args);
-				defenderMap.put(name, defender);
-			} catch (InstantiationException e) {
-				LOG.error("Error config 'Defender': " + clazz);
-				LOG.error(e.getMessage());
-			} catch (IllegalAccessException e) {
-				LOG.error("Error config 'Defender': " + clazz);
-				LOG.error(e.getMessage());
-			} catch (ClassNotFoundException e) {
-				LOG.error("Error config 'Defender': " + clazz);
-				LOG.error(e.getMessage());
-			}
+			String name = getTagContent(eachElement, "name");
+			String clazz = getTagContent(eachElement, "class");
+			String[] args = getInitParams(eachElement);
+			addDefender(name, clazz, args);
 		}
+	}
+
+	private void addDefender(String name, String clazz, String[] args) {
+		// TODO 필수 파라미터의 검증은 향후 DTD나 XSL등 XML 정합성체크에 맡겨야함
+		if (StringUtils.isBlank(name) || StringUtils.isBlank(clazz)) {
+			String message = String.format("The defender's name('%s') or clazz('%s') is empty. This defender is ignored", name, clazz);
+			LOG.warn(message);
+			return;
+		}
+		try {
+			Defender defender = (Defender)Class.forName(clazz.trim()).newInstance();
+			defender.init(args);
+			defenderMap.put(name, defender);
+		} catch (InstantiationException e) {
+			rethrow(name, clazz, e);
+		} catch (IllegalAccessException e) {
+			rethrow(name, clazz, e);
+		} catch (ClassNotFoundException e) {
+			rethrow(name, clazz, e);
+
+		}
+	}
+
+	private void rethrow(String name, String clazz, Exception e) {
+		String message = String.format("Fail to add defender: name=%s, class=%s", name, clazz);
+		throw new IllegalStateException(message, e);
+	}
+
+	private String[] getInitParams(Element eachElement) {
+		NodeList initParamNodeList = eachElement.getElementsByTagName("init-param");
+		if (initParamNodeList.getLength() == 0) {
+			return new String[]{};
+		}
+		Element paramValueElement = (Element)initParamNodeList.item(0);
+		NodeList paramValueNodeList = paramValueElement.getElementsByTagName("param-value");
+	
+		String[] args = new String[paramValueNodeList.getLength()];
+		for (int j = 0; paramValueNodeList.getLength() > 0 && j < paramValueNodeList.getLength(); j++) {
+			args[j] = paramValueNodeList.item(j).getTextContent();
+		}
+		return args;
+	}
+
+	private String getTagContent(Element eachElement, String tagName) {
+		NodeList nodeList = eachElement.getElementsByTagName(tagName);
+		if (nodeList.getLength() > 0) {
+			return nodeList.item(0).getTextContent();
+		}
+		return "";
 	}
 
 	/**
