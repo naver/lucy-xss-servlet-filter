@@ -7,7 +7,7 @@
 	<groupId>com.navercorp.lucy</groupId>
 	<artifactId>lucy-xss-servlet</artifactId>
 	<packaging>jar</packaging>
-	<version>2.0.0</version>
+	<version>2.0.1-SNAPSHOT</version>
 	<name>Lucy Xss Servlet Filter</name>
 	<description>XSS Servlet Filter for Web Service</description>
 
