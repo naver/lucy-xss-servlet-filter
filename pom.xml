@@ -47,10 +47,6 @@
 		</developer>
 	</developers>
 
-	<properties>
-		<additionalparam>-Xdoclint:none</additionalparam>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
