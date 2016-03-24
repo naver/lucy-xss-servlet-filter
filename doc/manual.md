@@ -55,7 +55,7 @@ Lucy-Xss-Servlet-Filter를 적용하게 되면 아래와 같은 장단점이 있
 
 ## Xml Config All examples
 
-```
+```XML
 <?xml version="1.0" encoding="UTF-8"?>
  
 <config xmlns="http://www.navercorp.com/lucy-xss-servlet">
