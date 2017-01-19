@@ -124,7 +124,7 @@ Lucy-Xss-Servlet-Filter를 적용하게 되면 아래와 같은 장단점이 있
     <!-- global 필터링 룰 선언 -->
     <global>
         <!-- 모든 url에서 들어오는 globalParameter 파라메터는 필터링 되지 않으며 
-                또한 lobalPrefixParameter로 시작하는 파라메터도 필터링 되지 않는다. -->
+                또한 globalPrefixParameter로 시작하는 파라메터도 필터링 되지 않는다. -->
         <params>
             <param name="globalParameter" useDefender="false" />
             <param name="globalPrefixParameter" usePrefix="true" useDefender="false" />
