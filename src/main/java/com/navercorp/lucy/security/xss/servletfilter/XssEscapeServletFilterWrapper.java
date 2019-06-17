@@ -34,7 +34,9 @@ public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
 	public XssEscapeServletFilterWrapper(ServletRequest request, XssEscapeFilter xssEscapeFilter) {
 		super((HttpServletRequest)request);
 		this.xssEscapeFilter = xssEscapeFilter;
-		this.path = ((HttpServletRequest)request).getRequestURI();
+
+		String contextPath = ((HttpServletRequest) request).getContextPath();
+		this.path = ((HttpServletRequest) request).getRequestURI().substring(contextPath.length());
 	}
 
 	@Override
