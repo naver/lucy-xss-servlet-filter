@@ -149,4 +149,27 @@ public class XssEscapeServletFilterWrapperTest {
 		values = (String[])map.get("globalParameter");
 		assertThat(values[0], is("&lt;script&gt;Text1&lt;/script&gt;"));
 	}
+
+	@Test
+	public void testContextPath() {
+		request = new MockHttpServletRequest("GET", "/test/notExistUrl.do");
+		request.setContextPath("/test");
+		request.addParameter("title", "<b>Text</b>");
+		request.addParameter("globalParameter", "<b>Text</b>");
+		wrapper = new XssEscapeServletFilterWrapper(request, filter);
+
+		assertThat(wrapper.getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
+		assertThat(wrapper.getParameter("globalParameter"), is("<b>Text</b>"));
+
+		request = new MockHttpServletRequest("GET", "/test/url1.do");
+		request.setContextPath("/test");
+		request.addParameter("title", "<b>Text</b>");
+		request.addParameter("mode", "<script>Text</script>");
+		request.addParameter("globalParameter", "<script>Text</script>");
+		wrapper = new XssEscapeServletFilterWrapper(request, filter);
+
+		assertThat(wrapper.getParameter("title"), is("&lt;b&gt;Text&lt;/b&gt;"));
+		assertThat(wrapper.getParameter("mode"), is("&lt;script&gt;Text&lt;/script&gt;"));
+		assertThat(wrapper.getParameter("globalParameter"), is("&lt;script&gt;Text&lt;/script&gt;"));
+	}
 }
