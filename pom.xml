@@ -45,6 +45,10 @@
 			<name>Hyeongkyu Lee</name>
 			<id>leeplay</id>
 		</developer>
+		<developer>
+			<name>HyunGil Jeong</name>
+			<id>Xylus</id>
+		</developer>
 	</developers>
 
 	<dependencies>
