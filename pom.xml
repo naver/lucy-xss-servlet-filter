@@ -7,7 +7,7 @@
 	<groupId>com.navercorp.lucy</groupId>
 	<artifactId>lucy-xss-servlet</artifactId>
 	<packaging>jar</packaging>
-	<version>2.0.1-SNAPSHOT</version>
+	<version>2.0.1</version>
 	<name>Lucy Xss Servlet Filter</name>
 	<description>XSS Servlet Filter for Web Service</description>
 
@@ -50,6 +50,10 @@
 			<id>Xylus</id>
 		</developer>
 	</developers>
+
+	<properties>
+		<additionalparam>-Xdoclint:none</additionalparam>
+	</properties>
 
 	<dependencies>
 		<dependency>
