@@ -36,9 +36,8 @@ import java.util.Set;
  */
 public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
 	private XssEscapeFilter xssEscapeFilter;
-	private String path = null;
+	private String path;
 	private Gson gson = new Gson();
-	private String encoding;
 
 	public XssEscapeServletFilterWrapper(ServletRequest request, XssEscapeFilter xssEscapeFilter) {
 		super((HttpServletRequest)request);
@@ -47,7 +46,6 @@ public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
 
 		String contextPath = ((HttpServletRequest) request).getContextPath();
 		this.path = ((HttpServletRequest) request).getRequestURI().substring(contextPath.length());
-		this.encoding = request.getCharacterEncoding();
 	}
 
 	@Override
@@ -97,7 +95,7 @@ public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
 	@Override
 	public ServletInputStream getInputStream() {
 		try {
-			String inputString = IOUtils.toString(super.getInputStream(), encoding);
+			String inputString = IOUtils.toString(super.getInputStream(), getCharacterEncoding());
 			Map<String, Object> map = gson.fromJson(inputString, Map.class);
 			Set<String> keys = map.keySet();
 			for(String key : keys) {
@@ -110,10 +108,10 @@ public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
 
 			return new XssFilteredServletInputStream(new ByteArrayInputStream(result.getBytes(getCharacterEncoding())));
 		} catch(IOException ioe) {
-			// error handling TODO
+			// error handling
 			ioe.printStackTrace();
 		} catch(JsonParseException jpe) {
-			// error handling TODO
+			// error handling
 			jpe.printStackTrace();
 		}
 		return getInputStream();
