@@ -38,14 +38,17 @@ public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
 	private XssEscapeFilter xssEscapeFilter;
 	private String path;
 	private Gson gson = new Gson();
+	private boolean isMultipart;
 
 	public XssEscapeServletFilterWrapper(ServletRequest request, XssEscapeFilter xssEscapeFilter) {
 		super((HttpServletRequest)request);
 
+		isMultipart = isMultipartContent((HttpServletRequest)request);
+
 		this.xssEscapeFilter = xssEscapeFilter;
 
-		String contextPath = ((HttpServletRequest) request).getContextPath();
-		this.path = ((HttpServletRequest) request).getRequestURI().substring(contextPath.length());
+		String contextPath = ((HttpServletRequest)request).getContextPath();
+		this.path = ((HttpServletRequest)request).getRequestURI().substring(contextPath.length());
 	}
 
 	@Override
@@ -57,10 +60,10 @@ public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
 	@Override
 	public String[] getParameterValues(String paramName) {
 		String values[] = super.getParameterValues(paramName);
-		if (values == null) {
+		if(values == null) {
 			return values;
 		}
-		for (int index = 0; index < values.length; index++) {
+		for(int index = 0; index < values.length; index++) {
 			values[index] = doFilter(paramName, values[index]);
 		}
 		return values;
@@ -73,14 +76,14 @@ public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
 		Map<String, Object> newFilteredParamMap = new HashMap<String, Object>();
 
 		Set<Map.Entry<String, Object>> entries = paramMap.entrySet();
-		for (Map.Entry<String, Object> entry : entries) {
+		for(Map.Entry<String, Object> entry : entries) {
 			String paramName = entry.getKey();
 			Object[] valueObj = (Object[])entry.getValue();
 			String[] filteredValue = new String[valueObj.length];
-			for (int index = 0; index < valueObj.length; index++) {
+			for(int index = 0; index < valueObj.length; index++) {
 				filteredValue[index] = doFilter(paramName, String.valueOf(valueObj[index]));
 			}
-			
+
 			newFilteredParamMap.put(entry.getKey(), filteredValue);
 		}
 
@@ -94,26 +97,30 @@ public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
 	 */
 	@Override
 	public ServletInputStream getInputStream() {
-		try {
-			String inputString = IOUtils.toString(super.getInputStream(), getCharacterEncoding());
-			Map<String, Object> map = gson.fromJson(inputString, Map.class);
-			Set<String> keys = map.keySet();
-			for(String key : keys) {
-				Object value = map.get(key);
-				if(value instanceof String) {
-					map.put(key, doFilter(key, (String)map.get(key)));
-				}
-			}
-			String result = gson.toJson(map);
 
-			return new XssFilteredServletInputStream(new ByteArrayInputStream(result.getBytes(getCharacterEncoding())));
-		} catch(IOException ioe) {
-			// error handling
-			ioe.printStackTrace();
-		} catch(JsonParseException jpe) {
-			// error handling
-			jpe.printStackTrace();
-		}
+			try {
+				if(isMultipart){
+					return super.getInputStream();
+				}
+				String inputString = IOUtils.toString(super.getInputStream(), getCharacterEncoding());
+				Map<String, Object> map = gson.fromJson(inputString, Map.class);
+				Set<String> keys = map.keySet();
+				for(String key : keys) {
+					Object value = map.get(key);
+					if(value instanceof String) {
+						map.put(key, doFilter(key, (String)map.get(key)));
+					}
+				}
+				String result = gson.toJson(map);
+
+				return new XssFilteredServletInputStream(new ByteArrayInputStream(result.getBytes(getCharacterEncoding())));
+			} catch(IOException ioe) {
+				// error handling
+				ioe.printStackTrace();
+			} catch(JsonParseException jpe) {
+				// error handling
+				jpe.printStackTrace();
+			}
 		return getInputStream();
 	}
 
@@ -130,9 +137,20 @@ public class XssEscapeServletFilterWrapper extends HttpServletRequestWrapper {
 		}
 	}
 
+	public boolean isMultipartContent(HttpServletRequest request) {
+		String contentType = request.getContentType();
+		if(contentType == null) {
+			return false;
+		}
+		if(contentType.toLowerCase().startsWith("multipart/form-data")) {
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * @param paramName String
-	 * @param value String
+	 * @param value     String
 	 * @return String
 	 */
 	private String doFilter(String paramName, String value) {
